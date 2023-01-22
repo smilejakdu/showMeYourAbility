@@ -1,6 +1,6 @@
 package com.example.showmeyourability.users.infrastructure.dto.DeleteUserDto;
 
-import com.example.demo.shared.CheckValidity;
+import com.example.showmeyourability.shared.CheckValidity;
 import lombok.Data;
 
 @Data
@@ -12,5 +12,4 @@ public class DeleteUserRequestDto implements CheckValidity {
             throw new RuntimeException("userId is empty");
         }
     }
-
 }
