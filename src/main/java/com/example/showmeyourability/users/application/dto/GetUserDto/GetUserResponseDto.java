@@ -1,4 +1,4 @@
-package com.example.showmeyourability.users.infrastructure.dto.GetUserDto;
+package com.example.showmeyourability.users.application.dto.GetUserDto;
 
 import com.example.showmeyourability.users.domain.User;
 import lombok.Data;
