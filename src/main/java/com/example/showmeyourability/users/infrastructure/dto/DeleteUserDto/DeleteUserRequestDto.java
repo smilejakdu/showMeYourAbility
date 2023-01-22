@@ -12,5 +12,4 @@ public class DeleteUserRequestDto implements CheckValidity {
             throw new RuntimeException("userId is empty");
         }
     }
-
 }
