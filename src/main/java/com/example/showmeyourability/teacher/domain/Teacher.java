@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "teachers")
 public class Teacher extends BaseTimeEntitiy {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, length = 100, name = "career")
