@@ -1,17 +1,17 @@
-package com.example.showmeyourability.users.infrastructure.dto.FindUserByEmailDto;
+package com.example.showmeyourability.users.application.dto.GetUserDto;
 
 import com.example.showmeyourability.shared.CheckValidity;
 import lombok.Data;
 
 @Data
-public class FindUserByEmailRequestDto implements CheckValidity {
+public class GetUserRequestDto implements CheckValidity {
 
     private String email;
 
     @Override
     public void check() {
         if(email == null || email.isEmpty()) {
-            throw new RuntimeException("email is empty");
+            throw new RuntimeException("Email is empty");
         }
     }
 }

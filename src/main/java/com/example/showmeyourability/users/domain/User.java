@@ -20,7 +20,14 @@ public class User extends BaseTimeEntitiy {
     @Column(unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private Enum<GenderType> gender;
+
+    @Column(nullable = false)
+    private int age;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @ToString.Exclude

@@ -1,4 +1,4 @@
-package com.example.showmeyourability.users.infrastructure.dto.DeleteUserDto;
+package com.example.showmeyourability.users.application.dto.DeleteUserDto;
 
 import com.example.showmeyourability.shared.CheckValidity;
 import lombok.Data;
