@@ -1,6 +1,6 @@
 package com.example.showmeyourability.users.infrastructure.dto.GetUserDto;
 
-import com.example.demo.users.domain.User;
+import com.example.showmeyourability.users.domain.User;
 import lombok.Data;
 
 @Data

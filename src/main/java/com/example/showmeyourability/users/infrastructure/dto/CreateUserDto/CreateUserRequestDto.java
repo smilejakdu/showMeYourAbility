@@ -1,6 +1,6 @@
 package com.example.showmeyourability.users.infrastructure.dto.CreateUserDto;
 
-import com.example.demo.shared.CheckValidity;
+import com.example.showmeyourability.shared.CheckValidity;
 import lombok.Data;
 
 @Data
