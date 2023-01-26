@@ -2,6 +2,7 @@ package com.example.showmeyourability.users.domain;
 
 import com.example.showmeyourability.comments.domain.Comments;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -29,7 +30,7 @@ public class User extends BaseTimeEntitiy {
     @Column(nullable = false)
     private int age;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    @ToString.Exclude
     private List<Comments> comments = new ArrayList<>();
 }
