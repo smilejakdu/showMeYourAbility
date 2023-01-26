@@ -39,7 +39,7 @@ public class FindTeacherApplication {
     ) {
         Teacher teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 선생님은 존재하지 않습니다."));
-//       왜 이게 500 으로 뜨는거지 ??
+
         System.out.println("teacher = " + teacher);
         FindTeacherByIdResponseDto responseDto = new FindTeacherByIdResponseDto();
         BeanUtils.copyProperties(teacher,
