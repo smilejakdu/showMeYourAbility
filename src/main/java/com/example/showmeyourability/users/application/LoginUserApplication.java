@@ -2,8 +2,8 @@ package com.example.showmeyourability.users.application;
 
 import com.example.showmeyourability.shared.SecurityService;
 import com.example.showmeyourability.users.domain.User;
-import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserRequestDto;
-import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserResponseDto;
+import com.example.showmeyourability.users.application.dto.LoginUserDto.LoginUserRequestDto;
+import com.example.showmeyourability.users.application.dto.LoginUserDto.LoginUserResponseDto;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;

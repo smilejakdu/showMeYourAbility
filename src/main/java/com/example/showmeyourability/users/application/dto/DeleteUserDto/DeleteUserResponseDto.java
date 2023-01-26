@@ -1,4 +1,4 @@
-package com.example.showmeyourability.users.infrastructure.dto.DeleteUserDto;
+package com.example.showmeyourability.users.application.dto.DeleteUserDto;
 
 import lombok.Data;
 

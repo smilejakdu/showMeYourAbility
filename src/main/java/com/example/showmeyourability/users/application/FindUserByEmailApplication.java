@@ -1,6 +1,6 @@
 package com.example.showmeyourability.users.application;
 
-import com.example.showmeyourability.users.infrastructure.dto.FindUserByEmailDto.FindUserByEmailResponseDto;
+import com.example.showmeyourability.users.application.dto.FindUserByEmailDto.FindUserByEmailResponseDto;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

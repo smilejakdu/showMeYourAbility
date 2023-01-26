@@ -3,6 +3,7 @@ package com.example.showmeyourability.teacher.domain;
 import com.example.showmeyourability.comments.domain.Comments;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.example.showmeyourability.users.domain.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.Collections;
@@ -26,6 +27,7 @@ public class Teacher extends BaseTimeEntitiy {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher")
     private List<Comments> comments = Collections.emptyList();
 }
