@@ -1,18 +1,17 @@
 package com.example.showmeyourability.shared;
 
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@Getter
+@NoArgsConstructor
+@Data
 public class HttpException extends RuntimeException {
-    private final HttpStatus httpStatus;
+    private String message;
+    private HttpStatus httpStatus;
 
     public HttpException(String message, HttpStatus httpStatus) {
-        super(message);
-        this.httpStatus = httpStatus;
-    }
-
-    public HttpException(HttpStatus httpStatus) {
+        this.message = message;
         this.httpStatus = httpStatus;
     }
 }
