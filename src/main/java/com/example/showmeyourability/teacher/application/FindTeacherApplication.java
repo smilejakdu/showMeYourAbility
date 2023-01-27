@@ -34,7 +34,7 @@ public class FindTeacherApplication {
     }
 
     @Transactional
-    public CoreSuccessResponse findOneTeacherById(
+    public FindTeacherByIdResponseDto findOneTeacherById(
             Long teacherId
     ) {
         Teacher teacher = teacherRepository.findById(teacherId)
@@ -47,6 +47,6 @@ public class FindTeacherApplication {
                 "user",
                 "comments"
         );
-        return new CoreSuccessResponse(responseDto);
+        return responseDto;
     }
 }

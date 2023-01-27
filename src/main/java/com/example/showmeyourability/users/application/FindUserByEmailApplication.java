@@ -1,6 +1,6 @@
 package com.example.showmeyourability.users.application;
 
-import com.example.showmeyourability.users.application.dto.FindUserByEmailDto.FindUserByEmailResponseDto;
+import com.example.showmeyourability.users.infrastructure.dto.FindUserDto.FindUserByEmailResponseDto;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,14 +12,13 @@ public class FindUserByEmailApplication {
     private final UserRepository userRepository;
 
     @Transactional
-    public FindUserByEmailResponseDto findUserByEmail(String email) {
+    public FindUserByEmailResponseDto execute(String email) {
         return userRepository.findByEmail(email)
                 .map(db->{
                     FindUserByEmailResponseDto responseDto = new FindUserByEmailResponseDto();
+                    responseDto.setId(db.getId());
                     responseDto.setEmail(db.getEmail());
-                    responseDto.setComments(db.getComments());
                     return responseDto;
                 }).orElseThrow();
-
     }
 }

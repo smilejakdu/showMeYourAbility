@@ -1,4 +1,4 @@
-package com.example.showmeyourability.users.application.dto.LoginUserDto;
+package com.example.showmeyourability.users.infrastructure.dto.LoginUserDto;
 
 import lombok.Data;
 

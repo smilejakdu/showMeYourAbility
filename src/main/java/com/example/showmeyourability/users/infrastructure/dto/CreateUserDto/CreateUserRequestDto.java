@@ -1,22 +1,22 @@
-package com.example.showmeyourability.users.application.dto.LoginUserDto;
+package com.example.showmeyourability.users.infrastructure.dto.CreateUserDto;
 
 import com.example.showmeyourability.shared.CheckValidity;
 import lombok.Data;
 
 @Data
-public class LoginUserRequestDto implements CheckValidity {
+public class CreateUserRequestDto implements CheckValidity {
 
     private String email;
-
     private String password;
+
     @Override
     public void check() {
         if(email == null || email.isEmpty()) {
-            throw new RuntimeException("Email is empty");
+            throw new RuntimeException("email is empty");
         }
 
         if(password == null || password.isEmpty()) {
-            throw new RuntimeException("Password is empty");
+            throw new RuntimeException("password is empty");
         }
     }
 }
