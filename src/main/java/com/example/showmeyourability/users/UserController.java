@@ -5,13 +5,13 @@ import com.example.showmeyourability.users.application.FindUserByEmailApplicatio
 import com.example.showmeyourability.users.application.LoginUserApplication;
 import com.example.showmeyourability.users.application.SignupUserApplication;
 import com.example.showmeyourability.users.application.UpdateMyInfoApplication;
-import com.example.showmeyourability.users.application.dto.FindUserByEmailDto.FindUserByEmailResponseDto;
-import com.example.showmeyourability.users.application.dto.LoginUserDto.LoginUserRequestDto;
-import com.example.showmeyourability.users.application.dto.LoginUserDto.LoginUserResponseDto;
-import com.example.showmeyourability.users.application.dto.SignupUserDto.SignupUserRequestDto;
-import com.example.showmeyourability.users.application.dto.SignupUserDto.SignupUserResponseDto;
-import com.example.showmeyourability.users.application.dto.UpdateUserDto.UpdateUserRequestDto;
-import com.example.showmeyourability.users.application.dto.UpdateUserDto.UpdateUserResponseDto;
+import com.example.showmeyourability.users.infrastructure.dto.CreateUserDto.CreateUserRequestDto;
+import com.example.showmeyourability.users.infrastructure.dto.CreateUserDto.CreateUserResponseDto;
+import com.example.showmeyourability.users.infrastructure.dto.FindUserDto.FindUserByEmailResponseDto;
+import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserRequestDto;
+import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserResponseDto;
+import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserRequestDto;
+import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,15 +29,17 @@ public class UserController {
     private final SecurityService securityService;
 
     @PostMapping("/signup")
-    public SignupUserResponseDto signup(
-            @RequestBody SignupUserRequestDto request
+    public CreateUserResponseDto signup(
+            @RequestBody CreateUserRequestDto request
     ) {
         return signupUserApplication.signupUser(request);
     }
 
     @PostMapping("/login")
-    public LoginUserResponseDto login(@RequestBody LoginUserRequestDto request) {
-        return loginUserApplication.LoginUser(request);
+    public LoginUserResponseDto login(
+            @RequestBody LoginUserRequestDto request
+    ) {
+        return loginUserApplication.execute(request);
     }
 
     @GetMapping()
@@ -45,7 +47,7 @@ public class UserController {
             @RequestHeader("access-token") String token
     ) {
         String responseEmail = securityService.getSubject(token);
-        return findUserByIdApplication.findUserByEmail(responseEmail);
+        return findUserByIdApplication.execute(responseEmail);
     }
 
     @PutMapping()
