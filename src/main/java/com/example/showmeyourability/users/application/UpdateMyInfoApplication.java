@@ -1,10 +1,9 @@
 package com.example.showmeyourability.users.application;
 
-import com.example.showmeyourability.shared.SecurityService;
-import com.example.showmeyourability.users.application.dto.UpdateUserDto.UpdateUserRequestDto;
-import com.example.showmeyourability.users.application.dto.UpdateUserDto.UpdateUserResponseDto;
 import com.example.showmeyourability.users.domain.GenderType;
 import com.example.showmeyourability.users.domain.User;
+import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserRequestDto;
+import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserResponseDto;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -23,7 +22,7 @@ public class UpdateMyInfoApplication {
             UpdateUserRequestDto request
     ) {
         User user =  userRepository.findByEmail(email)
-                .map(db->{
+                .map(db-> {
                     db.setEmail(email);
                     return db;
                 }).orElseThrow();

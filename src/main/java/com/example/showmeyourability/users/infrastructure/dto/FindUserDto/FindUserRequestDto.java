@@ -1,10 +1,10 @@
-package com.example.showmeyourability.users.application.dto.GetUserDto;
+package com.example.showmeyourability.users.infrastructure.dto.FindUserDto;
 
 import com.example.showmeyourability.shared.CheckValidity;
 import lombok.Data;
 
 @Data
-public class GetUserRequestDto implements CheckValidity {
+public class FindUserRequestDto implements CheckValidity {
 
     private String email;
 

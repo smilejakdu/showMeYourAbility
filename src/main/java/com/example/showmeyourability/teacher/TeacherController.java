@@ -2,6 +2,7 @@ package com.example.showmeyourability.teacher;
 
 import com.example.showmeyourability.shared.CoreSuccessResponse;
 import com.example.showmeyourability.teacher.application.FindTeacherApplication;
+import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -22,7 +23,7 @@ public class TeacherController {
     }
 
     @GetMapping("{teacherId}")
-    public CoreSuccessResponse findOneTeacherById(
+    public FindTeacherByIdResponseDto findOneTeacherById(
             @PathVariable Long teacherId
     ) {
         return findTeacherApplication.findOneTeacherById(teacherId);
