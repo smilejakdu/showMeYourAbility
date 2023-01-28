@@ -5,12 +5,16 @@ import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.example.showmeyourability.users.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Collections;
 import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "teachers")
 public class Teacher extends BaseTimeEntitiy {
     @Id
@@ -30,4 +34,11 @@ public class Teacher extends BaseTimeEntitiy {
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher")
     private List<Comments> comments = Collections.emptyList();
+
+    @Builder
+    public Teacher(String career, String skill, User user) {
+        this.career = career;
+        this.skill = skill;
+        this.user = user;
+    }
 }
