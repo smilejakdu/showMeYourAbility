@@ -5,7 +5,6 @@ import com.example.showmeyourability.comments.application.FindCommentByTeacherId
 import com.example.showmeyourability.comments.application.UpdateCommentApplication;
 import com.example.showmeyourability.comments.infrastructure.dto.CommentCreateDto.CreateCommentRequestDto;
 import com.example.showmeyourability.comments.infrastructure.dto.CommentCreateDto.CreateCommentResponseDto;
-import com.example.showmeyourability.comments.infrastructure.dto.FindCommentDto.FindCommentResponseDto;
 import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDto.UpdateCommentReqeustDto;
 import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDto.UpdateCommentResponseDto;
 import com.example.showmeyourability.shared.CoreSuccessResponse;
@@ -48,5 +47,12 @@ public class CommentController {
             @PathVariable("teacherId") Long teacherId
     ) {
         return findCommentByTeacherIdApplication.execute(teacherId);
+    }
+
+    @DeleteMapping("/{commentId}")
+    CoreSuccessResponse deleteComment(
+            @PathVariable("commentId") Long commentId
+    ) {
+        return findCommentByTeacherIdApplication.execute(commentId);
     }
 }

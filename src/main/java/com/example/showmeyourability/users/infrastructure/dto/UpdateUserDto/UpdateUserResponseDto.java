@@ -8,6 +8,4 @@ public class UpdateUserResponseDto {
     private String email;
 
     private int age;
-
-    private GenderType gender;
 }

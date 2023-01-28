@@ -4,6 +4,7 @@ import com.example.showmeyourability.comments.domain.Comments;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
@@ -25,7 +26,8 @@ public class User extends BaseTimeEntitiy {
     private String password;
 
     @Column(nullable = false)
-    private Enum<GenderType> gender;
+    @Enumerated(EnumType.STRING)
+    private GenderType genderType;
 
     @Column(nullable = false)
     private int age;

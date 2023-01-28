@@ -33,13 +33,12 @@ public class UpdateMyInfoApplication {
 
         user.setEmail(request.getEmail());
         user.setAge(request.getAge());
-        user.setGender(request.getGender());
+        user.setGenderType(request.getGender());
         user.setPassword(request.getPassword());
         User savedUser = userRepository.save(user);
 
         UpdateUserResponseDto responseDto = new UpdateUserResponseDto();
         responseDto.setEmail(savedUser.getEmail());
-        responseDto.setGender((GenderType) savedUser.getGender());
         responseDto.setAge(savedUser.getAge());
 
         return responseDto;

@@ -27,6 +27,8 @@ public class SignupUserApplication {
 
         newUser.setEmail(request.getEmail());
         newUser.setPassword(bcryptPassword);
+        newUser.setGenderType(request.getGenderType());
+        newUser.setAge(request.getAge());
         User saved = userRepository.save(newUser);
 
         CreateUserResponseDto responseDto = new CreateUserResponseDto();
