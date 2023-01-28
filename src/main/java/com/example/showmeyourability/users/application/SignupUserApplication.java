@@ -1,13 +1,17 @@
 package com.example.showmeyourability.users.application;
 
+import com.example.showmeyourability.shared.HttpException;
 import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.CreateUserDto.CreateUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.CreateUserDto.CreateUserResponseDto;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,10 +20,10 @@ public class SignupUserApplication {
 
     @Transactional
     public CreateUserResponseDto signupUser(CreateUserRequestDto request) {
-        userRepository.findByEmail(request.getEmail())
-                .map(db->{
-                    throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
-                });
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
+        if(user.isPresent()) {
+            throw new HttpException("이미 가입된 이메일 입니다.", HttpStatus.BAD_REQUEST);
+        }
 
         User newUser = User.builder()
               .email(request.getEmail())
