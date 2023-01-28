@@ -1,4 +1,4 @@
-package com.example.showmeyourability.shared;
+package com.example.showmeyourability.shared.Exception;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
