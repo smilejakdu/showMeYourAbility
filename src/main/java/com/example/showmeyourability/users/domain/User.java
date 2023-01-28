@@ -35,4 +35,12 @@ public class User extends BaseTimeEntitiy {
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Comments> comments = new ArrayList<>();
+
+    @Builder
+    public User(String email, String password, GenderType genderType, int age) {
+        this.email = email;
+        this.password = password;
+        this.genderType = genderType;
+        this.age = age;
+    }
 }

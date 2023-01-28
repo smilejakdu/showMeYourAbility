@@ -21,14 +21,13 @@ public class SignupUserApplication {
                     throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
                 });
 
-        User newUser = new User();
-        String password = request.getPassword();
-        String bcryptPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        User newUser = User.builder()
+              .email(request.getEmail())
+              .password(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()))
+              .genderType(request.getGenderType())
+              .age(request.getAge())
+              .build();
 
-        newUser.setEmail(request.getEmail());
-        newUser.setPassword(bcryptPassword);
-        newUser.setGenderType(request.getGenderType());
-        newUser.setAge(request.getAge());
         User saved = userRepository.save(newUser);
 
         CreateUserResponseDto responseDto = new CreateUserResponseDto();
