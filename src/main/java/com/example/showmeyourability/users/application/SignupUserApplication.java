@@ -1,6 +1,6 @@
 package com.example.showmeyourability.users.application;
 
-import com.example.showmeyourability.shared.HttpException;
+import com.example.showmeyourability.shared.Exception.HttpException;
 import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.CreateUserDto.CreateUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.CreateUserDto.CreateUserResponseDto;

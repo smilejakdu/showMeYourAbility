@@ -1,7 +1,6 @@
 package com.example.showmeyourability.teacher.application;
 
-import com.example.showmeyourability.shared.CoreSuccessResponse;
-import com.example.showmeyourability.shared.HttpException;
+import com.example.showmeyourability.shared.Exception.HttpException;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherResponseDto;
