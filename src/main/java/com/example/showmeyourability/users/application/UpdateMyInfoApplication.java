@@ -41,6 +41,7 @@ public class UpdateMyInfoApplication {
         user.setAge(request.getAge());
         user.setGenderType(request.getGender());
         user.setPassword(request.getPassword());
+        user.setImg(request.getImg());
         User savedUser = userRepository.save(user);
 
         UpdateUserResponseDto responseDto = new UpdateUserResponseDto();

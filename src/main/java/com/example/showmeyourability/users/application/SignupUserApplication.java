@@ -26,18 +26,21 @@ public class SignupUserApplication {
         }
 
         User newUser = User.builder()
-              .email(request.getEmail())
-              .password(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()))
-              .genderType(request.getGenderType())
-              .age(request.getAge())
-              .build();
+                .email(request.getEmail())
+                .password(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()))
+                .genderType(request.getGenderType())
+                .age(request.getAge())
+                .img(request.getImg())
+                .build();
 
         User saved = userRepository.save(newUser);
+        return convertToCreateUserResponseDto(saved);
+    }
 
-        CreateUserResponseDto responseDto = new CreateUserResponseDto();
-        responseDto.setId(saved.getId());
-        responseDto.setEmail(saved.getEmail());
-
-        return responseDto;
+    private CreateUserResponseDto convertToCreateUserResponseDto(User user) {
+        return CreateUserResponseDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .build();
     }
 }

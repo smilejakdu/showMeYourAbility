@@ -14,4 +14,6 @@ public class UpdateUserRequestDto {
     private String password;
 
     private GenderType gender;
+
+    private String img;
 }

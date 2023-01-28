@@ -12,6 +12,8 @@ public class CreateUserRequestDto implements CheckValidity {
     private GenderType genderType;
     private int age;
 
+    private String img;
+
     @Override
     public void check() {
         if(email == null || email.isEmpty()) {

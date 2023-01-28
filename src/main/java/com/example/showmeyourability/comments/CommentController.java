@@ -39,7 +39,6 @@ public class CommentController {
     ) {
         System.out.println("token: " + token);
         String responseEmail = securityService.getSubject(token);
-        System.out.println(responseEmail);
         return updateCommentApplication.execute(commentId, request);
     }
     @GetMapping("/{teacherId}")
