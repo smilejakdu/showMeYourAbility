@@ -14,7 +14,6 @@ import java.util.List;
 
 @Data
 @Entity
-@NoArgsConstructor
 @Table(name = "teachers")
 public class Teacher extends BaseTimeEntitiy {
     @Id
@@ -32,13 +31,7 @@ public class Teacher extends BaseTimeEntitiy {
     private User user;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "teacher")
     private List<Comments> comments = Collections.emptyList();
-
-    @Builder
-    public Teacher(String career, String skill, User user) {
-        this.career = career;
-        this.skill = skill;
-        this.user = user;
-    }
 }
+
