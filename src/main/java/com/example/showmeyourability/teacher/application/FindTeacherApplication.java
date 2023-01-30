@@ -40,7 +40,6 @@ public class FindTeacherApplication {
         for (TeacherDto teacherDto : teachers) {
             List<Comments> comments = teacherDto.getComments();
             int sum = 0;
-//            if comments is null
             if (comments == null) {
                 teacherDto.setAvgScore(0);
                 continue;
