@@ -18,6 +18,9 @@ public class Comments extends BaseTimeEntitiy {
     @Column(nullable = false, length = 1000, name = "content")
     private String content;
 
+    @Column(nullable = false, length = 1000, name = "likes")
+    private Long likes;
+
     @ManyToOne()
     @JoinColumn(name = "user_id")
     private User user;

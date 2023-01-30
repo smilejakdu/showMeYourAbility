@@ -1,5 +1,6 @@
 package com.example.showmeyourability.teacher.application;
 
+import com.example.showmeyourability.comments.domain.Comments;
 import com.example.showmeyourability.shared.Exception.HttpException;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
@@ -35,6 +36,20 @@ public class FindTeacherApplication {
                         .skill(teacher.getSkill())
                         .userId(teacher.getUser().getId())
                         .build()).collect(Collectors.toList());
+
+        for (TeacherDto teacherDto : teachers) {
+            List<Comments> comments = teacherDto.getComments();
+            int sum = 0;
+//            if comments is null
+            if (comments == null) {
+                teacherDto.setAvgScore(0);
+                continue;
+            }
+            for (Comments comment : comments) {
+                sum += comment.getLikes();
+            }
+            teacherDto.setAvgScore(sum / comments.size());
+        }
 
         int lastPage = teacherRepository.findAll(PageRequest.of(page, size)).getTotalPages();
 

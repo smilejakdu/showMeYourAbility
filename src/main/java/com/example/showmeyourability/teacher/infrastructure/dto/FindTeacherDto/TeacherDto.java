@@ -1,7 +1,10 @@
 package com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto;
 
+import com.example.showmeyourability.comments.domain.Comments;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
 
 
 @Data
@@ -15,12 +18,24 @@ public class TeacherDto {
 
     private Long userId;
 
+    private List<Comments> comments;
+
+    private int avgScore;
+
     @Builder
-    public TeacherDto(Long id, String career, String email, String skill, Long userId) {
+    public TeacherDto(
+            Long id,
+            String career,
+            String email,
+            String skill,
+            Long userId,
+            List<Comments> comments
+            ) {
         this.id = id;
         this.career = career;
         this.email = email;
         this.skill = skill;
         this.userId = userId;
+        this.comments = comments;
     }
 }
