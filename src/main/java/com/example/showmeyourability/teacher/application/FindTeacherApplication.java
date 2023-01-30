@@ -38,12 +38,13 @@ public class FindTeacherApplication {
                         .build()).collect(Collectors.toList());
 
         for (TeacherDto teacherDto : teachers) {
-            List<Comments> comments = teacherDto.getComments();
-            int sum = 0;
-            if (comments == null) {
-                teacherDto.setAvgScore(0);
+            List<Comments> comments = teacherRepository.findById(teacherDto.getId()).orElseThrow().getComments();
+            Double sum = 0.0;
+            if (comments.size() == 0) {
+                teacherDto.setAvgScore((double) 0);
                 continue;
             }
+
             for (Comments comment : comments) {
                 sum += comment.getLikes();
             }

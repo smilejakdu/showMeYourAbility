@@ -20,7 +20,7 @@ public class TeacherDto {
 
     private List<Comments> comments;
 
-    private int avgScore;
+    private Double avgScore;
 
     @Builder
     public TeacherDto(
