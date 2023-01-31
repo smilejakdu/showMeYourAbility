@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,35 +29,48 @@ public class FindTeacherApplication {
             int page,
             int size
     ) {
-        List<TeacherDto> teachers = teacherRepository.findAll(PageRequest.of(page, size))
-                .getContent().stream().map(teacher -> TeacherDto.builder()
-                        .id(teacher.getId())
-                        .career(teacher.getCareer())
-                        .email(teacher.getUser().getEmail())
-                        .skill(teacher.getSkill())
-                        .userId(teacher.getUser().getId())
-                        .build()).collect(Collectors.toList());
+        List<Teacher> teachers = teacherRepository.findAll(PageRequest.of(page, size)).getContent();
 
-        for (TeacherDto teacherDto : teachers) {
-            List<Comments> comments = teacherRepository.findById(teacherDto.getId()).orElseThrow().getComments();
+//      map 이용하면 되듯 ??
+        HashMap<Integer, Double> hashMap = new HashMap<>();
+        for (Teacher teacher : teachers) {
             Double sum = 0.0;
-            if (comments.size() == 0) {
-                teacherDto.setAvgScore((double) 0);
+            List<Comments> comments = teacher.getComments();
+            if (comments.isEmpty()) {
+                hashMap.put(teacher.getId().intValue(), 0.0);
                 continue;
             }
 
             for (Comments comment : comments) {
                 sum += comment.getLikes();
             }
-            teacherDto.setAvgScore(sum / comments.size());
+            hashMap.put(teacher.getId().intValue(), sum / comments.size());
+        }
+
+        List<TeacherDto> teacherDtos = new ArrayList<>();
+        for (Teacher teacher : teachers) {
+            TeacherDto teacherDto = TeacherDto.builder()
+                    .id(teacher.getId())
+                    .career(teacher.getCareer())
+                    .skill(teacher.getSkill())
+                    .userId(teacher.getUser().getId())
+                    .avgScore(hashMap.get(teacher.getId().intValue()))
+                    .build();
+            teacherDtos.add(teacherDto);
         }
 
         int lastPage = teacherRepository.findAll(PageRequest.of(page, size)).getTotalPages();
+        return convertToFindTeacherResponseDto(lastPage, teacherDtos);
+    }
 
-        FindTeacherResponseDto dto = new FindTeacherResponseDto();
-        dto.setLastPage(lastPage);
-        dto.setTeachers(teachers);
-        return dto;
+    private FindTeacherResponseDto convertToFindTeacherResponseDto(
+            int lastPage,
+            List<TeacherDto> teachers
+    ) {
+        return FindTeacherResponseDto.builder()
+                .lastPage(lastPage)
+                .teachers(teachers)
+                .build();
     }
 
     @Transactional

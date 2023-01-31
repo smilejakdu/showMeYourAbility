@@ -46,6 +46,7 @@ public class UserController {
     public FindUserByEmailResponseDto getMyInfoWithComment(
             @RequestHeader("access-token") String token
     ) {
+//        filtering 라는것을 사용하면 된다 ??
         String responseEmail = securityService.getSubject(token);
         return findUserByIdApplication.execute(responseEmail);
     }
