@@ -5,6 +5,7 @@ import com.example.showmeyourability.users.application.FindUserByEmailApplicatio
 import com.example.showmeyourability.users.application.LoginUserApplication;
 import com.example.showmeyourability.users.application.SignupUserApplication;
 import com.example.showmeyourability.users.application.UpdateMyInfoApplication;
+import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.CreateUserDto.CreateUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.CreateUserDto.CreateUserResponseDto;
 import com.example.showmeyourability.users.infrastructure.dto.FindUserDto.FindUserByEmailResponseDto;
@@ -47,8 +48,8 @@ public class UserController {
             @RequestHeader("access-token") String token
     ) {
 //        filtering 라는것을 사용하면 된다 ??
-        String responseEmail = securityService.getSubject(token);
-        return findUserByIdApplication.execute(responseEmail);
+        User responseUser = securityService.getSubject(token);
+        return findUserByIdApplication.execute(responseUser);
     }
 
     @PutMapping()
@@ -56,7 +57,7 @@ public class UserController {
             @RequestHeader("access-token") String token,
             @RequestBody UpdateUserRequestDto request
     ) {
-        String responseEmail = securityService.getSubject(token);
-        return updateMyInfoApplication.updateMyInfo(responseEmail, request);
+        User responseUser = securityService.getSubject(token);
+        return updateMyInfoApplication.updateMyInfo(responseUser, request);
     }
 }

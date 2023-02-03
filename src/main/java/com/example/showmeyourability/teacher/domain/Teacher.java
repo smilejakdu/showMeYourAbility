@@ -1,13 +1,12 @@
 package com.example.showmeyourability.teacher.domain;
 
 import com.example.showmeyourability.comments.domain.Comments;
+import com.example.showmeyourability.order.domain.Order;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.example.showmeyourability.users.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,5 +32,9 @@ public class Teacher extends BaseTimeEntitiy {
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "teacher")
     private List<Comments> comments = Collections.emptyList();
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
+    private List<Order> orders = Collections.emptyList();
 }
 

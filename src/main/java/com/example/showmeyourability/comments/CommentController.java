@@ -9,6 +9,8 @@ import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDt
 import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDto.UpdateCommentResponseDto;
 import com.example.showmeyourability.shared.CoreSuccessResponse;
 import com.example.showmeyourability.shared.SecurityService;
+import com.example.showmeyourability.users.domain.User;
+import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,7 @@ public class CommentController {
     private final UpdateCommentApplication updateCommentApplication;
     private final FindCommentByTeacherIdApplication findCommentByTeacherIdApplication;
     private final SecurityService securityService;
+    private final UserRepository userRepository;
 
     @PostMapping("/")
     CreateCommentResponseDto createComment(
@@ -27,8 +30,8 @@ public class CommentController {
             @RequestHeader("access-token") String token
     ) {
         System.out.println("token: " + token);
-        String responseEmail = securityService.getSubject(token);
-        return createCommentApplication.execute(responseEmail,request);
+        User responseUser = securityService.getSubject(token);
+        return createCommentApplication.execute(responseUser,request);
     }
 
     @PutMapping("/{commentId}")
@@ -38,7 +41,7 @@ public class CommentController {
             @RequestHeader("access-token") String token
     ) {
         System.out.println("token: " + token);
-        String responseEmail = securityService.getSubject(token);
+        securityService.getSubject(token);
         return updateCommentApplication.execute(commentId, request);
     }
     @GetMapping("/{teacherId}")

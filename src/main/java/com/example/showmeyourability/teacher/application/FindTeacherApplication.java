@@ -31,7 +31,6 @@ public class FindTeacherApplication {
     ) {
         List<Teacher> teachers = teacherRepository.findAll(PageRequest.of(page, size)).getContent();
 
-//      map 이용하면 되듯 ??
         HashMap<Integer, Double> hashMap = new HashMap<>();
         for (Teacher teacher : teachers) {
             Double sum = 0.0;
