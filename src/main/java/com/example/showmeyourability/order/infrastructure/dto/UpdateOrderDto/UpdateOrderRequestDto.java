@@ -1,13 +1,10 @@
 package com.example.showmeyourability.order.infrastructure.dto.UpdateOrderDto;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.Data;
 
-@RestController
-@RequestMapping("/v1/order")
-@RequiredArgsConstructor
+@Data
 public class UpdateOrderRequestDto {
+    private String orderStatus;
 
-    private final UpdateOrderRequestDto updateOrderRequestDto;
+    private Long teacherId;
 }

@@ -34,7 +34,6 @@ public class Teacher extends BaseTimeEntitiy {
     private List<Comments> comments = Collections.emptyList();
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "teacher")
     private List<Order> orders = Collections.emptyList();
 }
-

@@ -1,6 +1,7 @@
 package com.example.showmeyourability.users.domain;
 
 import com.example.showmeyourability.comments.domain.Comments;
+import com.example.showmeyourability.order.domain.Order;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -39,6 +40,10 @@ public class User extends BaseTimeEntitiy {
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Comments> comments = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Order> orders = new ArrayList<>();
 
     @Builder
     public User(
