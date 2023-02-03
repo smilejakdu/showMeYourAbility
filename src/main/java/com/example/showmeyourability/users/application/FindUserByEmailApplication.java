@@ -1,5 +1,6 @@
 package com.example.showmeyourability.users.application;
 
+import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.FindUserDto.FindUserByEmailResponseDto;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,8 @@ public class FindUserByEmailApplication {
     private final UserRepository userRepository;
 
     @Transactional
-    public FindUserByEmailResponseDto execute(String email) {
-        return userRepository.findByEmail(email)
+    public FindUserByEmailResponseDto execute(User user) {
+        return userRepository.findByEmail(user.getEmail())
                 .map(db->{
                     FindUserByEmailResponseDto responseDto = new FindUserByEmailResponseDto();
                     responseDto.setId(db.getId());

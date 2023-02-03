@@ -24,11 +24,9 @@ public class CreateCommentApplication {
 
     @Transactional
     public CreateCommentResponseDto execute(
-            String email,
+            User user,
             CreateCommentRequestDto request
     ) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow();
         System.out.println(user.getEmail());
 
         Comments newComments = new Comments();

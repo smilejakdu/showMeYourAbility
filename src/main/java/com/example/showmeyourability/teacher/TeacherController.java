@@ -1,6 +1,5 @@
 package com.example.showmeyourability.teacher;
 
-import com.example.showmeyourability.shared.CoreSuccessResponse;
 import com.example.showmeyourability.teacher.application.FindTeacherApplication;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherResponseDto;

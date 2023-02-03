@@ -19,15 +19,9 @@ public class UpdateMyInfoApplication {
 
     @Transactional
     public UpdateUserResponseDto updateMyInfo(
-            String email,
+            User user,
             UpdateUserRequestDto request
     ) {
-        User user =  userRepository.findByEmail(email)
-                .map(db-> {
-                    db.setEmail(email);
-                    return db;
-                }).orElseThrow();
-
         if (!BCrypt.checkpw(request.getPassword(), user.getPassword())) {
             throw new HttpException(
                     ErrorCode.INVALID_PARAMETER.getMessage(),
