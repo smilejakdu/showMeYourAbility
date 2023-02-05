@@ -9,6 +9,8 @@ public class OrderDto {
 
     private String orderStatus;
 
+    private Long userId;
+
     private Long teacherId;
 
     private String teacherSkill;
@@ -19,12 +21,14 @@ public class OrderDto {
     public OrderDto(
             Long orderId,
             String orderStatus,
+            Long userId,
             Long teacherId,
             String teacherEmail,
             String teacherSkill
     ) {
         this.orderId = orderId;
         this.orderStatus = orderStatus;
+        this.userId = userId;
         this.teacherId = teacherId;
         this.teacherEmail = teacherEmail;
         this.teacherSkill = teacherSkill;
