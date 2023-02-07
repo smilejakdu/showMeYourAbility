@@ -8,7 +8,6 @@ import com.example.showmeyourability.order.infrastructure.repository.OrderReposi
 import com.example.showmeyourability.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +33,7 @@ public class FindOrderByUserApplication {
         for (Order order : orders) {
             orderDtoList.add(convertToOrderDto(order));
         }
+
         int lastPage = orderRepository.findAllByUser(user, PageRequest.of(page, size)).size();
         return convertToFindOrderResponseDto(lastPage, orderDtoList);
     }

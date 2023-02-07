@@ -27,6 +27,7 @@ public class UserController {
     private final UpdateMyInfoApplication updateMyInfoApplication;
 
     private final SignupUserApplication signupUserApplication;
+
     private final SecurityService securityService;
 
     @PostMapping("/signup")
