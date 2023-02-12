@@ -20,6 +20,10 @@ public class CreateUserRequestDto implements CheckValidity {
             throw new RuntimeException("email is empty");
         }
 
+      if(!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+          throw new RuntimeException("email is not valid");
+      }
+
         if(password == null || password.isEmpty()) {
             throw new RuntimeException("password is empty");
         }

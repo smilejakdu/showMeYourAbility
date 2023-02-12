@@ -35,7 +35,7 @@ public class OrderController {
             @RequestHeader("access-token") String token,
             @PathVariable("teacherId") Long teacherId
     ) {
-        User responseUser = securityService.getSubject(token);
-        return findOrderByTeacherApplication.execute(responseUser, teacherId);
+        securityService.getSubject(token);
+        return findOrderByTeacherApplication.execute(teacherId);
     }
 }
