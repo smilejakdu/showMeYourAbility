@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
-    @Query("SELECT t FROM Teacher t WHERE t.createdAt >= ?1")
+    @Query("SELECT t FROM Teacher t WHERE t.createdAt >= ?1 order by t.createdAt desc")
     List<Teacher> findByCreatedAtAfter(LocalDateTime dateTime);
 }

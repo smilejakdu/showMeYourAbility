@@ -5,12 +5,15 @@ import com.example.showmeyourability.users.infrastructure.repository.UserReposit
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.xml.bind.DatatypeConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.time.Duration;
 import java.util.Date;
 
 @Service
@@ -45,5 +48,24 @@ public class SecurityService {
                 .parseClaimsJws(token)
                 .getBody();
         return userRepository.findByEmail(claims.getSubject()).orElseThrow();
+    }
+
+    public String createCookie(String token, HttpServletResponse response) {
+        Cookie cookie = new Cookie("token", String.valueOf(token));
+        cookie.setMaxAge(60 * 60 * 24);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+        return token;
+    }
+
+    public String getTokenByCookie(Cookie[] cookies) {
+        String token = null;
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("token")) {
+                token = cookie.getValue();
+            }
+        }
+        return token;
     }
 }
