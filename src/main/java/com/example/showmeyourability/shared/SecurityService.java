@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
-import java.time.Duration;
 import java.util.Date;
 
 @Service
@@ -48,15 +47,6 @@ public class SecurityService {
                 .parseClaimsJws(token)
                 .getBody();
         return userRepository.findByEmail(claims.getSubject()).orElseThrow();
-    }
-
-    public String createCookie(String token, HttpServletResponse response) {
-        Cookie cookie = new Cookie("token", String.valueOf(token));
-        cookie.setMaxAge(60 * 60 * 24);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
-        return token;
     }
 
     public String getTokenByCookie(Cookie[] cookies) {

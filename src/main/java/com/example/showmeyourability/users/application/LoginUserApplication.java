@@ -5,6 +5,8 @@ import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserResponseDto;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,10 @@ public class LoginUserApplication {
     private final SecurityService securityService;
 
     @Transactional
-    public LoginUserResponseDto execute(LoginUserRequestDto request) {
+    public LoginUserResponseDto execute(
+            LoginUserRequestDto request,
+            HttpServletResponse response
+    ) {
         try {
             Optional<User> user = userRepository.findByEmail(request.getEmail())
                     .map(db-> {
@@ -46,6 +51,13 @@ public class LoginUserApplication {
             LoginUserResponseDto responseDto = new LoginUserResponseDto();
             responseDto.setEmail(user.map(User::getEmail).orElseThrow());
             responseDto.setToken(getToken);
+
+            Cookie cookie = new Cookie("access-token", String.valueOf(getToken));
+            cookie.setMaxAge(60 * 60 * 24);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
+
             return responseDto;
         } catch (Exception e) {
             throw new RuntimeException("bad request");

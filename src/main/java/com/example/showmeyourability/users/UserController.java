@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,23 +51,23 @@ public class UserController {
 
     @PostMapping("/login")
     public LoginUserResponseDto login(
-            @RequestBody LoginUserRequestDto request
+            @RequestBody LoginUserRequestDto request,
+            HttpServletResponse response
     ) {
-        return loginUserApplication.execute(request);
+        return loginUserApplication.execute(request, response);
     }
 
     @GetMapping()
     public FindUserByEmailResponseDto getMyInfoWithComment(
-            @RequestHeader("access-token") String token
+            @CookieValue("access-token") String token
     ) {
-//        filtering 라는것을 사용하면 된다 ??
         User responseUser = securityService.getSubject(token);
         return findUserByIdApplication.execute(responseUser);
     }
 
     @PutMapping()
     public UpdateUserResponseDto updateMyInfo(
-            @RequestHeader("access-token") String token,
+            @CookieValue("access-token") String token,
             @RequestBody UpdateUserRequestDto request
     ) {
         User responseUser = securityService.getSubject(token);
