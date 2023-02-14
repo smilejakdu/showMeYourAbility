@@ -35,11 +35,14 @@ public class LoginUserApplication {
                         }
                         return db;
                     });
+//           map 만 돌리면 무시가 된다. orElse
 
             if (user.isEmpty()) {
                 throw new RuntimeException("가입되어있지 않은 유저 입니다.");
             }
 
+//          TODO : .......?
+//          orElseThrow 를 이용해서 한줄로 사용할 수 있다.
             if (!BCrypt.checkpw(request.getPassword(), user.map(User::getPassword).orElseThrow())) {
                 throw new RuntimeException("비밀번호가 일치하지 않습니다.");
             }

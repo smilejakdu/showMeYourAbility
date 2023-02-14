@@ -18,12 +18,16 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 public class SecurityService {
+
+//    properties 로 빼기
     private static final String SECRET_KEY ="dlfkajsdflkajsf;laskdjf;lasdkjfads;lkfjasd;lkfjasdfklasjdflaskjdhflsjadhf";
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
 
     private final UserRepository userRepository;
 
     public String createToken(String subject) {
+//        token 에 대해서 공부하기
+//        security 를 도입
         System.out.println("createToken subject"+subject);
         if (EXPIRATION_TIME <= 0) {
             throw new RuntimeException("Expiratio time must be greater than zero!");
