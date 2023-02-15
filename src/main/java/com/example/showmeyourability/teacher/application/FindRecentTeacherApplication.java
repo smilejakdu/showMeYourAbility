@@ -24,21 +24,29 @@ public class FindRecentTeacherApplication {
 //      soring 은 싱글 쓰레드로 동작하기 때문에 디비가 성능이 좋아도 싱글 스레드 -> 부하 심하다.
 //      index 를 걸어주자.
 //      distinct -> 디비에서 쿼리를 한다.
-//      group by 자체가 부하가 심하다.
+//      group by 자체가 부하가 심하다. -> 권장하지 않고 -> 자주 사용한다면 따로 빼는것이 좋다.
         List<Teacher> teachers = teacherRepository.findByCreatedAtAfter(fourDaysAgo)
                 .stream().toList();
 
-        List<TeacherDto> teacherDtoList = new ArrayList<>();
-//        map 으로 바꾸기
-        for (Teacher teacher : teachers) {
-            teacherDtoList.add(TeacherDto.builder()
-                    .id(teacher.getId())
-                    .career(teacher.getCareer())
-                    .email(teacher.getUser().getEmail())
-                    .skill(teacher.getSkill())
-                    .userId(teacher.getUser().getId())
-                    .build());
-        }
+//        List<TeacherDto> teacherDtoList = new ArrayList<>();
+//        for (Teacher teacher : teachers) {
+//            teacherDtoList.add(TeacherDto.builder()
+//                    .id(teacher.getId())
+//                    .career(teacher.getCareer())
+//                    .email(teacher.getUser().getEmail())
+//                    .skill(teacher.getSkill())
+//                    .userId(teacher.getUser().getId())
+//                    .build());
+//        }
+        List<TeacherDto> teacherDtoList = teachers.stream()
+                .map(teacher -> TeacherDto.builder()
+                        .id(teacher.getId())
+                        .career(teacher.getCareer())
+                        .email(teacher.getUser().getEmail())
+                        .skill(teacher.getSkill())
+                        .userId(teacher.getUser().getId())
+                        .build())
+                .toList();
 
         return FindRecentTeacherResponseDto.builder()
                 .teacherDtoList(teacherDtoList)
