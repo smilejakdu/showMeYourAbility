@@ -1,22 +1,14 @@
 package com.example.showmeyourability.shared;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 
 
-@OpenAPIDefinition(
-        servers = {
-                @Server(
-                        description = "Local server",
-                        url = "http://localhost:12425"
-                )
-        }
-)
+@EnableOpenApi
 @Configuration
 public class SwaggerConfig {
 
@@ -44,5 +36,4 @@ public class SwaggerConfig {
                 .version("0.1")
                 .termsOfService("http://localhost:8080"));
     }
-
 }
