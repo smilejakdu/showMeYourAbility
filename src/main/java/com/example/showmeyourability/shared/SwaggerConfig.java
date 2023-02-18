@@ -42,7 +42,7 @@ public class SwaggerConfig {
                 .title("SpringBoot Rest API Documentation")
                 .description("Spring Boot를 이용한 Rest API 문서입니다.")
                 .version("0.1")
-                .termsOfService("http://localhost:12425"));
+                .termsOfService("http://localhost:8080"));
     }
 
 }

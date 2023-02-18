@@ -3,12 +3,15 @@ package com.example.showmeyourability.comments.domain;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.users.domain.User;
+import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
-import javax.persistence.*;
+import lombok.NoArgsConstructor;
 
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "comments")
 public class Comments extends BaseTimeEntitiy {
     @Id
@@ -28,4 +31,17 @@ public class Comments extends BaseTimeEntitiy {
     @ManyToOne()
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+
+    @Builder
+    public Comments(
+            String content,
+            Long likes,
+            User user,
+            Teacher teacher
+    ) {
+        this.content = content;
+        this.likes = likes;
+        this.user = user;
+        this.teacher = teacher;
+    }
 }

@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/comment")
 @RequiredArgsConstructor
 public class CommentController {
-    private final CreateCommentApplication createCommentApplication;
     private final UpdateCommentApplication updateCommentApplication;
     private final FindCommentByTeacherIdApplication findCommentByTeacherIdApplication;
+    private final CreateCommentApplication createCommentApplication;
     private final SecurityService securityService;
     private final UserRepository userRepository;
 

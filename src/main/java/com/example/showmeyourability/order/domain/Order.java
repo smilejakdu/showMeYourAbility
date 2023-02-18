@@ -3,11 +3,11 @@ package com.example.showmeyourability.order.domain;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.users.domain.User;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 
 @Data
 @Entity

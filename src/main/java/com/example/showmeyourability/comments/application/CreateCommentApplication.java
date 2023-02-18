@@ -5,7 +5,6 @@ import com.example.showmeyourability.comments.infrastructure.dto.CommentCreateDt
 import com.example.showmeyourability.comments.infrastructure.dto.CommentCreateDto.CreateCommentResponseDto;
 import com.example.showmeyourability.comments.infrastructure.repository.CommentRepository;
 import com.example.showmeyourability.users.domain.User;
-import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreateCommentApplication {
     private final CommentRepository commentRepository;
-
-    private final UserRepository userRepository;
 
     @Transactional
     public CreateCommentResponseDto execute(

@@ -4,11 +4,11 @@ import com.example.showmeyourability.comments.domain.Comments;
 import com.example.showmeyourability.order.domain.Order;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,15 +37,15 @@ public class User extends BaseTimeEntitiy {
     @Column(nullable = false)
     private int age;
 
-    @Column(nullable = true)
+    @Column()
     private String img;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Comments> comments = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
 
     @Builder
