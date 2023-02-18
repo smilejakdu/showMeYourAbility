@@ -4,11 +4,11 @@ import com.example.showmeyourability.comments.domain.Comments;
 import com.example.showmeyourability.order.domain.Order;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +23,9 @@ public class User extends BaseTimeEntitiy {
 
     @Column(unique = true)
     private String email;
+
+    @Column(unique = true)
+    private String phone;
 
     @Column(nullable = false)
     private String password;

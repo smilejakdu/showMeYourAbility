@@ -12,6 +12,8 @@ public class CreateUserRequestDto implements CheckValidity {
     private GenderType genderType;
     private int age;
 
+    private String phone;
+
     private String img;
 
     @Override
@@ -26,6 +28,10 @@ public class CreateUserRequestDto implements CheckValidity {
 
         if (age < 0) {
             throw new RuntimeException("age is negative");
+        }
+
+        if (phone == null || phone.isEmpty()) {
+            throw new RuntimeException("phone is empty");
         }
     }
 }

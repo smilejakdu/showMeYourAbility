@@ -3,8 +3,8 @@ package com.example.showmeyourability.comments.domain;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.users.domain.User;
-import jakarta.persistence.*;
 import lombok.Data;
+import javax.persistence.*;
 
 
 @Data
