@@ -1,39 +1,34 @@
 package com.example.showmeyourability.shared;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.oas.annotations.EnableOpenApi;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
 
 
-@EnableOpenApi
 @Configuration
 public class SwaggerConfig {
 
     @Bean
-    public GroupedOpenApi storeOpenApi() {
-        return GroupedOpenApi.builder()
-                .group("stores")
-                .packagesToScan("com.example.showmeyourability.store.controller")
-                .build();
+    public Docket api() {
+        return new Docket(DocumentationType.OAS_30)
+                .useDefaultResponseMessages(false)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.example.swagger.controller"))
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(apiInfo());
     }
 
-    @Bean
-    public GroupedOpenApi userOpenApi() {
-        return GroupedOpenApi.builder()
-                .group("users")
-                .packagesToScan("com.example.showmeyourability.user.controller")
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("Backend API")
+                .description("Backend API 문서")
+                .version("1.0")
                 .build();
-    }
-
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI().info(new Info()
-                .title("SpringBoot Rest API Documentation")
-                .description("Spring Boot를 이용한 Rest API 문서입니다.")
-                .version("0.1")
-                .termsOfService("http://localhost:8080"));
     }
 }
