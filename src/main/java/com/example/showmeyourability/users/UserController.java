@@ -13,9 +13,6 @@ import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.Login
 import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserResponseDto;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserResponseDto;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -34,11 +31,11 @@ public class UserController {
 
     private final SecurityService securityService;
 
-    @ApiOperation(value = "test", notes = "테스트입니다")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "ok"),
-            @ApiResponse(code = 404, message = "page not found!")
-    })
+//    @ApiOperation(value = "test", notes = "테스트입니다")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "ok"),
+//            @ApiResponse(code = 404, message = "page not found!")
+//    })
     @PostMapping("/signup")
     public CreateUserResponseDto signup(
             @RequestBody CreateUserRequestDto request
