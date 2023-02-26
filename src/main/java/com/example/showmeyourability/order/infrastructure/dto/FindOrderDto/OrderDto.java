@@ -1,5 +1,6 @@
 package com.example.showmeyourability.order.infrastructure.dto.FindOrderDto;
 
+import com.example.showmeyourability.order.domain.OrderStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,7 +8,7 @@ import lombok.Data;
 public class OrderDto {
     private Long orderId;
 
-    private String orderStatus;
+    private OrderStatus orderStatus;
 
     private Long userId;
 
@@ -20,7 +21,7 @@ public class OrderDto {
     @Builder
     public OrderDto(
             Long orderId,
-            String orderStatus,
+            OrderStatus orderStatus,
             Long userId,
             Long teacherId,
             String teacherEmail,

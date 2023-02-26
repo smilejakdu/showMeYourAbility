@@ -1,6 +1,8 @@
 package com.example.showmeyourability.order.application;
 
 import com.example.showmeyourability.order.domain.Order;
+import com.example.showmeyourability.order.domain.OrderStatus;
+import com.example.showmeyourability.order.infrastructure.dto.UpdateOrderDto.UpdateOrderResponseDto;
 import com.example.showmeyourability.order.infrastructure.repository.OrderRepository;
 import com.example.showmeyourability.users.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +15,18 @@ public class UpdateOrderApplication {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public void execute(
+    public UpdateOrderResponseDto execute(
             Long orderId,
-            String orderStatus
+            Long userId,
+            OrderStatus orderStatus
     ) {
-        Order order = orderRepository.findById(orderId)
+        Order order = orderRepository.findByIdAndUserId(orderId, userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 주문을 찾을 수 없습니다."));
         order.setOrderStatus(orderStatus);
+        return UpdateOrderResponseDto.builder()
+                .orderId(orderId)
+                .orderStatus(orderStatus)
+                .teacherId(order.getTeacher().getId())
+                .build();
     }
 }
