@@ -36,12 +36,12 @@ public class OrderController {
     }
 
     @GetMapping("/{teacherId}")
-    public void getOrder(
+    public FindOrderResponseDto getOrder(
             @RequestHeader("access-token") String token,
             @PathVariable("teacherId") Long teacherId
     ) {
-        User responseUser = securityService.getSubject(token);
-//        return findOrderByTeacherApplication.execute(responseUser, teacherId);
+        securityService.getSubject(token);
+        return findOrderByTeacherApplication.execute(teacherId);
     }
 
     @PutMapping("/{orderId}")
