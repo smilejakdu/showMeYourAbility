@@ -42,7 +42,8 @@ public class FindTeacherApplication {
             for (Comments comment : comments) {
                 sum += comment.getLikes();
             }
-            hashMap.put(teacher.getId().intValue(), sum / comments.size());
+
+            hashMap.put(teacher.getId().intValue(), Math.round(sum / comments.size() * 10) / 10.0);
         }
 
         List<TeacherDto> teacherDtos = new ArrayList<>();

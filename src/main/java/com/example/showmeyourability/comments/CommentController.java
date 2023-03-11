@@ -22,14 +22,12 @@ public class CommentController {
     private final UpdateCommentApplication updateCommentApplication;
     private final FindCommentByTeacherIdApplication findCommentByTeacherIdApplication;
     private final SecurityService securityService;
-    private final UserRepository userRepository;
 
-    @PostMapping("/")
+    @PostMapping()
     CreateCommentResponseDto createComment(
             @RequestBody CreateCommentRequestDto request,
             @RequestHeader("access-token") String token
     ) {
-        System.out.println("token: " + token);
         User responseUser = securityService.getSubject(token);
         return createCommentApplication.execute(responseUser,request);
     }
@@ -44,9 +42,9 @@ public class CommentController {
         securityService.getSubject(token);
         return updateCommentApplication.execute(commentId, request);
     }
-    @GetMapping("/{teacherId}")
+    @GetMapping("/teacher")
     CoreSuccessResponse findComment(
-            @PathVariable("teacherId") Long teacherId
+            @RequestParam() Long teacherId
     ) {
         return findCommentByTeacherIdApplication.execute(teacherId);
     }
