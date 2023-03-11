@@ -26,6 +26,7 @@ public class Teacher extends BaseTimeEntitiy {
     private String skill;
 
     @OneToOne()
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
