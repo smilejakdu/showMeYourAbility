@@ -23,15 +23,11 @@ public class FindOrderByTeacherApplication {
 
     @Transactional
     public FindOrderResponseDto execute(
+            User user,
             Long teacherId
     ) {
         Teacher teacher = teacherRepository.findById(teacherId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 선생님을 찾을 수 없습니다."));
-
-//        List<Order> orderList = orderRepository.findAllByTeacher(teacher);
-//        if (orderList.isEmpty()) {
-//            throw new IllegalArgumentException("해당 선생님의 주문을 찾을 수 없습니다.");
-//        }
 
         List<OrderDto> orderDtoList = new ArrayList<>();
         for (Order order : teacher.getOrders()) {
