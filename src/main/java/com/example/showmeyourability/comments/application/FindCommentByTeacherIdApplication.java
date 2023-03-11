@@ -31,13 +31,12 @@ public class FindCommentByTeacherIdApplication {
     private List<CommentDto> getCommentDtoList(List<Comments> comments) {
         ArrayList<CommentDto> commentDtoList = new ArrayList<>(Collections.emptyList());
         for (Comments comment : comments) {
-            CommentDto commentDto = new CommentDto();
-            commentDto.setId(comment.getId());
-            commentDto.setUserId(comment.getUser().getId());
-            commentDto.setTeacherId(comment.getTeacher().getId());
-            commentDto.setContent(comment.getContent());
-            commentDto.setCreatedAt(String.valueOf(comment.getCreatedAt()));
-            commentDto.setUpdatedAt(String.valueOf(comment.getUpdatedAt()));
+            CommentDto commentDto = CommentDto.builder()
+                    .userId(comment.getUser().getId())
+                    .teacherId(comment.getTeacher().getId())
+                    .likes(comment.getLikes())
+                    .content(comment.getContent())
+                    .build();
             commentDtoList.add(commentDto);
         }
         return commentDtoList;
