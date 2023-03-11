@@ -1,3 +1,9 @@
+//buildscript {
+//    ext {
+//        queryDslVersion = "4.4.0"
+//    }
+//}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.1'
@@ -31,6 +37,8 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-gson:0.11.5'
+    // QueryDSL
+    implementation "com.querydsl:querydsl-jpa"
     runtimeOnly 'mysql:mysql-connector-java'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.10.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
@@ -38,6 +46,15 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+// QueryDSL
+sourceSets {
+    main {
+        java {
+            srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
+        }
+    }
 }
 
 tasks.named('test') {

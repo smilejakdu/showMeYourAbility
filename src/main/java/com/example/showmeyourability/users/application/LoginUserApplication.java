@@ -48,17 +48,16 @@ public class LoginUserApplication {
                     .orElseThrow(() -> new RuntimeException("가입되어있지 않은 유저 입니다."));
             String getToken = securityService.createToken(email);
 
-            LoginUserResponseDto responseDto = new LoginUserResponseDto();
-            responseDto.setEmail(user.map(User::getEmail).orElseThrow());
-            responseDto.setToken(getToken);
-
             Cookie cookie = new Cookie("access-token", String.valueOf(getToken));
             cookie.setMaxAge(60 * 60 * 24);
             cookie.setPath("/");
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
 
-            return responseDto;
+            return LoginUserResponseDto.builder()
+                    .email(email)
+                    .token(getToken)
+                    .build();
         } catch (Exception e) {
             throw new RuntimeException("bad request");
         }
