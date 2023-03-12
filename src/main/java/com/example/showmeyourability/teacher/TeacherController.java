@@ -1,11 +1,11 @@
 package com.example.showmeyourability.teacher;
 
-import com.example.showmeyourability.shared.CoreSuccessResponse;
+import com.example.showmeyourability.teacher.application.FindRecentTeacherApplication;
 import com.example.showmeyourability.teacher.application.FindTeacherApplication;
+import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindRecentTeacherResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TeacherController {
     private final FindTeacherApplication findTeacherApplication;
+
+    private final FindRecentTeacherApplication findRecentTeacherApplication;
 
     @GetMapping()
     public FindTeacherResponseDto findAllTeacher(
@@ -27,5 +29,10 @@ public class TeacherController {
             @PathVariable Long teacherId
     ) {
         return findTeacherApplication.findOneTeacherById(teacherId);
+    }
+
+    @GetMapping("/recentTeacher")
+    public FindRecentTeacherResponseDto findRecentTeacher() {
+        return findRecentTeacherApplication.execute();
     }
 }

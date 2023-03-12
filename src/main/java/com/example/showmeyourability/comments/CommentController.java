@@ -5,11 +5,12 @@ import com.example.showmeyourability.comments.application.FindCommentByTeacherId
 import com.example.showmeyourability.comments.application.UpdateCommentApplication;
 import com.example.showmeyourability.comments.infrastructure.dto.CommentCreateDto.CreateCommentRequestDto;
 import com.example.showmeyourability.comments.infrastructure.dto.CommentCreateDto.CreateCommentResponseDto;
-import com.example.showmeyourability.comments.infrastructure.dto.FindCommentDto.FindCommentResponseDto;
 import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDto.UpdateCommentReqeustDto;
 import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDto.UpdateCommentResponseDto;
 import com.example.showmeyourability.shared.CoreSuccessResponse;
 import com.example.showmeyourability.shared.SecurityService;
+import com.example.showmeyourability.users.domain.User;
+import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,14 +23,13 @@ public class CommentController {
     private final FindCommentByTeacherIdApplication findCommentByTeacherIdApplication;
     private final SecurityService securityService;
 
-    @PostMapping("/")
+    @PostMapping()
     CreateCommentResponseDto createComment(
             @RequestBody CreateCommentRequestDto request,
             @RequestHeader("access-token") String token
     ) {
-        System.out.println("token: " + token);
-        String responseEmail = securityService.getSubject(token);
-        return createCommentApplication.execute(responseEmail,request);
+        User responseUser = securityService.getSubject(token);
+        return createCommentApplication.execute(responseUser,request);
     }
 
     @PutMapping("/{commentId}")
@@ -39,14 +39,20 @@ public class CommentController {
             @RequestHeader("access-token") String token
     ) {
         System.out.println("token: " + token);
-        String responseEmail = securityService.getSubject(token);
-        System.out.println(responseEmail);
+        securityService.getSubject(token);
         return updateCommentApplication.execute(commentId, request);
     }
-    @GetMapping("/{teacherId}")
+    @GetMapping("/teacher")
     CoreSuccessResponse findComment(
-            @PathVariable("teacherId") Long teacherId
+            @RequestParam() Long teacherId
     ) {
         return findCommentByTeacherIdApplication.execute(teacherId);
+    }
+
+    @DeleteMapping("/{commentId}")
+    CoreSuccessResponse deleteComment(
+            @PathVariable("commentId") Long commentId
+    ) {
+        return findCommentByTeacherIdApplication.execute(commentId);
     }
 }

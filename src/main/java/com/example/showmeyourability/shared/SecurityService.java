@@ -1,8 +1,12 @@
 package com.example.showmeyourability.shared;
 
+import com.example.showmeyourability.users.domain.User;
+import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.xml.bind.DatatypeConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,8 @@ import java.util.Date;
 public class SecurityService {
     private static final String SECRET_KEY ="dlfkajsdflkajsf;laskdjf;lasdkjfads;lkfjasd;lkfjasdfklasjdflaskjdhflsjadhf";
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
+
+    private final UserRepository userRepository;
 
     public String createToken(String subject) {
         System.out.println("createToken subject"+subject);
@@ -34,14 +40,22 @@ public class SecurityService {
                 .compact();
     }
 
-    public String getSubject(String token) {
+    public User getSubject(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        System.out.println("getSubject claims"+claims);
+        return userRepository.findByEmail(claims.getSubject()).orElseThrow();
+    }
 
-        return claims.getSubject();
+    public String getTokenByCookie(Cookie[] cookies) {
+        String token = null;
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("token")) {
+                token = cookie.getValue();
+            }
+        }
+        return token;
     }
 }
