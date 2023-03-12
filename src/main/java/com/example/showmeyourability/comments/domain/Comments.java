@@ -3,6 +3,7 @@ package com.example.showmeyourability.comments.domain;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.users.domain.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -25,10 +26,12 @@ public class Comments extends BaseTimeEntitiy {
     private Double likes;
 
     @ManyToOne()
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne()
+    @JsonIgnore
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
