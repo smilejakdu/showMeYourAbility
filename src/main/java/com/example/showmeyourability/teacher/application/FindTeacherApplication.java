@@ -9,7 +9,6 @@ import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.F
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.TeacherDto;
 import com.example.showmeyourability.teacher.infrastructure.repository.TeacherRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

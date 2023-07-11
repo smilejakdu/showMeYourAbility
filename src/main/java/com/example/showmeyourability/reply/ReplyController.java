@@ -38,5 +38,6 @@ public class ReplyController {
     ) {
         User responseUser = securityService.getSubject(token);
         updateReplyApplication.execute(responseUser, replyId, content);
+        return null;
     }
 }
