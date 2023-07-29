@@ -9,7 +9,4 @@ public class ShowMeYourAbilityApplication {
     public static void main(String[] args) {
         SpringApplication.run(ShowMeYourAbilityApplication.class, args);
     }
-//    zoned 데이터
-//    mysql -> validate
-//
 }

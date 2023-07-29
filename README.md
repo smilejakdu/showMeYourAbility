@@ -6,9 +6,9 @@
 lsof -i :8080
 ```
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
 
 ## swagger
 
 localhost:8080/swagger-ui.html
-=======
->>>>>>> 59ee928 (query dsl settings and refac user login)
