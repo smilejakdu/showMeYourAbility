@@ -35,7 +35,6 @@ dependencies {
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
     implementation 'javax.servlet:javax.servlet-api:4.0.1'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.3'
     implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.6.3'
 //    query dsl 시작
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
