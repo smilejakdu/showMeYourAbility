@@ -4,7 +4,6 @@ import com.example.showmeyourability.order.domain.Order;
 import com.example.showmeyourability.order.domain.OrderStatus;
 import com.example.showmeyourability.order.infrastructure.dto.UpdateOrderDto.UpdateOrderResponseDto;
 import com.example.showmeyourability.order.infrastructure.repository.OrderRepository;
-import com.example.showmeyourability.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
