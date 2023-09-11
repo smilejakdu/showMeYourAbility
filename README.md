@@ -5,9 +5,6 @@
 ```agsl
 lsof -i :8080
 ```
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
 ## swagger
 
