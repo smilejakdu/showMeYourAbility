@@ -13,12 +13,14 @@ import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.Login
 import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserResponseDto;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserResponseDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/user")
+@Tag(name = "user", description = "유저 API")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
     private final LoginUserApplication loginUserApplication;
@@ -31,11 +33,6 @@ public class UserController {
 
     private final SecurityService securityService;
 
-//    @ApiOperation(value = "test", notes = "테스트입니다")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "ok"),
-//            @ApiResponse(code = 404, message = "page not found!")
-//    })
     @PostMapping("/signup")
     public CreateUserResponseDto signup(
             @RequestBody CreateUserRequestDto request
