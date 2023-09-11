@@ -11,11 +11,13 @@ import com.example.showmeyourability.shared.CoreSuccessResponse;
 import com.example.showmeyourability.shared.Service.SecurityService;
 import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/comment")
+@Tag(name = "comment", description = "댓글 API")
+@RequestMapping("/api/comment")
 @RequiredArgsConstructor
 public class CommentController {
     private final UpdateCommentApplication updateCommentApplication;
