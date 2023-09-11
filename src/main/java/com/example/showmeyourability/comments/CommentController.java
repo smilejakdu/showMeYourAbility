@@ -10,19 +10,21 @@ import com.example.showmeyourability.comments.infrastructure.dto.FindCommentDto.
 import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDto.UpdateCommentReqeustDto;
 import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDto.UpdateCommentResponseDto;
 import com.example.showmeyourability.shared.CoreSuccessResponse;
-import com.example.showmeyourability.shared.SecurityService;
+import com.example.showmeyourability.shared.Service.SecurityService;
 import com.example.showmeyourability.users.domain.User;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/comment")
+@Tag(name = "comment", description = "댓글 API")
+@RequestMapping("/api/comment")
 @RequiredArgsConstructor
 public class CommentController {
-    private final CreateCommentApplication createCommentApplication;
     private final UpdateCommentApplication updateCommentApplication;
     private final FindCommentByTeacherIdApplication findCommentByTeacherIdApplication;
     private final FindCommentAndReplyApplication findCommentAndReplyApplication;
+    private final CreateCommentApplication createCommentApplication;
     private final SecurityService securityService;
 
     @PostMapping()

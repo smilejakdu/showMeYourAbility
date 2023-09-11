@@ -1,6 +1,9 @@
 package com.example.showmeyourability.order.application;
 
-import com.example.showmeyourability.users.domain.User;
+import com.example.showmeyourability.order.domain.Order;
+import com.example.showmeyourability.order.domain.OrderStatus;
+import com.example.showmeyourability.order.infrastructure.dto.UpdateOrderDto.UpdateOrderResponseDto;
+import com.example.showmeyourability.order.infrastructure.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,15 +11,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class UpdateOrderApplication {
-    private final FindOrderByUserApplication findOrderApplication;
+    private final OrderRepository orderRepository;
 
     @Transactional
-    public void updateOrder(
-            User user,
+    public UpdateOrderResponseDto execute(
             Long orderId,
-            String orderName
+            Long userId,
+            OrderStatus orderStatus
     ) {
-//      먼저 Order 에 있는 userId 가 같은지 확인을 먼저한다.
-//      update 니까 orderStatus 와 teacher 를 변경한다.
+        Order order = orderRepository.findByIdAndUserId(orderId, userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 주문을 찾을 수 없습니다."));
+        order.setOrderStatus(orderStatus);
+        return UpdateOrderResponseDto.builder()
+                .orderId(orderId)
+                .orderStatus(orderStatus)
+                .teacherId(order.getTeacher().getId())
+                .build();
     }
 }

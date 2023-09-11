@@ -5,12 +5,15 @@ import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.example.showmeyourability.users.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "reply")
 public class Reply extends BaseTimeEntitiy {
@@ -23,21 +26,14 @@ public class Reply extends BaseTimeEntitiy {
     @JoinColumn(name = "comment_id")
     private Comments comments;
 
-    @ManyToOne()
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Column(nullable = false, length = 1000, name = "content")
     private String content;
 
-    @Builder
-    public Reply(
-            Comments comments,
-            User user,
-            String content
-    ) {
-        this.user = user;
-        this.comments = comments;
-        this.content = content;
-    }
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
+    private Comments parentComment;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

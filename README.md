@@ -10,3 +10,12 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.properties.hibernate.dialect.storage_engine=innodb
 ```
+# 실행 port 확인
+
+```agsl
+lsof -i :8080
+```
+
+## swagger
+
+localhost:8080/swagger-ui.html

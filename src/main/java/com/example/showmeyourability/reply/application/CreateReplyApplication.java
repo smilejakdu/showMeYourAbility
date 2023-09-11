@@ -43,5 +43,25 @@ public class CreateReplyApplication {
                 .replyId(savedReply.getId())
                 .content(savedReply.getContent())
                 .build();
+    };
+
+    @Transactional
+    public CreateReplyResponseDto execute(
+            String content,
+            User user,
+            Comments comments
+    ) {
+        Reply newReply = Reply.builder()
+                .content(content)
+                .user(user)
+                .comments(comments)
+                .build();
+
+        Reply reply = replyRepository.save(newReply);
+        return CreateReplyResponseDto.builder()
+                .replyId(reply.getId())
+                .content(reply.getContent())
+                .commentId(reply.getParentComment().getId())
+                .build();
     }
 }

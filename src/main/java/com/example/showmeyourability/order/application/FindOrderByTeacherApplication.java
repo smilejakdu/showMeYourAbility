@@ -3,10 +3,8 @@ package com.example.showmeyourability.order.application;
 import com.example.showmeyourability.order.domain.Order;
 import com.example.showmeyourability.order.infrastructure.dto.FindOrderDto.FindOrderResponseDto;
 import com.example.showmeyourability.order.infrastructure.dto.FindOrderDto.OrderDto;
-import com.example.showmeyourability.order.infrastructure.repository.OrderRepository;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.teacher.infrastructure.repository.TeacherRepository;
-import com.example.showmeyourability.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +15,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FindOrderByTeacherApplication {
-    private final OrderRepository orderRepository;
-
     private final TeacherRepository teacherRepository;
 
     @Transactional

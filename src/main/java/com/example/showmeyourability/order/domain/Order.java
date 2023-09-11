@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @Entity
 @Table(name = "orders")
@@ -17,7 +18,9 @@ public class Order extends BaseTimeEntitiy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String orderStatus;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
@@ -29,7 +32,7 @@ public class Order extends BaseTimeEntitiy {
 
     @Builder
     public Order (
-            String orderStatus,
+            OrderStatus orderStatus,
             User user,
             Teacher teacher
     ) {

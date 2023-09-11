@@ -1,18 +1,19 @@
 package com.example.showmeyourability.reply;
 
-
 import com.example.showmeyourability.reply.application.CreateReplyApplication;
 import com.example.showmeyourability.reply.application.UpdateReplyApplication;
 import com.example.showmeyourability.reply.infrastructure.dto.CreateReplyRequestDto;
 import com.example.showmeyourability.reply.infrastructure.dto.CreateReplyResponseDto;
 import com.example.showmeyourability.reply.infrastructure.dto.UpdateReplyResponseDto;
-import com.example.showmeyourability.shared.SecurityService;
 import com.example.showmeyourability.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import com.example.showmeyourability.shared.Service.SecurityService;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/reply")
+@RequestMapping("/api/reply")
 @RequiredArgsConstructor
 public class ReplyController {
     private final CreateReplyApplication createReplyApplication;

@@ -24,17 +24,20 @@ public class UpdateMyInfoApplication {
     ) {
         if (!BCrypt.checkpw(request.getPassword(), user.getPassword())) {
             throw new HttpException(
+                    false,
                     ErrorCode.INVALID_PARAMETER.getMessage(),
                     ErrorCode.INVALID_PARAMETER.getStatus()
             );
         }
+        User updatedUser = User.builder()
+                .email(request.getEmail())
+                .age(request.getAge())
+                .genderType(request.getGender())
+                .password(request.getPassword())
+                .img(request.getImg())
+                .build();
 
-        user.setEmail(request.getEmail());
-        user.setAge(request.getAge());
-        user.setGenderType(request.getGender());
-        user.setPassword(request.getPassword());
-        user.setImg(request.getImg());
-        User savedUser = userRepository.save(user);
+        User savedUser = userRepository.save(updatedUser);
 
         UpdateUserResponseDto responseDto = new UpdateUserResponseDto();
         responseDto.setEmail(savedUser.getEmail());
