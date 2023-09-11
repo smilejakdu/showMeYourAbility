@@ -1,7 +1,7 @@
 package com.example.showmeyourability.users.application;
 
 import com.example.showmeyourability.shared.Exception.HttpException;
-import com.example.showmeyourability.shared.SecurityService;
+import com.example.showmeyourability.shared.Service.SecurityService;
 import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserResponseDto;
@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

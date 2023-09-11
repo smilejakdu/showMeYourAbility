@@ -13,8 +13,9 @@ public class ExceptionController {
         HttpStatus httpStatus = e.getHttpStatus();
         return ResponseEntity.status(e.getHttpStatus()).body(
                 new ExceptionResponse(
-                        httpStatus.value(),
-                        message
+                        false,
+                        message,
+                        httpStatus.value()
                 ));
     }
 }

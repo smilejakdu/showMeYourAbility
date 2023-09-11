@@ -8,7 +8,7 @@ import com.example.showmeyourability.order.infrastructure.dto.CreateOrderDto.Cre
 import com.example.showmeyourability.order.infrastructure.dto.FindOrderDto.FindOrderResponseDto;
 import com.example.showmeyourability.order.infrastructure.dto.UpdateOrderDto.UpdateOrderRequestDto;
 import com.example.showmeyourability.order.infrastructure.dto.UpdateOrderDto.UpdateOrderResponseDto;
-import com.example.showmeyourability.shared.SecurityService;
+import com.example.showmeyourability.shared.Service.SecurityService;
 import com.example.showmeyourability.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

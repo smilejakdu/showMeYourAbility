@@ -1,6 +1,6 @@
 package com.example.showmeyourability.users;
 
-import com.example.showmeyourability.shared.SecurityService;
+import com.example.showmeyourability.shared.Service.SecurityService;
 import com.example.showmeyourability.users.application.FindUserByEmailApplication;
 import com.example.showmeyourability.users.application.LoginUserApplication;
 import com.example.showmeyourability.users.application.SignupUserApplication;
