@@ -22,7 +22,10 @@ public class SignupUserApplication {
     public CreateUserResponseDto signupUser(CreateUserRequestDto request) {
         Optional<User> user = userRepository.findByEmail(request.getEmail());
         if(user.isPresent()) {
-            throw new HttpException("이미 가입된 이메일 입니다.", HttpStatus.BAD_REQUEST);
+            throw new HttpException(
+                    false,
+                    "이미 가입된 이메일 입니다.",
+                    HttpStatus.BAD_REQUEST);
         }
 
         User newUser = User.builder()

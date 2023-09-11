@@ -22,7 +22,10 @@ public class UpdateReplyApplication {
             User user
     ) {
         Reply foundReply = replyRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new HttpException("해당 댓글을 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new HttpException(
+                        false,
+                        "해당 댓글을 찾을 수 없습니다.",
+                        HttpStatus.NOT_FOUND));
 
         foundReply.setContent(content);
 

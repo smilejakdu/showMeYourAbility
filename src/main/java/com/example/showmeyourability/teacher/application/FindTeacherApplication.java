@@ -76,7 +76,10 @@ public class FindTeacherApplication {
             Long teacherId
     ) {
         Teacher teacher = teacherRepository.findById(teacherId)
-                .orElseThrow(()-> new HttpException("해당하는 선생님을 찾을 수 없습니다.", HttpStatus.NOT_FOUND));
+                .orElseThrow(()-> new HttpException(
+                        false,
+                        "해당하는 선생님을 찾을 수 없습니다.",
+                        HttpStatus.NOT_FOUND));
 
         FindTeacherByIdResponseDto responseDto = new FindTeacherByIdResponseDto();
         BeanUtils.copyProperties(teacher,

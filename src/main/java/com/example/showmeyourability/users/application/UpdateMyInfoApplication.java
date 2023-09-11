@@ -24,6 +24,7 @@ public class UpdateMyInfoApplication {
     ) {
         if (!BCrypt.checkpw(request.getPassword(), user.getPassword())) {
             throw new HttpException(
+                    false,
                     ErrorCode.INVALID_PARAMETER.getMessage(),
                     ErrorCode.INVALID_PARAMETER.getStatus()
             );

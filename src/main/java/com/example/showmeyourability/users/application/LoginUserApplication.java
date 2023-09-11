@@ -31,10 +31,16 @@ public class LoginUserApplication {
             User user = userRepository.findByEmail(request.getEmail())
                     .map(db-> {
                         if(!BCrypt.checkpw(request.getPassword(), db.getPassword())) {
-                            throw new HttpException("비밀번호가 일치하지 않습니다.",HttpStatus.BAD_REQUEST);
+                            throw new HttpException(
+                                    false,
+                                    "비밀번호가 일치하지 않습니다.",
+                                    HttpStatus.BAD_REQUEST);
                         }
                         return db;
-                    }).orElseThrow(() -> new HttpException("가입되어있지 않은 유저 입니다.", HttpStatus.BAD_REQUEST));
+                    }).orElseThrow(() -> new HttpException(
+                            false,
+                            "가입되어있지 않은 유저 입니다.",
+                            HttpStatus.BAD_REQUEST));
 
             String getToken = securityService.createToken(user.getEmail());
 

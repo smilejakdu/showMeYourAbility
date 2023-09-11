@@ -20,7 +20,9 @@ public class DeleteOrderApplication {
             DeleteOrderRequestDto deleteOrderRequestDto
     ) {
         Order order = orderRepository.findById(deleteOrderRequestDto.getOrderId())
-                .orElseThrow(() -> new HttpException("Cannot find order with id: " + deleteOrderRequestDto.getOrderId(),
+                .orElseThrow(() -> new HttpException(
+                        false,
+                        "Cannot find order with id: " + deleteOrderRequestDto.getOrderId(),
                         HttpStatus.NOT_FOUND));
         orderRepository.delete(order);
         return new DeleteOrderResponseDto(order.getId());

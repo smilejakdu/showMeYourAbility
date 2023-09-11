@@ -17,10 +17,10 @@ public class ReplyController {
 
     @PostMapping()
     public void createReply(
-            @RequestHeader("access-token") String token,
+            @CookieValue("access-token") String accessToken,
             @RequestBody CreateReplyRequestDto request
     ) {
-        User responseUser = securityService.getSubject(token);
+        User responseUser = securityService.getSubject(accessToken);
         Comments comments = request.getComments();
         String content = request.getContent();
         createReplyApplication.execute(content, responseUser, comments);
