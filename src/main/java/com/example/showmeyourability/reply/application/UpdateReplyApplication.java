@@ -49,7 +49,7 @@ public class UpdateReplyApplication {
         Reply reply = replyRepository.save(foundReply);
         return UpdateRelyResponseDto.builder()
                 .id(reply.getId())
-                .commentsId(reply.getParentComment().getId())
+                .commentsId(reply.getComments().getId())
                 .content(reply.getContent())
                 .build();
     }

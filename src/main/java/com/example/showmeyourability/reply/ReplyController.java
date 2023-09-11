@@ -6,6 +6,7 @@ import com.example.showmeyourability.reply.infrastructure.dto.CreateReplyRequest
 import com.example.showmeyourability.reply.infrastructure.dto.CreateReplyResponseDto;
 import com.example.showmeyourability.reply.infrastructure.dto.UpdateReplyResponseDto;
 import com.example.showmeyourability.users.domain.User;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.example.showmeyourability.shared.Service.SecurityService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "reply", description = "reply API")
 @RequestMapping("/api/reply")
 @RequiredArgsConstructor
 public class ReplyController {

@@ -30,10 +30,6 @@ public class Reply extends BaseTimeEntitiy {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "comment_id")
-    private Comments parentComment;
-
-    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 }

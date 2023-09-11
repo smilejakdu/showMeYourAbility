@@ -61,7 +61,7 @@ public class CreateReplyApplication {
         return CreateReplyResponseDto.builder()
                 .replyId(reply.getId())
                 .content(reply.getContent())
-                .commentId(reply.getParentComment().getId())
+                .commentId(reply.getComments().getId())
                 .build();
     }
 }
