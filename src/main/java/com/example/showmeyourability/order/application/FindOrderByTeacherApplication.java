@@ -20,7 +20,6 @@ public class FindOrderByTeacherApplication {
 
     @Transactional
     public FindOrderResponseDto execute(
-            User user,
             Long teacherId
     ) {
         Teacher teacher = teacherRepository.findById(teacherId)
