@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
-        info = @Info(title = "SHOW ME YOUR ABILITY",
-                description = "SHOW ME YOUR ABILITY",
+        info = @Info(title = "SHOW ME YOUR ABILITY App",
+                description = "SHOW ME YOUR ABILITY api명세",
                 version = "v1"))
-@Configuration
 @RequiredArgsConstructor
+@Configuration
 public class SwaggerConfig {
 
     @Bean
