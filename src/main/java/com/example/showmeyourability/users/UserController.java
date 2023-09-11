@@ -1,6 +1,6 @@
 package com.example.showmeyourability.users;
 
-import com.example.showmeyourability.shared.SecurityService;
+import com.example.showmeyourability.shared.Service.SecurityService;
 import com.example.showmeyourability.users.application.FindUserByEmailApplication;
 import com.example.showmeyourability.users.application.LoginUserApplication;
 import com.example.showmeyourability.users.application.SignupUserApplication;
@@ -13,16 +13,14 @@ import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.Login
 import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserResponseDto;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserResponseDto;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/user")
+@Tag(name = "user", description = "유저 API")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
     private final LoginUserApplication loginUserApplication;
@@ -35,13 +33,6 @@ public class UserController {
 
     private final SecurityService securityService;
 
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "SUCCESS",
-                    content = @Content(schema = @Schema(implementation = CreateUserResponseDto.class))),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
-            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
-    })
     @PostMapping("/signup")
     public CreateUserResponseDto signup(
             @RequestBody CreateUserRequestDto request

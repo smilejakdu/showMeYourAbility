@@ -24,6 +24,9 @@ public class User extends BaseTimeEntitiy {
     @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
+    private String phone;
+
     @Column(nullable = false)
     private String password;
 
@@ -34,15 +37,15 @@ public class User extends BaseTimeEntitiy {
     @Column(nullable = false)
     private int age;
 
-    @Column(nullable = true)
+    @Column()
     private String img;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Comments> comments = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
 
     @Builder

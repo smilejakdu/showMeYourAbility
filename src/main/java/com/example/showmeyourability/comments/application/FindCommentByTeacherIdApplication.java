@@ -23,7 +23,6 @@ public class FindCommentByTeacherIdApplication {
             Long teacherId
     ) {
         List<Comments> comments = commentRepository.findByTeacherId(teacherId);
-
         List<CommentDto> commentDtoList = getCommentDtoList(comments);
         return new CoreSuccessResponse(commentDtoList);
     }
