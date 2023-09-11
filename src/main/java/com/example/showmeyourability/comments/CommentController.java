@@ -64,7 +64,7 @@ public class CommentController {
             @CookieValue("access-token") String token,
             @PathVariable("commentId") Long commentId
     ) {
-        User responseUser = securityService.getSubject(token);
-        return deleteCommentApplication.execute(commentId);
+        User user = securityService.getSubject(token);
+        return deleteCommentApplication.execute(user, commentId);
     }
 }

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class DeleteCommentApplication {
@@ -22,7 +24,8 @@ public class DeleteCommentApplication {
         Comments comments = commentRepository.findByIdAndUserId(commentId,user.getId())
                 .orElseThrow(() -> new IllegalArgumentException("요청한 commentId에 해당하는 댓글이 존재하지 않습니다."));
 
-        commentRepository.delete(comments);
+        comments.setDeletedAt(LocalDateTime.now());
+        commentRepository.save(comments);
         return new CoreSuccessResponse(commentId);
     }
 }
