@@ -1,9 +1,6 @@
 package com.example.showmeyourability.comments;
 
-import com.example.showmeyourability.comments.application.CreateCommentApplication;
-import com.example.showmeyourability.comments.application.FindCommentAndReplyApplication;
-import com.example.showmeyourability.comments.application.FindCommentByTeacherIdApplication;
-import com.example.showmeyourability.comments.application.UpdateCommentApplication;
+import com.example.showmeyourability.comments.application.*;
 import com.example.showmeyourability.comments.infrastructure.dto.CommentCreateDto.CreateCommentRequestDto;
 import com.example.showmeyourability.comments.infrastructure.dto.CommentCreateDto.CreateCommentResponseDto;
 import com.example.showmeyourability.comments.infrastructure.dto.FindCommentDto.FindCommentAndReplyResponseDto;
@@ -22,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CommentController {
     private final UpdateCommentApplication updateCommentApplication;
+    private final DeleteCommentApplication deleteCommentApplication;
     private final FindCommentByTeacherIdApplication findCommentByTeacherIdApplication;
     private final FindCommentAndReplyApplication findCommentAndReplyApplication;
     private final CreateCommentApplication createCommentApplication;
@@ -39,8 +37,8 @@ public class CommentController {
     @PutMapping("/{commentId}")
     UpdateCommentResponseDto updateComment(
             @PathVariable("commentId") Long commentId,
-            @RequestBody UpdateCommentReqeustDto request,
-            @RequestHeader("access-token") String token
+            @CookieValue("access-token") String token,
+            @RequestBody UpdateCommentReqeustDto request
     ) {
         System.out.println("token: " + token);
         securityService.getSubject(token);
@@ -59,5 +57,14 @@ public class CommentController {
             @PathVariable("commentId") Long commentId
     ) {
         return findCommentAndReplyApplication.execute(commentId);
+    }
+
+    @DeleteMapping("/{commentId}")
+    CoreSuccessResponse deleteComment(
+            @CookieValue("access-token") String token,
+            @PathVariable("commentId") Long commentId
+    ) {
+        User responseUser = securityService.getSubject(token);
+        return deleteCommentApplication.execute(commentId);
     }
 }

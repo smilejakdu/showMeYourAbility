@@ -5,11 +5,13 @@ import com.example.showmeyourability.teacher.application.FindTeacherApplication;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindRecentTeacherResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherResponseDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/teacher")
+@Tag(name = "teacher", description = "선생님 API")
+@RequestMapping("/api/teacher")
 @RequiredArgsConstructor
 public class TeacherController {
     private final FindTeacherApplication findTeacherApplication;

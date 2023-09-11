@@ -10,11 +10,13 @@ import com.example.showmeyourability.order.infrastructure.dto.UpdateOrderDto.Upd
 import com.example.showmeyourability.order.infrastructure.dto.UpdateOrderDto.UpdateOrderResponseDto;
 import com.example.showmeyourability.shared.Service.SecurityService;
 import com.example.showmeyourability.users.domain.User;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/order")
+@Tag(name = "order", description = "order API")
+@RequestMapping("/api/order")
 @RequiredArgsConstructor
 public class OrderController {
 
