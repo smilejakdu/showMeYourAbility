@@ -5,6 +5,7 @@ import com.example.showmeyourability.order.domain.Order;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,8 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "users")
 public class User extends BaseTimeEntitiy {
     @Id
@@ -34,7 +37,7 @@ public class User extends BaseTimeEntitiy {
     @Enumerated(EnumType.STRING)
     private GenderType genderType;
 
-    @Column(nullable = false)
+    @Column()
     private int age;
 
     @Column()
@@ -47,19 +50,4 @@ public class User extends BaseTimeEntitiy {
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
-
-    @Builder
-    public User(
-            String email,
-            String password,
-            GenderType genderType,
-            int age,
-            String img
-    ) {
-        this.email = email;
-        this.password = password;
-        this.genderType = genderType;
-        this.age = age;
-        this.img = img;
-    }
 }
