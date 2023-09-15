@@ -1,7 +1,6 @@
 package com.example.showmeyourability.service.userApplication;
 
 import com.example.showmeyourability.users.application.FindUserByEmailApplication;
-import com.example.showmeyourability.users.application.SignupUserApplication;
 import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.FindUserDto.FindUserByEmailResponseDto;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
@@ -11,6 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class FindUserApplicationTest {
@@ -27,32 +31,45 @@ public class FindUserApplicationTest {
     }
 
     @Test
-    public void findUserByEmail() {
+    public void testFindUserByEmail() {
         // given
-        // 1. 특정 유저의 email를 나타내는 변수를 생성한다.
         Long userId = 1L;
-        String email = "ash@gmail.com";
-        String phone = "112";
+        String email = "aweroh@gmail.com";
+        User user = User.builder()
+                .id(userId)
+                .email(email)
+                .build();
 
-        // 2. 테스트용으로 사용할 유저 객체를 생성한다.
-        // 해당 유저의 속성(이메일, 전화번호)를 설정하고 빌더 패턴을 사용하여 객체를 생성한다.
+        FindUserByEmailResponseDto expectedResponse = new FindUserByEmailResponseDto();
+        expectedResponse.setId(1L);
+        expectedResponse.setEmail(email);
+
+        // when
+        Mockito.when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        FindUserByEmailResponseDto actualResponse = findUserByEmailApplication.execute(user);
+        System.out.println("found user :" + actualResponse);
+
+        // then
+        assertEquals(expectedResponse.getId(), actualResponse.getId());
+        assertEquals(expectedResponse.getEmail(), actualResponse.getEmail());
+    }
+
+    @Test
+    public void testFindUserByEmailNotExists() {
+        // given
+        String email = "doesnotemail@gmail.com";
+
         User user = User.builder()
                 .email(email)
                 .build();
 
-        // 3. 유저 객체에
-        // 테스트 목적으로 추가된 작업
-        // 실제로는 자동 증가되는 값
-        user.setId(userId);// Added for test //AutoEncrementation
-
-        // 4. Mockito를 사용하여 userRepository의 findByEmail 메소드를 호출하면 user 객체를 반환하도록 설정한다.
-        Mockito.when(userRepository.findByEmail(email)).thenReturn(java.util.Optional.of(user));
-
         // when
-        // 5. FindUserByEmailApplication 객체를 생성한다.
-        FindUserByEmailResponseDto findUser = findUserByEmailApplication.execute(user);
-        System.out.println("findUser:"+findUser);
+        Mockito.when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
-        Assertions.assertNotNull(findUser);
+        // then
+        // 이 경우, execute 메서드가 존재하지 않는 이메일을 찾을 때 예외를 던져야 합니다.
+        assertThrows(NoSuchElementException.class, () -> {
+            findUserByEmailApplication.execute(user);
+        });
     }
 }
