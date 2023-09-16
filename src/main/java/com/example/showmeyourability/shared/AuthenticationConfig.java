@@ -16,9 +16,14 @@ public class AuthenticationConfig {
         return httpSecurity
                 .httpBasic().disable() // HTTP Basic 인증을 비활성화합니다.
                 .csrf().disable() // CSRF(Cross-Site Request Forgery) 공격을 비활성화합니다.
-                .cors().and() // CORS(Cross-Origin Resource Sharing) 설정을 활성화합니다.
+                .cors().and()
+                .formLogin().disable() // 폼 기반 인증을 비활성화합니다.
                 .authorizeHttpRequests() // HTTP 요청에 대한 인가를 설정합니다.
-                .requestMatchers("/api/users/signup", "/api/users/login","/swagger-ui/**", "/v3/api-docs/**").permitAll() // 특정 요청 경로에 대해 모든 사용자에게 허용합니다.
+                .requestMatchers(
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/api/**" // 당장은 모두 허용을 해준다.
+                ).permitAll() // 특정 요청 경로에 대해 모든 사용자에게 허용합니다.
                 .anyRequest().authenticated() // 다른 모든 요청은 인증된 사용자에게만 허용됩니다.
                 .and()
                 .sessionManagement() // 세션 관리를 설정합니다.
