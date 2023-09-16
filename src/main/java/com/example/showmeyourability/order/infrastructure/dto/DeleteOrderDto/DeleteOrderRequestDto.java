@@ -1,16 +1,12 @@
 package com.example.showmeyourability.order.infrastructure.dto.DeleteOrderDto;
 
-import com.example.showmeyourability.shared.CheckValidity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class DeleteOrderRequestDto implements CheckValidity {
+@NoArgsConstructor
+public class DeleteOrderRequestDto {
+    @Schema(description = "주문 번호", example = "1")
     private Long orderId;
-
-    @Override
-    public void check() {
-        if (orderId == null) {
-            throw new RuntimeException("orderId is empty");
-        }
-    }
 }

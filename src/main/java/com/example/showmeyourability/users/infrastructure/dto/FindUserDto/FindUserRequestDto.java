@@ -1,17 +1,10 @@
 package com.example.showmeyourability.users.infrastructure.dto.FindUserDto;
 
-import com.example.showmeyourability.shared.CheckValidity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class FindUserRequestDto implements CheckValidity {
-
+public class FindUserRequestDto{
+    @Schema(description = "email", example = "email")
     private String email;
-
-    @Override
-    public void check() {
-        if(email == null || email.isEmpty()) {
-            throw new RuntimeException("Email is empty");
-        }
-    }
 }

@@ -1,16 +1,10 @@
 package com.example.showmeyourability.comments.infrastructure.dto.DeleteCommentDto;
 
-import com.example.showmeyourability.shared.CheckValidity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class DeleteCommentRequestDto implements CheckValidity {
+public class DeleteCommentRequestDto {
+    @Schema(description = "댓글 id", example = "1")
     Long id;
-
-    @Override
-    public void check() {
-        if(id == null) {
-            throw new RuntimeException("id is empty");
-        }
-    }
 }
