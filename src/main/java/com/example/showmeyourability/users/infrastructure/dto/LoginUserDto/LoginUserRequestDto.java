@@ -1,22 +1,18 @@
 package com.example.showmeyourability.users.infrastructure.dto.LoginUserDto;
 
 import com.example.showmeyourability.shared.CheckValidity;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class LoginUserRequestDto implements CheckValidity {
-
+@NoArgsConstructor
+public class LoginUserRequestDto {
+    @Schema(description = "email", example = "이메일")
+    @NotEmpty(message = "이메일을 입력해주세요.")
     private String email;
-
+    @Schema(description = "password", example = "패스워드")
+    @NotEmpty(message = "비밀번호를 입력해주세요.")
     private String password;
-    @Override
-    public void check() {
-        if(email == null || email.isEmpty()) {
-            throw new RuntimeException("Email is empty");
-        }
-
-        if(password == null || password.isEmpty()) {
-            throw new RuntimeException("Password is empty");
-        }
-    }
 }

@@ -59,7 +59,7 @@ public class LoginUserApplication {
                     .token(getToken)
                     .build();
         } catch (Exception e) {
-            throw new RuntimeException("bad request");
+            throw e;
         }
     }
 }

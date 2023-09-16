@@ -14,8 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 public class FindUserApplicationTest {
     @MockBean // 스프링 부트 테스트에서 사용하는 목(mock) 객체를 생성하는 어노테이션입니다
@@ -50,8 +48,8 @@ public class FindUserApplicationTest {
         System.out.println("found user :" + actualResponse);
 
         // then
-        assertEquals(expectedResponse.getId(), actualResponse.getId());
-        assertEquals(expectedResponse.getEmail(), actualResponse.getEmail());
+        Assertions.assertEquals(expectedResponse.getId(), actualResponse.getId());
+        Assertions.assertEquals(expectedResponse.getEmail(), actualResponse.getEmail());
     }
 
     @Test
@@ -68,7 +66,7 @@ public class FindUserApplicationTest {
 
         // then
         // 이 경우, execute 메서드가 존재하지 않는 이메일을 찾을 때 예외를 던져야 합니다.
-        assertThrows(NoSuchElementException.class, () -> {
+        Assertions.assertThrows(NoSuchElementException.class, () -> {
             findUserByEmailApplication.execute(user);
         });
     }
