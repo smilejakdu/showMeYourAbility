@@ -7,15 +7,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ExceptionController {
-    @ExceptionHandler(HttpException.class)
-    public ResponseEntity<ExceptionResponse> handleHttpException(HttpException e) {
+    @ExceptionHandler(HttpExceptionCustom.class)
+    public ResponseEntity<ExceptionResponse> handleHttpException(HttpExceptionCustom e) {
+        int httpStatus = e.getHttpStatus().value();
+        System.out.println("httpStatus test : " + httpStatus);
         String message = e.getMessage();
-        HttpStatus httpStatus = e.getHttpStatus();
         return ResponseEntity.status(e.getHttpStatus()).body(
                 new ExceptionResponse(
                         false,
                         message,
-                        httpStatus.value()
+                        httpStatus
                 ));
     }
 }

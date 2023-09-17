@@ -1,7 +1,7 @@
 package com.example.showmeyourability.users.application;
 
 import com.example.showmeyourability.shared.Exception.ErrorCode;
-import com.example.showmeyourability.shared.Exception.HttpException;
+import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserResponseDto;
@@ -23,7 +23,7 @@ public class UpdateMyInfoApplication {
             UpdateUserRequestDto request
     ) {
         if (!BCrypt.checkpw(request.getPassword(), user.getPassword())) {
-            throw new HttpException(
+            throw new HttpExceptionCustom(
                     false,
                     ErrorCode.INVALID_PARAMETER.getMessage(),
                     ErrorCode.INVALID_PARAMETER.getStatus()

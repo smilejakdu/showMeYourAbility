@@ -4,7 +4,7 @@ import com.example.showmeyourability.comments.domain.Comments;
 import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDto.UpdateCommentReqeustDto;
 import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDto.UpdateCommentResponseDto;
 import com.example.showmeyourability.comments.infrastructure.repository.CommentRepository;
-import com.example.showmeyourability.shared.Exception.HttpException;
+import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class UpdateCommentApplication {
             UpdateCommentReqeustDto request
     ) {
         Comments comments = commentRepository.findById(commentId)
-                .orElseThrow(() -> new HttpException(
+                .orElseThrow(() -> new HttpExceptionCustom(
                         false,
                         "요청한 commentId에 해당하는 댓글이 존재하지 않습니다.",
                         HttpStatus.BAD_REQUEST));

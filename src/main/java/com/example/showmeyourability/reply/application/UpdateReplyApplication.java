@@ -4,7 +4,7 @@ import com.example.showmeyourability.reply.domain.Reply;
 import com.example.showmeyourability.reply.infrastructure.dto.UpdateReplyDto.UpdateRelyResponseDto;
 import com.example.showmeyourability.reply.infrastructure.dto.UpdateReplyResponseDto;
 import com.example.showmeyourability.reply.infrastructure.repository.ReplyRepository;
-import com.example.showmeyourability.shared.Exception.HttpException;
+import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import com.example.showmeyourability.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,7 +39,7 @@ public class UpdateReplyApplication {
             User user
     ) {
         Reply foundReply = replyRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new HttpException(
+                .orElseThrow(() -> new HttpExceptionCustom(
                         false,
                         "해당 댓글을 찾을 수 없습니다.",
                         HttpStatus.NOT_FOUND));

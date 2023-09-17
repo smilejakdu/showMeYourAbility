@@ -6,11 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@AllArgsConstructor
 @Data
-@Builder
-@NoArgsConstructor
-public class HttpException extends RuntimeException {
+@AllArgsConstructor
+public class HttpExceptionCustom extends RuntimeException {
     private boolean ok;
     private String message;
     private HttpStatus httpStatus;

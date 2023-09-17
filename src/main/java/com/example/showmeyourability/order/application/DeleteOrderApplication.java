@@ -4,7 +4,7 @@ import com.example.showmeyourability.order.domain.Order;
 import com.example.showmeyourability.order.infrastructure.dto.DeleteOrderDto.DeleteOrderRequestDto;
 import com.example.showmeyourability.order.infrastructure.dto.DeleteOrderDto.DeleteOrderResponseDto;
 import com.example.showmeyourability.order.infrastructure.repository.OrderRepository;
-import com.example.showmeyourability.shared.Exception.HttpException;
+import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class DeleteOrderApplication {
             DeleteOrderRequestDto deleteOrderRequestDto
     ) {
         Order order = orderRepository.findById(deleteOrderRequestDto.getOrderId())
-                .orElseThrow(() -> new HttpException(
+                .orElseThrow(() -> new HttpExceptionCustom(
                         false,
                         "Cannot find order with id: " + deleteOrderRequestDto.getOrderId(),
                         HttpStatus.NOT_FOUND));

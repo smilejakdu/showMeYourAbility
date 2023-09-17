@@ -1,6 +1,6 @@
 package com.example.showmeyourability.shared.Service;
 
-import com.example.showmeyourability.shared.Exception.HttpException;
+import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -52,7 +52,7 @@ public class SecurityService {
 
         return userRepository.findByEmail(claims.getSubject())
                 .orElseThrow(
-                        () -> new HttpException(
+                        () -> new HttpExceptionCustom(
                                 false,
                                 "존재하지 않은 사용자입니다.",
                                 HttpStatus.NOT_FOUND

@@ -1,6 +1,6 @@
 package com.example.showmeyourability.users.application;
 
-import com.example.showmeyourability.shared.Exception.HttpException;
+import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.CreateUserDto.CreateUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.CreateUserDto.CreateUserResponseDto;
@@ -22,7 +22,7 @@ public class SignupUserApplication {
     public CreateUserResponseDto signupUser(CreateUserRequestDto request) {
         Optional<User> user = userRepository.findByEmail(request.getEmail());
         if(user.isPresent()) {
-            throw new HttpException(
+            throw new HttpExceptionCustom(
                     false,
                     "이미 가입된 이메일 입니다.",
                     HttpStatus.BAD_REQUEST);

@@ -2,7 +2,7 @@ package com.example.showmeyourability.teacher.application;
 
 import com.example.showmeyourability.comments.domain.Comments;
 import com.example.showmeyourability.comments.infrastructure.dto.FindCommentDto.CommentDto;
-import com.example.showmeyourability.shared.Exception.HttpException;
+import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherResponseDto;
@@ -77,10 +77,11 @@ public class FindTeacherApplication {
             Long teacherId
     ) {
         Teacher teacher = teacherRepository.findById(teacherId)
-                .orElseThrow(()-> new HttpException(
+                .orElseThrow(()-> new HttpExceptionCustom(
                         false,
                         "해당하는 선생님을 찾을 수 없습니다.",
-                        HttpStatus.NOT_FOUND));
+                        HttpStatus.NOT_FOUND
+                ));
 
         List<CommentDto> commentDtos = new ArrayList<>();
         for (Comments comment : teacher.getComments()) {
