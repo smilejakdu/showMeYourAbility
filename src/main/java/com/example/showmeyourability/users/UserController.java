@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,7 +37,7 @@ public class UserController {
 
     @PostMapping("/signup")
     public CreateUserResponseDto signup(
-            @Valid @RequestBody CreateUserRequestDto request
+            @RequestBody CreateUserRequestDto request
     ) {
         return signupUserApplication.signupUser(request);
     }
