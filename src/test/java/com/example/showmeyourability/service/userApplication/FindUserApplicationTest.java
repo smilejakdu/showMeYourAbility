@@ -29,7 +29,7 @@ public class FindUserApplicationTest {
     }
 
     @Test
-    public void testFindUserByEmail() {
+    public void successTestFindUserByEmail() {
         // given
         Long userId = 1L;
         String email = "aweroh@gmail.com";

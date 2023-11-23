@@ -1,6 +1,6 @@
 package com.example.showmeyourability.service.userApplication;
 
-import com.example.showmeyourability.shared.Exception.HttpException;
+import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import com.example.showmeyourability.shared.Service.SecurityService;
 import com.example.showmeyourability.users.application.LoginUserApplication;
 import com.example.showmeyourability.users.domain.User;
@@ -105,7 +105,7 @@ public class LoginUserApplicationTest {
 
         // then
         // HttpException이 예상대로 발생하는지 확인
-        HttpException exception = Assertions.assertThrows(HttpException.class, () -> {
+        HttpExceptionCustom exception = Assertions.assertThrows(HttpExceptionCustom.class, () -> {
             loginUserApplication.execute(request, response);
         });
 
@@ -132,7 +132,7 @@ public class LoginUserApplicationTest {
 
         // then
         // HttpException이 예상대로 발생하는지 확인
-        HttpException exception = Assertions.assertThrows(HttpException.class, () -> {
+        HttpExceptionCustom exception = Assertions.assertThrows(HttpExceptionCustom.class, () -> {
             loginUserApplication.execute(request, response);
         });
 

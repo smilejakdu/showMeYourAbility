@@ -13,7 +13,9 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "teachers")
+@Table(name = "teachers", indexes = {
+        @Index(name = "teacher_index", columnList = "id")
+})
 public class Teacher extends BaseTimeEntitiy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

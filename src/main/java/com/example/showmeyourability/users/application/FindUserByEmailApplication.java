@@ -6,6 +6,7 @@ import com.example.showmeyourability.users.infrastructure.repository.UserReposit
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,8 @@ public class FindUserByEmailApplication {
 
     @Transactional
     public FindUserByEmailResponseDto execute(User user) {
+        if (user == null) throw new NotFoundException("user is null");
+
         return userRepository.findByEmail(user.getEmail())
                 .map(db->{
                     FindUserByEmailResponseDto responseDto = new FindUserByEmailResponseDto();

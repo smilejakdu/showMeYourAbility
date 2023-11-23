@@ -1,10 +1,7 @@
 package com.example.showmeyourability.service.teacherApplication;
 
-import com.example.showmeyourability.shared.Service.SecurityService;
 import com.example.showmeyourability.teacher.application.FindTeacherApplication;
 import com.example.showmeyourability.teacher.infrastructure.repository.TeacherRepository;
-import com.example.showmeyourability.users.application.LoginUserApplication;
-import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
