@@ -13,9 +13,9 @@ spring.jpa.properties.hibernate.dialect.storage_engine=innodb
 # 실행 port 확인
 
 ```agsl
-lsof -i :8080
+lsof -i :13022
 ```
 
 ## swagger
 
-localhost:8080/swagger-ui.html
+http://localhost:13022/swagger-ui/index.html
