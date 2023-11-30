@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 @Data
 public class CreateUserRequestDto implements CheckValidity {
     @Schema(description = "email", example = "이메일")
+    @NotEmpty(message = "이메일을 입력해주세요.")
     private String email;
 
     @Schema(description = "password", example = "password")
