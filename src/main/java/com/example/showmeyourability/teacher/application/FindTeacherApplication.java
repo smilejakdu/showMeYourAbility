@@ -3,11 +3,13 @@ package com.example.showmeyourability.teacher.application;
 import com.example.showmeyourability.comments.domain.Comments;
 import com.example.showmeyourability.comments.infrastructure.dto.FindCommentDto.CommentDto;
 import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
+import com.example.showmeyourability.teacher.domain.QTeacher;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.TeacherDto;
 import com.example.showmeyourability.teacher.infrastructure.repository.TeacherRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FindTeacherApplication {
+    private final JPAQueryFactory queryFactory; // JPAQueryFactory 주입
     private final TeacherRepository teacherRepository;
 
     @Transactional
@@ -28,9 +31,18 @@ public class FindTeacherApplication {
             int page,
             int size
     ) {
-        List<Teacher> teachers = teacherRepository.findAll(PageRequest.of(page, size)).getContent();
+        QTeacher qTeacher = QTeacher.teacher; // Q 클래스 사용
+//        List<Teacher> teachers = teacherRepository.findAll(PageRequest.of(page, size)).getContent();
+        List<Teacher> teachers = queryFactory
+                .selectFrom(qTeacher)
+//                .orderBy(qTeacher.name.asc()) // 예시 정렬 조건
+                .offset((long) page * size)
+                .limit(size)
+                .fetch();
+
 
         HashMap<Integer, Double> hashMap = new HashMap<>();
+
         for (Teacher teacher : teachers) {
             Double sum = 0.0;
             List<Comments> comments = teacher.getComments();
