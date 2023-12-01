@@ -13,7 +13,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,25 +79,14 @@ public class FindTeacherApplication {
                 .where(QTeacher.teacher.id.eq(teacherId))
                 .fetchOne();
 
-        if (teacher == null) {
-            throw new IllegalArgumentException("해당 선생님을 찾을 수 없습니다.");
-        }
+//        Teacher teacher = null;
+        // teacher 값을 null 로 하려면 어떻게 해야해 ??
+//        if (teacher == null) {
+//            throw new NotFoundException("해당 선생님을 찾을 수 없습니다.");
+//        }
 
-        List<CommentDto> commentDtos = queryFactory.selectFrom(qComments)
-                .where(qComments.teacher.eq(teacher))
-                .fetch()
-                .stream()
-                .map(comment -> CommentDto.builder()
-                        .id(comment.getId())
-                        .content(comment.getContent())
-                        .likes(comment.getLikes())
-                        .userId(comment.getUser().getId())
-                        .build())
-                .collect(Collectors.toList());
-
-        return FindTeacherByIdResponseDto.builder()
-                .teacher(teacher)
-                .commentDtoList(commentDtos)
-                .build();
+        FindTeacherByIdResponseDto findTeacherByIdResponseDto = new FindTeacherByIdResponseDto();
+        findTeacherByIdResponseDto.setTeacher(teacher);
+        return new FindTeacherByIdResponseDto();
     }
 }
