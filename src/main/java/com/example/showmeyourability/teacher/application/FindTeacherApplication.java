@@ -1,9 +1,7 @@
 package com.example.showmeyourability.teacher.application;
 
-import com.example.showmeyourability.comments.domain.Comments;
 import com.example.showmeyourability.comments.domain.QComments;
 import com.example.showmeyourability.comments.infrastructure.dto.FindCommentDto.CommentDto;
-import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import com.example.showmeyourability.teacher.domain.QTeacher;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
@@ -13,12 +11,11 @@ import com.example.showmeyourability.teacher.infrastructure.repository.TeacherRe
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +23,12 @@ public class FindTeacherApplication {
     private final JPAQueryFactory queryFactory; // JPAQueryFactory 주입
     private final TeacherRepository teacherRepository;
 
+    private final QTeacher qTeacher = QTeacher.teacher; // 클래스 수준의 QTeacher 인스턴스
+    private final QComments qComments = QComments.comments; // 클래스 수준의 QComments 인스턴스
+
+
     @Transactional
     public FindTeacherResponseDto findAllTeacher(int page, int size) {
-        QTeacher qTeacher = QTeacher.teacher; // Q 클래스 사용
-        QComments qComments = QComments.comments; // Comments에 대한 Q 클래스
-
         // 교사 정보와 평균 점수를 함께 조회
         List<TeacherDto> teacherDtos = queryFactory
                 .select(Projections.constructor(TeacherDto.class,
@@ -73,23 +71,27 @@ public class FindTeacherApplication {
     public FindTeacherByIdResponseDto findOneTeacherById(
             Long teacherId
     ) {
-        Teacher teacher = teacherRepository.findById(teacherId)
-                .orElseThrow(()-> new HttpExceptionCustom(
-                        false,
-                        "해당하는 선생님을 찾을 수 없습니다.",
-                        HttpStatus.NOT_FOUND
-                ));
+        Teacher teacher = queryFactory
+                .selectFrom(QTeacher.teacher)
+                // Teacher의 ID가 메서드 파라미터로 전달된 teacherId와 같은 경우를 조건으로 합니다.
+                .where(QTeacher.teacher.id.eq(teacherId))
+                .fetchOne();
 
-        List<CommentDto> commentDtos = new ArrayList<>();
-        for (Comments comment : teacher.getComments()) {
-            CommentDto commentDto = CommentDto.builder()
-                    .id(comment.getId())
-                    .content(comment.getContent())
-                    .likes(comment.getLikes())
-                    .userId(comment.getUser().getId())
-                    .build();
-            commentDtos.add(commentDto);
+        if (teacher == null) {
+            throw new IllegalArgumentException("해당 선생님을 찾을 수 없습니다.");
         }
+
+        List<CommentDto> commentDtos = queryFactory.selectFrom(qComments)
+                .where(qComments.teacher.eq(teacher))
+                .fetch()
+                .stream()
+                .map(comment -> CommentDto.builder()
+                        .id(comment.getId())
+                        .content(comment.getContent())
+                        .likes(comment.getLikes())
+                        .userId(comment.getUser().getId())
+                        .build())
+                .collect(Collectors.toList());
 
         return FindTeacherByIdResponseDto.builder()
                 .teacher(teacher)
