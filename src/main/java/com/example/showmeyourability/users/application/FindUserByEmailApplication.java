@@ -18,9 +18,10 @@ public class FindUserByEmailApplication {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("해당 유저가 존재하지 않습니다."));
 
-        FindUserByEmailResponseDto responseDto = new FindUserByEmailResponseDto();
-        responseDto.setEmail(user.getEmail());
-
-        return responseDto;
+        return FindUserByEmailResponseDto
+                .builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .build();
     }
 }
