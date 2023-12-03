@@ -53,7 +53,8 @@ public class UserController {
             @CookieValue("access-token") String token
     ) {
         User responseUser = securityService.getSubject(token);
-        return findUserByIdApplication.execute(responseUser);
+        String email = responseUser.getEmail();
+        return findUserByIdApplication.execute(email);
     }
 
     @PutMapping()

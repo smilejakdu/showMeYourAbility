@@ -14,15 +14,13 @@ public class FindUserByEmailApplication {
     private final UserRepository userRepository;
 
     @Transactional
-    public FindUserByEmailResponseDto execute(User user) {
-        if (user == null) throw new NotFoundException("user is null");
+    public FindUserByEmailResponseDto execute(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("해당 유저가 존재하지 않습니다."));
 
-        return userRepository.findByEmail(user.getEmail())
-                .map(db->{
-                    FindUserByEmailResponseDto responseDto = new FindUserByEmailResponseDto();
-                    responseDto.setId(db.getId());
-                    responseDto.setEmail(db.getEmail());
-                    return responseDto;
-                }).orElseThrow();
+        FindUserByEmailResponseDto responseDto = new FindUserByEmailResponseDto();
+        responseDto.setEmail(user.getEmail());
+
+        return responseDto;
     }
 }

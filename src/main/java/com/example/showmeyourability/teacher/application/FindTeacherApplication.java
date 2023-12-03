@@ -1,7 +1,6 @@
 package com.example.showmeyourability.teacher.application;
 
 import com.example.showmeyourability.comments.domain.QComments;
-import com.example.showmeyourability.comments.infrastructure.dto.FindCommentDto.CommentDto;
 import com.example.showmeyourability.teacher.domain.QTeacher;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
@@ -13,11 +12,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.webjars.NotFoundException;
 
-import java.sql.SQLOutput;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
