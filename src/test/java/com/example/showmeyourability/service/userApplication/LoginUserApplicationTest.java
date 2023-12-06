@@ -38,10 +38,15 @@ public class LoginUserApplicationTest {
     private LoginUserApplication loginUserApplication;
 
     private User user;
+    private String email;
+    private String password;
 
     @BeforeEach
     public void setUp() {
-        String hashedPassword = BCrypt.hashpw("1234", BCrypt.gensalt());
+        email = "robertvsd1@gmail.com";
+        password = "password1234";
+
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
         // User 객체 생성
         user = User.builder()
@@ -57,20 +62,19 @@ public class LoginUserApplicationTest {
     @Test
     public void testExecuteUserNotFound() {
         // given
-        String email = "nonexistent@example.com";
-        String password = "password123";
+        String doesNotFoundEmail = "nonexistent@example.com";
 
         // HTTP 응답 모의 객체 생성
         HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
 
         // 로그인 요청 DTO 생성
         LoginUserRequestDto request = new LoginUserRequestDto();
-        request.setEmail(email);
+        request.setEmail(doesNotFoundEmail);
         request.setPassword(password);
 
         // when
         // UserRepository의 모의 동작 설정
-        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(doesNotFoundEmail)).thenReturn(Optional.empty());
 
         // then
         // HttpException이 예상대로 발생하는지 확인
@@ -85,19 +89,14 @@ public class LoginUserApplicationTest {
     @Test
     public void testExecuteInvalidPassword() {
         // given
-        String email = "test@example.com";
-        String password = "password123";
+        String password = "passwod5632";
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
 
         // 로그인 요청 DTO 생성
         LoginUserRequestDto request = new LoginUserRequestDto();
         request.setEmail(email);
-        request.setPassword(password);
-
-        // 올바른 이메일을 갖지만 패스워드 해시가 일치하지 않는 사용자 생성
-        User user = User.builder()
-                .email(email)
-                .password(BCrypt.hashpw("incorrect_password", BCrypt.gensalt())) // 잘못된 패스워드 해시
-                .build();
+        request.setPassword(hashedPassword);
 
         // HTTP 응답 모의 객체 생성
         HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
@@ -120,8 +119,8 @@ public class LoginUserApplicationTest {
     @Test
     public void testLoginSuccessUser() {
         // given
-        String email = "test@example.com";
-        String password = "password123";
+        String email = "robertvsd1@gmail.com";
+        String password = "pascdr123c";
 
         // 로그인 요청 DTO 생성
         LoginUserRequestDto request = new LoginUserRequestDto();
