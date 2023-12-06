@@ -17,7 +17,6 @@ import org.webjars.NotFoundException;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -75,7 +74,7 @@ public class FindUserApplicationTest {
 
     @Test
     public void successTestFindUserByEmail() {
-// given
+        // given
         String email = "robertvsd1@gmail.com";
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user1));
 
@@ -88,5 +87,6 @@ public class FindUserApplicationTest {
 
         // then
         Assertions.assertEquals(expectedResponse.getId(), actualResponse.getId());
-        Assertions.assertEquals(expectedResponse.getEmail(), actualResponse.getEmail());    }
+        Assertions.assertEquals(expectedResponse.getEmail(), actualResponse.getEmail());
+    }
 }
