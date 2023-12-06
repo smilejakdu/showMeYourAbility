@@ -37,7 +37,7 @@ public class UserController {
     public CreateUserResponseDto signup(
             @RequestBody CreateUserRequestDto request
     ) {
-        return signupUserApplication.signupUser(request);
+        return signupUserApplication.execute(request);
     }
 
     @PostMapping("/login")
