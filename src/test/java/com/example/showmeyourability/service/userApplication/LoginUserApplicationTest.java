@@ -12,6 +12,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,7 +34,7 @@ public class LoginUserApplicationTest {
     private UserRepository userRepository;
     @Mock
     private SecurityService securityService;
-
+    @InjectMocks
     private LoginUserApplication loginUserApplication;
 
     private User user;
@@ -57,14 +58,10 @@ public class LoginUserApplicationTest {
                 .password(hashedPassword)
                 .build();
 
-        // SecurityService 모의 객체 설정
-        when(securityService.createToken(anyString())).thenReturn("mocked_token");
-
-        // LoginUserApplication 수동 생성
-        loginUserApplication = new LoginUserApplication(userRepository, securityService);
     }
 
     @Test
+    @DisplayName("로그인 유저 없음 테스트")
     public void testExecuteUserNotFound() {
         // given
         String doesNotFoundEmail = "nonexistent@example.com";
@@ -87,11 +84,14 @@ public class LoginUserApplicationTest {
             loginUserApplication.execute(request, response);
         });
 
+        System.out.println("exception = " + exception);
+
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, exception.getHttpStatus());
         Assertions.assertEquals("가입되어있지 않은 유저 입니다.", exception.getMessage());
     }
 
     @Test
+    @DisplayName("로그인 패스워드 실패 테스트")
     public void testExecuteInvalidPassword() {
         // given
         String password = "passwod5632";
@@ -122,6 +122,7 @@ public class LoginUserApplicationTest {
 
 
     @Test
+    @DisplayName("로그인 성공 테스트")
     public void testLoginSuccessUser() {
         // given
         LoginUserRequestDto request = new LoginUserRequestDto();
@@ -134,6 +135,13 @@ public class LoginUserApplicationTest {
         // when
         // UserRepository와 SecurityService의 모의 동작 설정
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+
+        // SecurityService 모의 객체 설정
+        when(securityService.createToken(anyString())).thenReturn("mocked_token");
+
+        // LoginUserApplication 수동 생성
+        loginUserApplication = new LoginUserApplication(userRepository, securityService);
+
 
         // 메서드 실행
         LoginUserResponseDto responseDto = loginUserApplication.execute(request, response);

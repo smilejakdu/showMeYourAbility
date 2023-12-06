@@ -18,48 +18,41 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LoginUserApplication {
 
-    private final UserRepository userRepository;
 
+    private final UserRepository userRepository;
     private final SecurityService securityService;
 
     @Transactional
-    public LoginUserResponseDto execute(
-            LoginUserRequestDto request,
-            HttpServletResponse response
-    ) {
-        try {
-            User user = userRepository.findByEmail(request.getEmail())
-                    .map(db-> {
-                        if(!BCrypt.checkpw(request.getPassword(), db.getPassword())) {
-                            throw new HttpExceptionCustom(
-                                    false,
-                                    "비밀번호가 일치하지 않습니다.",
-                                    HttpStatus.BAD_REQUEST);
-                        }
-                        return db;
-                    }).orElseThrow(() -> new HttpExceptionCustom(
-                            false,
-                            "가입되어있지 않은 유저 입니다.",
-                            HttpStatus.BAD_REQUEST));
+    public LoginUserResponseDto execute(LoginUserRequestDto request, HttpServletResponse response) {
+        // 각 메서드가 단일 책임을 갖도록 하여 유지보수를 용이하게 합니다.
+        // 각각 메서드는 단일 책임원칙을 따르는것이 중요합니다.
+        User user = validateUser(request);
+        String token = securityService.createToken(user.getEmail());
 
-            String getToken = securityService.createToken(user.getEmail());
+        setCookie(response, token);
 
-            LoginUserResponseDto responseDto = new LoginUserResponseDto();
-            responseDto.setEmail(user.getEmail());
-            responseDto.setToken(getToken);
+        return LoginUserResponseDto.builder()
+                .email(user.getEmail())
+                .token(token)
+                .build();
+    }
 
-            Cookie cookie = new Cookie("access-token", String.valueOf(getToken));
-            cookie.setMaxAge(60 * 60 * 24);
-            cookie.setPath("/");
-            cookie.setHttpOnly(true);
-            response.addCookie(cookie);
+    private User validateUser(LoginUserRequestDto request) {
+        return userRepository.findByEmail(request.getEmail())
+                .map(dbUser -> {
+                    if (!BCrypt.checkpw(request.getPassword(), dbUser.getPassword())) {
+                        throw new HttpExceptionCustom(false, "비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+                    }
+                    return dbUser;
+                })
+                .orElseThrow(() -> new HttpExceptionCustom(false, "가입되어있지 않은 유저 입니다.", HttpStatus.BAD_REQUEST));
+    }
 
-            return LoginUserResponseDto.builder()
-                    .email(user.getEmail())
-                    .token(getToken)
-                    .build();
-        } catch (Exception e) {
-            throw e;
-        }
+    private void setCookie(HttpServletResponse response, String token) {
+        Cookie cookie = new Cookie("access-token", token);
+        cookie.setMaxAge(60 * 60 * 24);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
     }
 }
