@@ -18,13 +18,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 
@@ -32,9 +31,9 @@ import static org.mockito.Mockito.when;
 public class LoginUserApplicationTest {
     @Mock
     private UserRepository userRepository;
-    @InjectMocks
+    @Mock
     private SecurityService securityService;
-    @InjectMocks
+
     private LoginUserApplication loginUserApplication;
 
     private User user;
@@ -57,6 +56,12 @@ public class LoginUserApplicationTest {
                 .img("img")
                 .password(hashedPassword)
                 .build();
+
+        // SecurityService 모의 객체 설정
+        when(securityService.createToken(anyString())).thenReturn("mocked_token");
+
+        // LoginUserApplication 수동 생성
+        loginUserApplication = new LoginUserApplication(userRepository, securityService);
     }
 
     @Test
@@ -119,21 +124,9 @@ public class LoginUserApplicationTest {
     @Test
     public void testLoginSuccessUser() {
         // given
-        String email = "robertvsd1@gmail.com";
-        String password = "pascdr123c";
-
-        // 로그인 요청 DTO 생성
         LoginUserRequestDto request = new LoginUserRequestDto();
         request.setEmail(email);
         request.setPassword(password);
-
-        // 올바른 이메일과 패스워드 해시를 갖는 사용자 생성
-        User user = User.builder()
-                .email(email)
-                .password(BCrypt.hashpw(password, BCrypt.gensalt()))
-                .build();
-
-        String token = "test_token";
 
         // HTTP 응답 모의 객체 생성
         HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
@@ -141,7 +134,6 @@ public class LoginUserApplicationTest {
         // when
         // UserRepository와 SecurityService의 모의 동작 설정
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
-        when(securityService.createToken(email)).thenReturn(token);
 
         // 메서드 실행
         LoginUserResponseDto responseDto = loginUserApplication.execute(request, response);
@@ -150,7 +142,7 @@ public class LoginUserApplicationTest {
         // 응답이 null이 아니고 예상 값들을 확인
         Assertions.assertNotNull(responseDto);
         Assertions.assertEquals(email, responseDto.getEmail());
-        Assertions.assertEquals(token, responseDto.getToken());
+        Assertions.assertEquals("mocked_token", responseDto.getToken());
 
         // 쿠키가 설정되었는지 확인
         Mockito.verify(response).addCookie(Mockito.any(Cookie.class));
