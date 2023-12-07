@@ -1,7 +1,5 @@
-package com.example.showmeyourability.shared;
+package com.example.showmeyourability.shared.Exception;
 
-import com.example.showmeyourability.shared.Exception.ExceptionResponse;
-import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
