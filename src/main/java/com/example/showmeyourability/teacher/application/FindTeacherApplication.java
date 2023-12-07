@@ -71,7 +71,6 @@ public class FindTeacherApplication {
     ) {
         Teacher teacher = queryFactory
                 .selectFrom(QTeacher.teacher)
-                // Teacher의 ID가 메서드 파라미터로 전달된 teacherId와 같은 경우를 조건으로 합니다.
                 .where(QTeacher.teacher.id.eq(teacherId))
                 .leftJoin(QTeacher.teacher.comments, QComments.comments)
                 .fetchOne();
