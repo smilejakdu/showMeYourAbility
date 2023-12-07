@@ -1,17 +1,19 @@
 package com.example.showmeyourability.teacher.application;
 
 import com.example.showmeyourability.comments.domain.QComments;
+import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import com.example.showmeyourability.teacher.domain.QTeacher;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.TeacherDto;
-import com.example.showmeyourability.teacher.infrastructure.repository.TeacherRepository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 
@@ -19,8 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FindTeacherApplication {
     private final JPAQueryFactory queryFactory; // JPAQueryFactory 주입
-    private final TeacherRepository teacherRepository;
-
     private final QTeacher qTeacher = QTeacher.teacher; // 클래스 수준의 QTeacher 인스턴스
     private final QComments qComments = QComments.comments; // 클래스 수준의 QComments 인스턴스
 
@@ -73,16 +73,21 @@ public class FindTeacherApplication {
                 .selectFrom(QTeacher.teacher)
                 // Teacher의 ID가 메서드 파라미터로 전달된 teacherId와 같은 경우를 조건으로 합니다.
                 .where(QTeacher.teacher.id.eq(teacherId))
+                .leftJoin(QTeacher.teacher.comments, QComments.comments)
                 .fetchOne();
+        System.out.println("teacher = " + teacher);
 
-//        Teacher teacher = null;
-        // teacher 값을 null 로 하려면 어떻게 해야해 ??
-//        if (teacher == null) {
-//            throw new NotFoundException("해당 선생님을 찾을 수 없습니다.");
-//        }
+        if (teacher == null) {
+            throw new HttpExceptionCustom(
+                    false,
+                    "해당하는 선생님 정보가 없습니다.",
+                    HttpStatus.NOT_FOUND
+            );
+        }
 
         FindTeacherByIdResponseDto findTeacherByIdResponseDto = new FindTeacherByIdResponseDto();
         findTeacherByIdResponseDto.setTeacher(teacher);
-        return new FindTeacherByIdResponseDto();
+        findTeacherByIdResponseDto.setCommentDtoList(teacher.getComments());
+        return findTeacherByIdResponseDto;
     }
 }

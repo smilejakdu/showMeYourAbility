@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
@@ -23,10 +24,12 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SignUpUserApplicationTest {
-    @Mock
+    @Mock // 테스트 대상이 의존하는 객체
     private UserRepository userRepository;
-    @InjectMocks
+    @InjectMocks // 테스트 대상
     private SignupUserApplication signUpUserApplication;
+    // 테스트 대상인 빈에는 @InjectMocks를 사용하고
+    // 가짜로 대체할 의존성에는 @Mock을 사용한다.
 
     private User user;
     private String email;
