@@ -24,7 +24,12 @@ public class FindCommentByTeacherIdApplication {
     ) {
         List<Comments> comments = commentRepository.findByTeacherId(teacherId);
         List<CommentDto> commentDtoList = getCommentDtoList(comments);
-        return new CoreSuccessResponse(commentDtoList);
+        return CoreSuccessResponse
+                .builder()
+                .ok(true)
+                .message("댓글 조회 성공")
+                .data(commentDtoList)
+                .build();
     }
 
     private List<CommentDto> getCommentDtoList(List<Comments> comments) {

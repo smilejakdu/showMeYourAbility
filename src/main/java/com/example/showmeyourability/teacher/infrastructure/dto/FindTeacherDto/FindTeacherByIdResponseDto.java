@@ -1,7 +1,6 @@
 package com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto;
 
 import com.example.showmeyourability.comments.domain.Comments;
-import com.example.showmeyourability.comments.infrastructure.dto.FindCommentDto.CommentDto;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

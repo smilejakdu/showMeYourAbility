@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.webjars.NotFoundException;
 
 import java.util.List;
 
@@ -23,7 +22,6 @@ public class FindTeacherApplication {
     private final JPAQueryFactory queryFactory; // JPAQueryFactory 주입
     private final QTeacher qTeacher = QTeacher.teacher; // 클래스 수준의 QTeacher 인스턴스
     private final QComments qComments = QComments.comments; // 클래스 수준의 QComments 인스턴스
-
 
     @Transactional
     public FindTeacherResponseDto findAllTeacher(int page, int size) {

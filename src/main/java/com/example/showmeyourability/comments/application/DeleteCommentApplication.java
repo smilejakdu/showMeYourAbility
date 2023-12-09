@@ -25,7 +25,12 @@ public class DeleteCommentApplication {
                 .orElseThrow(() -> new IllegalArgumentException("요청한 commentId에 해당하는 댓글이 존재하지 않습니다."));
 
         comments.setDeletedAt(LocalDateTime.now());
-        commentRepository.save(comments);
-        return new CoreSuccessResponse(commentId);
+        Comments savedComment = commentRepository.save(comments);
+        return CoreSuccessResponse
+                .builder()
+                .ok(true)
+                .message("댓글 삭제 성공")
+                .data(savedComment)
+                .build();
     }
 }

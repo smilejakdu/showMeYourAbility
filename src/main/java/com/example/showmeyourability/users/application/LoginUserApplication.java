@@ -10,9 +10,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Service
 @RequiredArgsConstructor
@@ -23,14 +25,16 @@ public class LoginUserApplication {
     private final SecurityService securityService;
 
     @Transactional
-    public LoginUserResponseDto execute(LoginUserRequestDto request, HttpServletResponse response) {
+    public LoginUserResponseDto execute(
+            LoginUserRequestDto request,
+            HttpServletResponse response
+    ) {
         // 각 메서드가 단일 책임을 갖도록 하여 유지보수를 용이하게 합니다.
         // 각각 메서드는 단일 책임원칙을 따르는것이 중요합니다.
         User user = validateUser(request);
         String token = securityService.createToken(user.getEmail());
 
         setCookie(response, token);
-
         return LoginUserResponseDto.builder()
                 .email(user.getEmail())
                 .token(token)

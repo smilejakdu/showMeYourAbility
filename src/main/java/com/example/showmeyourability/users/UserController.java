@@ -1,5 +1,6 @@
 package com.example.showmeyourability.users;
 
+import com.example.showmeyourability.shared.CoreSuccessResponse;
 import com.example.showmeyourability.shared.Service.SecurityService;
 import com.example.showmeyourability.users.application.FindUserByEmailApplication;
 import com.example.showmeyourability.users.application.LoginUserApplication;
@@ -16,6 +17,7 @@ import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.Upda
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -41,11 +43,16 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public LoginUserResponseDto login(
+    public CoreSuccessResponse login(
             @RequestBody LoginUserRequestDto request,
             HttpServletResponse response
     ) {
-        return loginUserApplication.execute(request, response);
+        LoginUserResponseDto loginUserResponseDto = loginUserApplication.execute(request, response);
+        return CoreSuccessResponse.builder()
+                .ok(true)
+                .message("로그인 성공")
+                .data(loginUserResponseDto)
+                .build();
     }
 
     @GetMapping()
