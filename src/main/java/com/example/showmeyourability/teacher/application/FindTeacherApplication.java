@@ -72,7 +72,6 @@ public class FindTeacherApplication {
                 .where(QTeacher.teacher.id.eq(teacherId))
                 .leftJoin(QTeacher.teacher.comments, QComments.comments)
                 .fetchOne();
-        System.out.println("teacher = " + teacher);
 
         if (teacher == null) {
             throw new HttpExceptionCustom(

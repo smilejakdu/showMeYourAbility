@@ -1,5 +1,6 @@
 package com.example.showmeyourability.teacher;
 
+import com.example.showmeyourability.shared.CoreSuccessResponse;
 import com.example.showmeyourability.teacher.application.FindRecentTeacherApplication;
 import com.example.showmeyourability.teacher.application.FindTeacherApplication;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindRecentTeacherResponseDto;
@@ -27,10 +28,15 @@ public class TeacherController {
     }
 
     @GetMapping("{teacherId}")
-    public FindTeacherByIdResponseDto findOneTeacherById(
+    public CoreSuccessResponse findOneTeacherById(
             @PathVariable Long teacherId
     ) {
-        return findTeacherApplication.findOneTeacherById(teacherId);
+        FindTeacherByIdResponseDto findTeacherByIdResponseDto = findTeacherApplication.findOneTeacherById(teacherId);
+        return CoreSuccessResponse.builder()
+                .ok(true)
+                .message("교사 정보 조회 성공")
+                .data(findTeacherByIdResponseDto)
+                .build();
     }
 
     @GetMapping("/recentTeacher")
