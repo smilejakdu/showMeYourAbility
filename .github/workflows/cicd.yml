@@ -23,3 +23,27 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew clean build
+
+      # 현재 시간 정보를 가져오는 액션을 사용
+      - name: Get current time
+        uses: josStorer/get-current-time@v2.0.2
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
+
+      # 빌드 결과물의 이름을 artifact라는 이름으로 환경 변수에 저장
+      - name: Set artifact
+        run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
+
+      # Beanstalk에 배포하는 액션을 사용
+      - name: Beanstalk Deploy
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: showMeYourAbility
+          environment_name: showMeYourAbility-env
+          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+          region: ap-northeast-2
+          deployment_package: ./build/libs/${{env.artifact}}
