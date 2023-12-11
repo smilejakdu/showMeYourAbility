@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'corretto' # Corretto 배포판을 사용하도록 설정
-          java-version: '17.0.9'   # Java 버전을 17.0.9로 설정
+          java-version: '17'   # Java 버전을 17로 설정
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
