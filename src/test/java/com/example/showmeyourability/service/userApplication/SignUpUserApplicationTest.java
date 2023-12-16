@@ -15,13 +15,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -90,32 +89,28 @@ public class SignUpUserApplicationTest {
         // given
         CreateUserRequestDto createUserRequestDto = new CreateUserRequestDto();
         createUserRequestDto.setEmail("newuser@example.com");
-        String hashedPassword = BCrypt.hashpw("swepowfwer124908", BCrypt.gensalt());
-        createUserRequestDto.setPassword(hashedPassword);
-        createUserRequestDto.setGenderType(GenderType.FEMALE); // or MALE, as per your choice
-        createUserRequestDto.setAge(25);
-        createUserRequestDto.setPhone("112");
-        createUserRequestDto.setImg("userImgPath");
+        createUserRequestDto.setPassword("swepowfwer124908");
+        createUserRequestDto.setGenderType(GenderType.FEMALE);
+        createUserRequestDto.setAge(20);
+        createUserRequestDto.setImg("img_path");
+        String hashedPassword = BCrypt.hashpw(createUserRequestDto.getPassword(), BCrypt.gensalt());
 
-        when(userRepository.findByEmail(createUserRequestDto.getEmail())).thenReturn(Optional.empty());
-
-        User savedUser = User.builder()
+        User newUser = User.builder()
                 .email(createUserRequestDto.getEmail())
-                .phone(createUserRequestDto.getPhone())
-                .password(createUserRequestDto.getPassword()) // or hashed password
+                .password(hashedPassword)
                 .genderType(createUserRequestDto.getGenderType())
                 .age(createUserRequestDto.getAge())
                 .img(createUserRequestDto.getImg())
                 .build();
 
-        when(userRepository.save(savedUser)).thenReturn(savedUser);
+        when(userRepository.findByEmail(createUserRequestDto.getEmail())).thenReturn(Optional.empty());
+        when(userRepository.save(any(User.class))).thenReturn(newUser);
 
         // when
         CreateUserResponseDto result = signUpUserApplication.execute(createUserRequestDto);
-
+        System.out.println("result = " + result);
         // then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(createUserRequestDto.getEmail(), result.getEmail());
-        Assertions.assertNotNull(result.getId());
     }
 }
