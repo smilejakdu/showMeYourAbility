@@ -69,17 +69,24 @@ public class UserController {
             @CookieValue("access-token") String token
     ) {
         User responseUser = securityService.getSubject(token);
-        String email = responseUser.getEmail();
-        return findUserByIdApplication.execute(email);
+        return findUserByIdApplication.execute(responseUser.getEmail());
     }
 
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public UpdateUserResponseDto updateMyInfo(
+    public CoreSuccessResponse updateMyInfo(
             @CookieValue("access-token") String token,
             @RequestBody UpdateUserRequestDto request
     ) {
         User responseUser = securityService.getSubject(token);
-        return updateMyInfoApplication.updateMyInfo(responseUser, request);
+        UpdateUserResponseDto updateUserResponseDto = updateMyInfoApplication.execute(
+                responseUser,
+                request
+        );
+        return CoreSuccessResponse.builder()
+                .ok(true)
+                .message("내정보 업데이트")
+                .data(updateUserResponseDto)
+                .build();
     }
 }

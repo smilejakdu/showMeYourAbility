@@ -1,6 +1,7 @@
 package com.example.showmeyourability.teacher.application;
 
 import com.example.showmeyourability.comments.domain.QComments;
+import com.example.showmeyourability.shared.Exception.ErrorCode;
 import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import com.example.showmeyourability.teacher.domain.QTeacher;
 import com.example.showmeyourability.teacher.domain.Teacher;
@@ -76,7 +77,7 @@ public class FindTeacherApplication {
         if (teacher == null) {
             throw new HttpExceptionCustom(
                     false,
-                    "해당하는 선생님 정보가 없습니다.",
+                    ErrorCode.NOT_FOUND_DATA.getMessage(),
                     HttpStatus.NOT_FOUND
             );
         }

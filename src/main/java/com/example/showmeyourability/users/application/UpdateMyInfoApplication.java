@@ -7,6 +7,7 @@ import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.Upda
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserResponseDto;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,7 @@ public class UpdateMyInfoApplication {
     private final UserRepository userRepository;
 
     @Transactional
-    public UpdateUserResponseDto updateMyInfo(
+    public UpdateUserResponseDto execute(
             User user,
             UpdateUserRequestDto request
     ) {
@@ -26,13 +27,13 @@ public class UpdateMyInfoApplication {
             throw new HttpExceptionCustom(
                     false,
                     ErrorCode.INVALID_PARAMETER.getMessage(),
-                    ErrorCode.INVALID_PARAMETER.getStatus()
+                    HttpStatus.BAD_REQUEST
             );
         }
         User updatedUser = User.builder()
                 .email(request.getEmail())
                 .age(request.getAge())
-                .genderType(request.getGender())
+                .genderType(request.getGenderType())
                 .password(request.getPassword())
                 .img(request.getImg())
                 .build();

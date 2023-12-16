@@ -2,6 +2,7 @@ package com.example.showmeyourability.service.teacherApplication;
 
 import com.example.showmeyourability.comments.domain.QComments;
 import com.example.showmeyourability.shared.CoreSuccessResponse;
+import com.example.showmeyourability.shared.Exception.ErrorCode;
 import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import com.example.showmeyourability.teacher.application.FindTeacherApplication;
 import com.example.showmeyourability.teacher.domain.QTeacher;
@@ -75,9 +76,13 @@ public class FindTeacherApplicationTest {
         when(jpaQuery.leftJoin(QTeacher.teacher.comments, QComments.comments)).thenReturn(jpaQuery);
         when(jpaQuery.fetchOne()).thenReturn(null);
 
-        assertThrows(HttpExceptionCustom.class, () -> {
+        HttpExceptionCustom exception = assertThrows(HttpExceptionCustom.class, () -> {
             findTeacherApplication.findOneTeacherById(teacherId);
-        }, "해당하는 선생님 정보가 없습니다.");
+        });
+        System.out.println("exception = " + exception);
+
+        Assertions.assertEquals(ErrorCode.NOT_FOUND_DATA.getMessage(), exception.getMessage());
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
     }
 
     @Test

@@ -3,16 +3,14 @@ package com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto;
 import com.example.showmeyourability.users.domain.GenderType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UpdateUserRequestDto {
-    @Schema(description = "name", example = "name")
-    @NotEmpty(message = "name 을 입력해주세요.")
-    private String name;
-
     @Schema(description = "email", example = "이메일")
     @NotEmpty(message = "email을 입력해주세요.")
     private String email;
@@ -26,7 +24,7 @@ public class UpdateUserRequestDto {
 
     @Schema(description = "gender", example = "성별")
     @NotEmpty(message = "성별을 입력해주세요.")
-    private GenderType gender;
+    private GenderType genderType;
 
     @Schema(description = "img", example = "이미지")
     private String img;

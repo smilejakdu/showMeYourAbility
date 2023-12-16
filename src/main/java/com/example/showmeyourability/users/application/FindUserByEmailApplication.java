@@ -1,5 +1,6 @@
 package com.example.showmeyourability.users.application;
 
+import com.example.showmeyourability.shared.Exception.ErrorCode;
 import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.FindUserDto.FindUserByEmailResponseDto;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
@@ -16,7 +17,9 @@ public class FindUserByEmailApplication {
     @Transactional
     public FindUserByEmailResponseDto execute(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException("해당 유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException(
+                        ErrorCode.NOT_FOUND_DATA.getMessage()
+                ));
 
         return FindUserByEmailResponseDto
                 .builder()
