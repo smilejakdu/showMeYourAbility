@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
-        info = @Info(title = "SHOW ME YOUR ABILITY App",
+        info = @Info(title = "SHOW ME YOUR ABILITY API",
                 description = "SHOW ME YOUR ABILITY api명세",
                 version = "v1"))
 @Configuration

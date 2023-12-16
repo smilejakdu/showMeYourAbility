@@ -17,6 +17,7 @@ import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.Upda
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,13 +37,20 @@ public class UserController {
     private final SecurityService securityService;
 
     @PostMapping("/signup")
-    public CreateUserResponseDto signup(
+    @ResponseStatus(HttpStatus.CREATED)
+    public CoreSuccessResponse signup(
             @RequestBody CreateUserRequestDto request
     ) {
-        return signupUserApplication.execute(request);
+        CreateUserResponseDto createUserResponseDto =  signupUserApplication.execute(request);
+        return CoreSuccessResponse.builder()
+                .ok(true)
+                .message("회원가입 성공")
+                .data(createUserResponseDto)
+                .build();
     }
 
     @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
     public CoreSuccessResponse login(
             @RequestBody LoginUserRequestDto request,
             HttpServletResponse response
@@ -56,6 +64,7 @@ public class UserController {
     }
 
     @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
     public FindUserByEmailResponseDto getMyInfoWithComment(
             @CookieValue("access-token") String token
     ) {
@@ -65,6 +74,7 @@ public class UserController {
     }
 
     @PutMapping()
+    @ResponseStatus(HttpStatus.OK)
     public UpdateUserResponseDto updateMyInfo(
             @CookieValue("access-token") String token,
             @RequestBody UpdateUserRequestDto request

@@ -27,8 +27,10 @@ public class SignupUserApplication {
                 });
 
         User newUser = createUser(request);
-        User saved = userRepository.save(newUser);
-        return toCreateUserResponseDto(saved);
+        User savedUser = userRepository.save(newUser);
+        return new CreateUserResponseDto(
+                savedUser.getId(),
+                savedUser.getEmail());
     }
 
     private User createUser(CreateUserRequestDto request) {
@@ -38,13 +40,6 @@ public class SignupUserApplication {
                 .genderType(request.getGenderType())
                 .age(request.getAge())
                 .img(request.getImg())
-                .build();
-    }
-
-    private CreateUserResponseDto toCreateUserResponseDto(User user) {
-        return CreateUserResponseDto.builder()
-                .id(user.getId())
-                .email(user.getEmail())
                 .build();
     }
 }

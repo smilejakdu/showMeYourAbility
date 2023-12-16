@@ -1,16 +1,13 @@
 package com.example.showmeyourability.users.infrastructure.dto.CreateUserDto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class CreateUserResponseDto {
     private Long id;
     private String email;
-
-    @Builder
-    public CreateUserResponseDto(Long id, String email) {
-        this.id = id;
-        this.email = email;
-    }
 }

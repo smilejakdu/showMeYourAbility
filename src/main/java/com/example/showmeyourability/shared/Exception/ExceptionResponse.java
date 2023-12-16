@@ -10,5 +10,3 @@ public class ExceptionResponse {
     private String message;
     private int statusCode;
 }
-
-
