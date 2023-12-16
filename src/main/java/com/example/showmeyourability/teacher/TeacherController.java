@@ -6,8 +6,10 @@ import com.example.showmeyourability.teacher.application.FindTeacherApplication;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindRecentTeacherResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +22,11 @@ public class TeacherController {
     private final FindRecentTeacherApplication findRecentTeacherApplication;
 
     @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "선생님 데이터 불러오기",
+            description = "선생님 데이터 불러오기"
+    )
     public FindTeacherResponseDto findAllTeacher(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size
@@ -28,6 +35,11 @@ public class TeacherController {
     }
 
     @GetMapping("{teacherId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "선생님 데이터 하나 불러오기",
+            description = "선생님 데이터 하나 불러오기"
+    )
     public CoreSuccessResponse findOneTeacherById(
             @PathVariable Long teacherId
     ) {
@@ -40,6 +52,11 @@ public class TeacherController {
     }
 
     @GetMapping("/recentTeacher")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "최신 선생님 데이터 4개 불러오기",
+            description = "최신 선생님 데이터 4개 불러오기"
+    )
     public FindRecentTeacherResponseDto findRecentTeacher() {
         return findRecentTeacherApplication.execute();
     }

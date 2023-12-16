@@ -6,6 +6,7 @@ import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserResponseDto;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
+import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -18,18 +19,22 @@ public class UpdateMyInfoApplication {
 
     private final UserRepository userRepository;
 
+    private void validatePassword(String requestPassword, String userPassword) {
+        if (!BCrypt.checkpw(requestPassword, userPassword)) {
+            throw new HttpExceptionCustom(
+                    false,
+                    "Invalid Password",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
     @Transactional
     public UpdateUserResponseDto execute(
             User user,
             UpdateUserRequestDto request
     ) {
-        if (!BCrypt.checkpw(request.getPassword(), user.getPassword())) {
-            throw new HttpExceptionCustom(
-                    false,
-                    ErrorCode.INVALID_PARAMETER.getMessage(),
-                    HttpStatus.BAD_REQUEST
-            );
-        }
+        validatePassword(request.getPassword(), user.getPassword());
         User updatedUser = User.builder()
                 .email(request.getEmail())
                 .age(request.getAge())
@@ -40,10 +45,12 @@ public class UpdateMyInfoApplication {
 
         User savedUser = userRepository.save(updatedUser);
 
-        UpdateUserResponseDto responseDto = new UpdateUserResponseDto();
-        responseDto.setEmail(savedUser.getEmail());
-        responseDto.setAge(savedUser.getAge());
-
-        return responseDto;
+        return UpdateUserResponseDto.builder()
+                .id(savedUser.getId())
+                .email(savedUser.getEmail())
+                .age(savedUser.getAge())
+                .img(savedUser.getImg())
+                .genderType(savedUser.getGenderType())
+                .build();
     }
 }

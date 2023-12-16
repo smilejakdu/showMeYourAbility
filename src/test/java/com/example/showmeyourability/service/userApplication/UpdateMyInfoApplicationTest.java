@@ -6,6 +6,7 @@ import com.example.showmeyourability.users.application.UpdateMyInfoApplication;
 import com.example.showmeyourability.users.domain.GenderType;
 import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserRequestDto;
+import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserResponseDto;
 import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -76,17 +78,40 @@ public class UpdateMyInfoApplicationTest {
 
     @Test
     @DisplayName("내정보 수정 성공 테스트")
-    public void testUpdateMyInfo() {
+    public void testUpdateMyInfoSuccess() {
         // given
-        Long userId = 1L;
-        String email = "aweroh@gmail.com";
-        User user = User.builder()
-                .id(userId)
-                .email(email)
+        String updatedEmail = "updatedUser@example.com"; // update email
+        int updatedAge = 25; // update age
+        GenderType updatedGender = GenderType.FEMALE;
+        String updatedImg = "updatedImg.jpg"; // update img
+
+        UpdateUserRequestDto updateUserRequestDto = UpdateUserRequestDto.builder()
+                .email(updatedEmail)
+                .age(updatedAge)
+                .genderType(updatedGender)
+                .img(updatedImg)
+                .password(user.getPassword())
                 .build();
-        System.out.println("user : " + user);
+
+        User userForReturn = User.builder()
+                .id(user.getId())
+                .email(updatedEmail)
+                .age(updatedAge)
+                .img(updatedImg)
+                .genderType(updatedGender)
+                .build();
+
+        // Mock userRepository behavior
+        when(userRepository.save(any(User.class))).thenReturn(userForReturn);
         // when
+        UpdateUserResponseDto result = updateMyInfoApplication.execute(user, updateUserRequestDto);
 
         // then
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(user.getId(), result.getId());
+        Assertions.assertEquals(updatedEmail, result.getEmail());
+        Assertions.assertEquals(updatedAge, result.getAge());
+        Assertions.assertEquals(updatedImg, result.getImg());
+        Assertions.assertEquals(updatedGender, result.getGenderType());
     }
 }

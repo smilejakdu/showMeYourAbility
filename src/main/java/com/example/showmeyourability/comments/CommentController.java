@@ -9,8 +9,10 @@ import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDt
 import com.example.showmeyourability.shared.CoreSuccessResponse;
 import com.example.showmeyourability.shared.Service.SecurityService;
 import com.example.showmeyourability.users.domain.User;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,6 +28,11 @@ public class CommentController {
     private final SecurityService securityService;
 
     @PostMapping()
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "댓글 작성하기",
+            description = "댓글 작성하기"
+    )
     CreateCommentResponseDto createComment(
             @RequestBody CreateCommentRequestDto request,
             @RequestHeader("access-token") String token
@@ -35,6 +42,11 @@ public class CommentController {
     }
 
     @PutMapping("/{commentId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "댓글 수정하기",
+            description = "댓글 수정하기"
+    )
     UpdateCommentResponseDto updateComment(
             @PathVariable("commentId") Long commentId,
             @CookieValue("access-token") String token,
@@ -46,6 +58,11 @@ public class CommentController {
     }
 
     @GetMapping("/teacher")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "해당하는 선생님 댓글 불러오기",
+            description = "해당하는 선생님 댓글 불러오기"
+    )
     CoreSuccessResponse findComment(
             @RequestParam() Long teacherId
     ) {
@@ -53,6 +70,11 @@ public class CommentController {
     }
 
     @GetMapping("/{commentId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "댓글 하나 불러오기",
+            description = "댓글 하나 불러오기"
+    )
     FindCommentAndReplyResponseDto findCommentAndReply(
             @PathVariable("commentId") Long commentId
     ) {
@@ -60,6 +82,11 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "댓글 삭제하기",
+            description = "댓글 삭제하기"
+    )
     CoreSuccessResponse deleteComment(
             @CookieValue("access-token") String token,
             @PathVariable("commentId") Long commentId

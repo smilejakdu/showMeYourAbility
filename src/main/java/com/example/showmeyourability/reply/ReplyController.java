@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name = "reply", description = "reply API")
+@Tag(name = "reply", description = "대댓글 API")
 @RequestMapping("/api/reply")
 @RequiredArgsConstructor
 public class ReplyController {

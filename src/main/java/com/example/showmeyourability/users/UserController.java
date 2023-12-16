@@ -14,11 +14,11 @@ import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.Login
 import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserResponseDto;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,6 +38,10 @@ public class UserController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(
+            summary = "회원가입",
+            description = "회원가입"
+    )
     public CoreSuccessResponse signup(
             @RequestBody CreateUserRequestDto request
     ) {
@@ -51,6 +55,10 @@ public class UserController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "로그인",
+            description = "로그인"
+    )
     public CoreSuccessResponse login(
             @RequestBody LoginUserRequestDto request,
             HttpServletResponse response
@@ -65,6 +73,10 @@ public class UserController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "내정보 불러오기",
+            description = "내정보 불러오기"
+    )
     public FindUserByEmailResponseDto getMyInfoWithComment(
             @CookieValue("access-token") String token
     ) {
@@ -74,6 +86,10 @@ public class UserController {
 
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "내정보 수정",
+            description = "내정보 수정"
+    )
     public CoreSuccessResponse updateMyInfo(
             @CookieValue("access-token") String token,
             @RequestBody UpdateUserRequestDto request
