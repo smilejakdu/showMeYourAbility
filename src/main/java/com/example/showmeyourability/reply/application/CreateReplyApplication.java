@@ -16,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreateReplyApplication {
     private final ReplyRepository replyRepository;
-
-    private final UserRepository userRepository;
-
     private final CommentRepository commentsRepository;
 
     @Transactional
@@ -44,24 +41,4 @@ public class CreateReplyApplication {
                 .content(savedReply.getContent())
                 .build();
     };
-
-    @Transactional
-    public CreateReplyResponseDto execute(
-            String content,
-            User user,
-            Comments comments
-    ) {
-        Reply newReply = Reply.builder()
-                .content(content)
-                .user(user)
-                .comments(comments)
-                .build();
-
-        Reply reply = replyRepository.save(newReply);
-        return CreateReplyResponseDto.builder()
-                .replyId(reply.getId())
-                .content(reply.getContent())
-                .commentId(reply.getComments().getId())
-                .build();
-    }
 }
