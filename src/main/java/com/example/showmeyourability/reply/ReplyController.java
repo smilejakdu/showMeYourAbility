@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ReplyController {
     private final CreateReplyApplication createReplyApplication;
-
     private final UpdateReplyApplication updateReplyApplication;
-
     private final SecurityService securityService;
 
     @PostMapping()

@@ -7,7 +7,6 @@ import com.example.showmeyourability.reply.infrastructure.dto.CreateReplyRequest
 import com.example.showmeyourability.reply.infrastructure.dto.CreateReplyResponseDto;
 import com.example.showmeyourability.reply.infrastructure.repository.ReplyRepository;
 import com.example.showmeyourability.users.domain.User;
-import com.example.showmeyourability.users.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,22 +15,34 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreateReplyApplication {
     private final ReplyRepository replyRepository;
-    private final CommentRepository commentsRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public CreateReplyResponseDto execute(
             User user,
             CreateReplyRequestDto requestDto
     ) {
-        Comments comment = commentsRepository.findById(requestDto.getCommentId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 댓글을 찾을 수 없습니다."));
+        Comments comment = findCommentById(requestDto.getCommentId());
+        Reply reply = buildReply(user, requestDto.getContent(), comment);
+        Reply savedReply = replyRepository.save(reply);
 
-        Reply reply = Reply.builder()
+        return buildCreateReplyResponseDto(savedReply);
+    }
+
+    private Comments findCommentById(Long id) {
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 댓글을 찾을 수 없습니다."));
+    }
+
+    private Reply buildReply(User user, String content, Comments comment) {
+        return Reply.builder()
                 .comments(comment)
                 .user(user)
-                .content(requestDto.getContent())
+                .content(content)
                 .build();
-        Reply savedReply = replyRepository.save(reply);
+    }
+
+    private CreateReplyResponseDto buildCreateReplyResponseDto(Reply savedReply) {
         return CreateReplyResponseDto
                 .builder()
                 .userId(savedReply.getUser().getId())
@@ -40,5 +51,5 @@ public class CreateReplyApplication {
                 .replyId(savedReply.getId())
                 .content(savedReply.getContent())
                 .build();
-    };
+    }
 }
