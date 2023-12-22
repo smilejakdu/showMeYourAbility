@@ -40,6 +40,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath img = createString("img");
 
+    public final StringPath name = createString("name");
+
     public final ListPath<com.example.showmeyourability.order.domain.Order, com.example.showmeyourability.order.domain.QOrder> orders = this.<com.example.showmeyourability.order.domain.Order, com.example.showmeyourability.order.domain.QOrder>createList("orders", com.example.showmeyourability.order.domain.Order.class, com.example.showmeyourability.order.domain.QOrder.class, PathInits.DIRECT2);
 
     public final StringPath password = createString("password");

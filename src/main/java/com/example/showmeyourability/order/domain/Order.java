@@ -4,12 +4,11 @@ import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.users.domain.User;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "orders")
 @NoArgsConstructor

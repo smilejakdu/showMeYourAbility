@@ -6,15 +6,13 @@ import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.example.showmeyourability.users.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Collections;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @Entity
 @Builder
 @AllArgsConstructor

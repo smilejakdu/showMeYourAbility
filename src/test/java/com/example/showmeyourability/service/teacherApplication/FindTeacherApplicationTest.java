@@ -89,8 +89,6 @@ public class FindTeacherApplicationTest {
     @DisplayName("teacher find one 조회 성공")
     void successFindOneTeacherByIdTest() {
         Long teacherId = 1L;
-
-        // queryFactory의 동작을 모의 처리합니다.
         // when
         when(queryFactory.selectFrom(QTeacher.teacher)).thenReturn(jpaQuery);
         when(jpaQuery.where(QTeacher.teacher.id.eq(teacherId))).thenReturn(jpaQuery);
@@ -101,7 +99,7 @@ public class FindTeacherApplicationTest {
 
         // 검증 코드를 추가하는 것이 좋습니다.
         // 예를 들어, responseDto가 예상대로 선생님 정보를 포함하고 있는지 확인합니다.
-        System.out.println("response = "+responseDto);
+        System.out.println("response = " + responseDto);
         Assertions.assertEquals(teacher.getId(), responseDto.getTeacher().getId());
         Assertions.assertEquals(teacher.getSkill(), responseDto.getTeacher().getSkill());
     }

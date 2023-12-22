@@ -5,15 +5,13 @@ import com.example.showmeyourability.order.domain.Order;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,6 +24,9 @@ public class User extends BaseTimeEntitiy {
 
     @Column(unique = true)
     private String email;
+
+    @Column(unique = true)
+    private String name;
 
     @Column(unique = true)
     private String phone;
