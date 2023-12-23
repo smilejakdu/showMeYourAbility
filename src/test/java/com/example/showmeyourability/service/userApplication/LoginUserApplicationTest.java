@@ -80,9 +80,7 @@ public class LoginUserApplicationTest {
 
         // then
         // HttpException이 예상대로 발생하는지 확인
-        HttpExceptionCustom exception = Assertions.assertThrows(HttpExceptionCustom.class, () -> {
-            loginUserApplication.execute(request, response);
-        });
+        HttpExceptionCustom exception = Assertions.assertThrows(HttpExceptionCustom.class, () -> loginUserApplication.execute(request, response));
 
         System.out.println("exception = " + exception);
 
