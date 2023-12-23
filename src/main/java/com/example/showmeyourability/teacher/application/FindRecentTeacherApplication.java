@@ -19,11 +19,13 @@ public class FindRecentTeacherApplication {
 
     @Transactional
     public FindRecentTeacherResponseDto execute() {
+        // 4일 전
         LocalDateTime fourDaysAgo = LocalDateTime.now().minusDays(4);
         QTeacher qTeacher = QTeacher.teacher;
 
         List<TeacherDto> teacherDtoList = queryFactory.selectFrom(qTeacher)
                 .where(qTeacher.createdAt.after(fourDaysAgo))
+                .innerJoin(qTeacher.user)
                 .fetch()
                 .stream()
                 .map(teacher -> TeacherDto.builder()
@@ -34,9 +36,7 @@ public class FindRecentTeacherApplication {
                         .userId(teacher.getUser().getId())
                         .build())
                 .collect(Collectors.toList());
-
-        return FindRecentTeacherResponseDto.builder()
-                .teacherDtoList(teacherDtoList)
-                .build();
+        System.out.println("teacherDtoList = " + teacherDtoList);
+        return new FindRecentTeacherResponseDto(teacherDtoList);
     }
 }

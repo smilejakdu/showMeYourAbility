@@ -57,7 +57,12 @@ public class TeacherController {
             summary = "최신 선생님 데이터 4개 불러오기",
             description = "최신 선생님 데이터 4개 불러오기"
     )
-    public FindRecentTeacherResponseDto findRecentTeacher() {
-        return findRecentTeacherApplication.execute();
+    public CoreSuccessResponse findRecentTeacher() {
+        FindRecentTeacherResponseDto findRecentTeacherResponseDto = findRecentTeacherApplication.execute();
+        return CoreSuccessResponse.builder()
+                .ok(true)
+                .message("최신 선생님 데이터 조회 성공")
+                .data(findRecentTeacherResponseDto)
+                .build();
     }
 }
