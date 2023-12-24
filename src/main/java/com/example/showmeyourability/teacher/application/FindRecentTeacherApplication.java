@@ -33,6 +33,7 @@ public class FindRecentTeacherApplication {
                         .career(teacher.getCareer())
                         .email(teacher.getUser().getEmail())
                         .skill(teacher.getSkill())
+                        .createdAt(teacher.getCreatedAt())
                         .userId(teacher.getUser().getId())
                         .build())
                 .collect(Collectors.toList());

@@ -4,10 +4,12 @@ import com.example.showmeyourability.teacher.application.FindRecentTeacherApplic
 import com.example.showmeyourability.teacher.domain.QTeacher;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindRecentTeacherResponseDto;
+import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.TeacherDto;
 import com.example.showmeyourability.users.domain.User;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,49 +35,77 @@ public class FindRecentTeacherApplicationTest {
     @InjectMocks
     private FindRecentTeacherApplication findRecentTeacherApplication;
 
-    private List<Teacher> teachers;
+    private List<TeacherDto> teacherDtoList;
+    private User user;
+
+    LocalDateTime fourDaysAgo = LocalDateTime.now().minusDays(4);
+    LocalDateTime threeDaysAgo = LocalDateTime.now().minusDays(3);
 
     @BeforeEach
     public void setup() {
         String password = "password1234";
         String hashPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-        User user = User.builder()
+        user = User.builder()
                 .id(1L)
                 .name("robert")
                 .email("robert@gmail.com")
                 .password(hashPassword)
                 .build();
 
-        teachers = Arrays.asList(
-                Teacher.builder()
+
+        teacherDtoList = Arrays.asList(
+                TeacherDto.builder()
                         .id(1L)
-                        .career("1")
-                        .skill("english")
-                        .user(user)
+                        .career("career")
+                        .skill("skill")
+                        .createdAt(fourDaysAgo)
+                        .userId(user.getId())
+                        .email(user.getEmail())
                         .build(),
-                Teacher.builder()
+                TeacherDto.builder()
                         .id(2L)
-                        .career("13")
-                        .skill("math")
-                        .user(user)
-                        .build(),
-                Teacher.builder()
-                        .id(3L)
-                        .career("13")
-                        .skill("math")
-                        .user(user)
-                        .build(),
-                Teacher.builder()
-                        .id(4L)
-                        .career("13")
-                        .skill("math")
-                        .user(user)
-                        .build(),
-                Teacher.builder()
-                        .id(5L)
-                        .career("13")
-                        .skill("math")
-                        .user(user)
-                        .build());
+                        .career("career2")
+                        .skill("skill2")
+                        .userId(user.getId())
+                        .createdAt(threeDaysAgo)
+                        .email(user.getEmail())
+                        .build()
+        );
+    }
+
+    @Test
+    @DisplayName("최근 4일간 가입한 선생님들 조회")
+    public void testExecute() {
+        // given
+        QTeacher qTeacher = QTeacher.teacher;
+
+        JPAQuery<Teacher> mockQuery = mock(JPAQuery.class);
+        when(queryFactory.selectFrom(qTeacher)).thenReturn(mockQuery);
+        when(mockQuery.where(any(BooleanExpression.class))).thenReturn(mockQuery);
+        when(mockQuery.innerJoin(qTeacher.user)).thenReturn(mockQuery);
+        when(mockQuery.fetch()).thenReturn(
+                Arrays.asList(
+                        Teacher.builder()
+                                .id(1L)
+                                .career("career")
+                                .skill("skill")
+                                .createdAt(fourDaysAgo) // createdAt 값을 수동으로 설정
+                                .user(user)
+                                .build(),
+                        Teacher.builder()
+                                .id(2L)
+                                .career("career2")
+                                .skill("skill2")
+                                .createdAt(threeDaysAgo) // createdAt 값을 수동으로 설정
+                                .user(user)
+                                .build()
+                )
+        );
+
+        // when
+        FindRecentTeacherResponseDto findRecentTeacherResponseDto = findRecentTeacherApplication.execute();
+        System.out.println("findRecentTeacherResponseDto = " + findRecentTeacherResponseDto);
+        // then
+        assertEquals(teacherDtoList, findRecentTeacherResponseDto.getTeacherDtoList());
     }
 }

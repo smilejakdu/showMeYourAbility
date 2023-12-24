@@ -7,15 +7,18 @@ import com.example.showmeyourability.users.domain.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-@Setter
-@Getter
 @Entity
-@Builder
+@Getter
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor
 @Table(name = "teachers", indexes = {
         @Index(name = "teacher_index", columnList = "id")
@@ -43,4 +46,14 @@ public class Teacher extends BaseTimeEntitiy {
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "teacher")
     private List<Order> orders = Collections.emptyList();
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    private LocalDateTime deletedAt;
 }

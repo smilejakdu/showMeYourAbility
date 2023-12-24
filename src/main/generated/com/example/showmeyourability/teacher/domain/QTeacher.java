@@ -28,11 +28,9 @@ public class QTeacher extends EntityPathBase<Teacher> {
 
     public final ListPath<com.example.showmeyourability.comments.domain.Comments, com.example.showmeyourability.comments.domain.QComments> comments = this.<com.example.showmeyourability.comments.domain.Comments, com.example.showmeyourability.comments.domain.QComments>createList("comments", com.example.showmeyourability.comments.domain.Comments.class, com.example.showmeyourability.comments.domain.QComments.class, PathInits.DIRECT2);
 
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> deletedAt = _super.deletedAt;
+    public final DateTimePath<java.time.LocalDateTime> deletedAt = createDateTime("deletedAt", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -40,8 +38,7 @@ public class QTeacher extends EntityPathBase<Teacher> {
 
     public final StringPath skill = createString("skill");
 
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
 
     public final com.example.showmeyourability.users.domain.QUser user;
 
