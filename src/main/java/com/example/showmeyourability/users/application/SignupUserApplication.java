@@ -26,7 +26,15 @@ public class SignupUserApplication {
                             HttpStatus.BAD_REQUEST);
                 });
 
-        User newUser = createUser(request);
+        User newUser = User.builder()
+                .email(request.getEmail())
+                .name(request.getName())
+                .password(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()))
+                .genderType(request.getGenderType())
+                .age(request.getAge())
+                .img(request.getImg())
+                .build();
+
         User savedUser = userRepository.save(newUser);
         return new CreateUserResponseDto(
                 savedUser.getId(),
@@ -36,6 +44,7 @@ public class SignupUserApplication {
     private User createUser(CreateUserRequestDto request) {
         return User.builder()
                 .email(request.getEmail())
+                .name(request.getName())
                 .password(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()))
                 .genderType(request.getGenderType())
                 .age(request.getAge())
