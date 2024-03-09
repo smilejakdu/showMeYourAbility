@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.showmeyourability.shared.CoreSuccessResponse.coreSuccessResponse;
+
 @RestController
 @Tag(name = "user", description = "유저 API")
 @RequestMapping("/api/user")
@@ -64,11 +66,7 @@ public class UserController {
             HttpServletResponse response
     ) {
         LoginUserResponseDto loginUserResponseDto = loginUserApplication.execute(request, response);
-        return CoreSuccessResponse.builder()
-                .ok(true)
-                .message("로그인 성공")
-                .data(loginUserResponseDto)
-                .build();
+        return coreSuccessResponse(true,loginUserResponseDto, "로그인 성공");
     }
 
     @GetMapping()
@@ -77,11 +75,12 @@ public class UserController {
             summary = "내정보 불러오기",
             description = "내정보 불러오기"
     )
-    public FindUserByEmailResponseDto getMyInfoWithComment(
+    public CoreSuccessResponse getMyInfoWithComment(
             @CookieValue("access-token") String token
     ) {
         User responseUser = securityService.getSubject(token);
-        return findUserByIdApplication.execute(responseUser.getEmail());
+        FindUserByEmailResponseDto findUserByEmailResponseDto = findUserByIdApplication.execute(responseUser.getEmail());
+        return coreSuccessResponse(true, findUserByEmailResponseDto, "로그인 성공");
     }
 
     @PutMapping()
