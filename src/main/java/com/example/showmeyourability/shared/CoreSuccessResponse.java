@@ -12,16 +12,19 @@ public class CoreSuccessResponse {
     public static CoreSuccessResponse coreSuccessResponse(
             boolean ok,
             Object data,
-            String message
+            String message,
+            int httpStatus
     ) {
         return CoreSuccessResponse.builder()
                 .ok(ok)
+                .httpStatus(httpStatus)
                 .message(message)
                 .data(data)
                 .build();
     }
 
     private boolean ok;
+    private int httpStatus;
     private String message;
     private Object data;
 }

@@ -25,14 +25,14 @@ public class User extends BaseTimeEntitiy {
     @Column(unique = true)
     private String email;
 
+    @Column(nullable = false)
+    private String password;
+
     @Column(unique = true)
     private String name;
 
     @Column(unique = true)
     private String phone;
-
-    @Column(nullable = false)
-    private String password;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

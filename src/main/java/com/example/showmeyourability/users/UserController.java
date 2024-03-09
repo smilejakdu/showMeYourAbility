@@ -47,12 +47,8 @@ public class UserController {
     public CoreSuccessResponse signup(
             @RequestBody CreateUserRequestDto request
     ) {
-        CreateUserResponseDto createUserResponseDto =  signupUserApplication.execute(request);
-        return CoreSuccessResponse.builder()
-                .ok(true)
-                .message("회원가입 성공")
-                .data(createUserResponseDto)
-                .build();
+        CreateUserResponseDto createUserResponseDto = signupUserApplication.execute(request);
+        return coreSuccessResponse(true, createUserResponseDto, "회원가입 성공", HttpStatus.CREATED.value());
     }
 
     @PostMapping("/login")
@@ -66,7 +62,7 @@ public class UserController {
             HttpServletResponse response
     ) {
         LoginUserResponseDto loginUserResponseDto = loginUserApplication.execute(request, response);
-        return coreSuccessResponse(true,loginUserResponseDto, "로그인 성공");
+        return coreSuccessResponse(true,loginUserResponseDto, "로그인 성공", HttpStatus.OK.value());
     }
 
     @GetMapping()
@@ -80,7 +76,7 @@ public class UserController {
     ) {
         User responseUser = securityService.getSubject(token);
         FindUserByEmailResponseDto findUserByEmailResponseDto = findUserByIdApplication.execute(responseUser.getEmail());
-        return coreSuccessResponse(true, findUserByEmailResponseDto, "로그인 성공");
+        return coreSuccessResponse(true, findUserByEmailResponseDto, "로그인 성공", HttpStatus.OK.value());
     }
 
     @PutMapping()

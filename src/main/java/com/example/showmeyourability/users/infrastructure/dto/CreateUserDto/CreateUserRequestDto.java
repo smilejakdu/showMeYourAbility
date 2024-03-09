@@ -15,6 +15,10 @@ public class CreateUserRequestDto implements CheckValidity {
     @NotEmpty(message = "이메일을 입력해주세요.")
     private String email;
 
+    @Schema(description = "name", example = "name")
+    @NotEmpty(message = "name을 입력해주세요.")
+    private String name;
+
     @Schema(description = "password", example = "password")
     @NotEmpty(message = "비밀번호를 입력해주세요.")
     private String password;
