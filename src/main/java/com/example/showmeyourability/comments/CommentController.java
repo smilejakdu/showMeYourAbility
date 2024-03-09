@@ -38,11 +38,12 @@ public class CommentController {
             description = "댓글 작성하기"
     )
     public CreateCommentResponseDto createComment(
-            @RequestBody CreateCommentRequestDto request,
-            @RequestHeader("access-token") String token
+            HttpServletRequest httpServletRequest,
+            @RequestBody CreateCommentRequestDto createCommentRequestDto
     ) {
-        User responseUser = securityService.getSubject(token);
-        return createCommentApplication.execute(responseUser,request);
+        Cookie[] cookies = httpServletRequest.getCookies();
+        User responseUser = securityService.getTokenByCookie(cookies);
+        return createCommentApplication.execute(responseUser, createCommentRequestDto);
     }
 
     @PutMapping("/{commentId}")
@@ -52,12 +53,12 @@ public class CommentController {
             description = "댓글 수정하기"
     )
     public UpdateCommentResponseDto updateComment(
+            HttpServletRequest httpServletRequest,
             @PathVariable("commentId") Long commentId,
-            @CookieValue("access-token") String token,
             @RequestBody UpdateCommentReqeustDto request
     ) {
-        System.out.println("token: " + token);
-        securityService.getSubject(token);
+        Cookie[] cookies = httpServletRequest.getCookies();
+        securityService.getTokenByCookie(cookies);
         return updateCommentApplication.execute(commentId, request);
     }
 

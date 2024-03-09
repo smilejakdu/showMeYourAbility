@@ -37,7 +37,7 @@ public class FindRecentTeacherApplication {
                         .userId(teacher.getUser().getId())
                         .build())
                 .collect(Collectors.toList());
-        System.out.println("teacherDtoList = " + teacherDtoList);
+
         return new FindRecentTeacherResponseDto(teacherDtoList);
     }
 }
