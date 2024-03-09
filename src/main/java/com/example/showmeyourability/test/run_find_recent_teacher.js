@@ -2,7 +2,7 @@ import http from 'k6/http';
 import { sleep, check } from 'k6';
 
 export let options = {
-    vus: 50, // 동시에 실행될 가상 사용자(VU)의 수
+    vus: 1000, // 동시에 실행될 가상 사용자(VU)의 수
     duration: '30s', // 테스트 지속 시간
 };
 
