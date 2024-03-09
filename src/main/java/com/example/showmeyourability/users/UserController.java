@@ -94,10 +94,6 @@ public class UserController {
                 responseUser,
                 request
         );
-        return CoreSuccessResponse.builder()
-                .ok(true)
-                .message("내정보 업데이트")
-                .data(updateUserResponseDto)
-                .build();
+        return coreSuccessResponse(true, updateUserResponseDto, "내정보 수정 성공", HttpStatus.OK.value());
     }
 }

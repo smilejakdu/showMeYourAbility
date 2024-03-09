@@ -12,13 +12,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.showmeyourability.shared.CoreSuccessResponse.coreSuccessResponse;
+
 @RestController
 @Tag(name = "teacher", description = "선생님 API")
 @RequestMapping("/api/teacher")
 @RequiredArgsConstructor
 public class TeacherController {
     private final FindTeacherApplication findTeacherApplication;
-
     private final FindRecentTeacherApplication findRecentTeacherApplication;
 
     @GetMapping()
@@ -27,11 +28,12 @@ public class TeacherController {
             summary = "선생님 데이터 불러오기",
             description = "선생님 데이터 불러오기"
     )
-    public FindTeacherResponseDto findAllTeacher(
+    public CoreSuccessResponse findAllTeacher(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size
     ) {
-        return findTeacherApplication.findAllTeacher(page, size);
+        FindTeacherResponseDto findTeacherResponseDto = findTeacherApplication.findAllTeacher(page, size);
+        return coreSuccessResponse(true, findTeacherResponseDto, "교사 정보 조회 성공", HttpStatus.OK.value());
     }
 
     @GetMapping("{teacherId}")
@@ -44,11 +46,7 @@ public class TeacherController {
             @PathVariable Long teacherId
     ) {
         FindTeacherByIdResponseDto findTeacherByIdResponseDto = findTeacherApplication.findOneTeacherById(teacherId);
-        return CoreSuccessResponse.builder()
-                .ok(true)
-                .message("교사 정보 조회 성공")
-                .data(findTeacherByIdResponseDto)
-                .build();
+        return coreSuccessResponse(true, findTeacherByIdResponseDto, "교사 정보 조회 성공", HttpStatus.OK.value());
     }
 
     @GetMapping("/recentTeacher")
@@ -59,10 +57,6 @@ public class TeacherController {
     )
     public CoreSuccessResponse findRecentTeacher() {
         FindRecentTeacherResponseDto findRecentTeacherResponseDto = findRecentTeacherApplication.execute();
-        return CoreSuccessResponse.builder()
-                .ok(true)
-                .message("최신 선생님 데이터 조회 성공")
-                .data(findRecentTeacherResponseDto)
-                .build();
+        return coreSuccessResponse(true, findRecentTeacherResponseDto, "최신 선생님 데이터 조회 성공", HttpStatus.OK.value());
     }
 }
