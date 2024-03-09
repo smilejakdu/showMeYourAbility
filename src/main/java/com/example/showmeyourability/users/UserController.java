@@ -16,6 +16,8 @@ import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.Upda
 import com.example.showmeyourability.users.infrastructure.dto.UpdateUserDto.UpdateUserResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -72,9 +74,11 @@ public class UserController {
             description = "내정보 불러오기"
     )
     public CoreSuccessResponse getMyInfoWithComment(
-            @CookieValue("access-token") String token
+            HttpServletRequest request
     ) {
-        User responseUser = securityService.getSubject(token);
+        Cookie[] cookies = request.getCookies();
+        String tokenString = securityService.getTokenByCookie(cookies);
+        User responseUser = securityService.getSubject(tokenString);
         FindUserByEmailResponseDto findUserByEmailResponseDto = findUserByIdApplication.execute(responseUser.getEmail());
         return coreSuccessResponse(true, findUserByEmailResponseDto, "로그인 성공", HttpStatus.OK.value());
     }
@@ -86,13 +90,15 @@ public class UserController {
             description = "내정보 수정"
     )
     public CoreSuccessResponse updateMyInfo(
-            @CookieValue("access-token") String token,
-            @RequestBody UpdateUserRequestDto request
+            HttpServletRequest request,
+            @RequestBody UpdateUserRequestDto updateUserRequestDto
     ) {
-        User responseUser = securityService.getSubject(token);
+        Cookie[] cookies = request.getCookies();
+        String tokenString = securityService.getTokenByCookie(cookies);
+        User responseUser = securityService.getSubject(tokenString);
         UpdateUserResponseDto updateUserResponseDto = updateMyInfoApplication.execute(
                 responseUser,
-                request
+                updateUserRequestDto
         );
         return coreSuccessResponse(true, updateUserResponseDto, "내정보 수정 성공", HttpStatus.OK.value());
     }

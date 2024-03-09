@@ -63,7 +63,7 @@ public class SecurityService {
     public String getTokenByCookie(Cookie[] cookies) {
         String token = null;
         for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("token")) {
+            if (cookie.getName().equals("access-token")) {
                 token = cookie.getValue();
             }
         }
