@@ -60,13 +60,13 @@ public class SecurityService {
                 );
     }
 
-    public String getTokenByCookie(Cookie[] cookies) {
+    public User getTokenByCookie(Cookie[] cookies) {
         String token = null;
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("access-token")) {
                 token = cookie.getValue();
             }
         }
-        return token;
+        return getSubject(token);
     }
 }

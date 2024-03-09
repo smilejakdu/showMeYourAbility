@@ -11,9 +11,13 @@ import com.example.showmeyourability.shared.Service.SecurityService;
 import com.example.showmeyourability.users.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import static com.example.showmeyourability.shared.CoreSuccessResponse.coreSuccessResponse;
 
 @RestController
 @Tag(name = "comment", description = "댓글 API")
@@ -33,7 +37,7 @@ public class CommentController {
             summary = "댓글 작성하기",
             description = "댓글 작성하기"
     )
-    CreateCommentResponseDto createComment(
+    public CreateCommentResponseDto createComment(
             @RequestBody CreateCommentRequestDto request,
             @RequestHeader("access-token") String token
     ) {
@@ -47,7 +51,7 @@ public class CommentController {
             summary = "댓글 수정하기",
             description = "댓글 수정하기"
     )
-    UpdateCommentResponseDto updateComment(
+    public UpdateCommentResponseDto updateComment(
             @PathVariable("commentId") Long commentId,
             @CookieValue("access-token") String token,
             @RequestBody UpdateCommentReqeustDto request
@@ -63,7 +67,7 @@ public class CommentController {
             summary = "해당하는 선생님 댓글 불러오기",
             description = "해당하는 선생님 댓글 불러오기"
     )
-    CoreSuccessResponse findComment(
+    public CoreSuccessResponse findComment(
             @RequestParam() Long teacherId
     ) {
         return findCommentByTeacherIdApplication.execute(teacherId);
@@ -75,10 +79,11 @@ public class CommentController {
             summary = "댓글 하나 불러오기",
             description = "댓글 하나 불러오기"
     )
-    FindCommentAndReplyResponseDto findCommentAndReply(
+    public CoreSuccessResponse findCommentAndReply(
             @PathVariable("commentId") Long commentId
     ) {
-        return findCommentAndReplyApplication.execute(commentId);
+        FindCommentAndReplyResponseDto findCommentAndReplyResponseDto = findCommentAndReplyApplication.execute(commentId);
+        return coreSuccessResponse(true, findCommentAndReplyResponseDto, "댓글 불러오기 성공", HttpStatus.OK.value());
     }
 
     @DeleteMapping("/{commentId}")
@@ -87,11 +92,12 @@ public class CommentController {
             summary = "댓글 삭제하기",
             description = "댓글 삭제하기"
     )
-    CoreSuccessResponse deleteComment(
-            @CookieValue("access-token") String token,
+    public CoreSuccessResponse deleteComment(
+            HttpServletRequest httpServletRequest,
             @PathVariable("commentId") Long commentId
     ) {
-        User user = securityService.getSubject(token);
-        return deleteCommentApplication.execute(user, commentId);
+        Cookie[] cookies = httpServletRequest.getCookies();
+        User responseUser = securityService.getTokenByCookie(cookies);
+        return deleteCommentApplication.execute(responseUser, commentId);
     }
 }

@@ -77,8 +77,7 @@ public class UserController {
             HttpServletRequest request
     ) {
         Cookie[] cookies = request.getCookies();
-        String tokenString = securityService.getTokenByCookie(cookies);
-        User responseUser = securityService.getSubject(tokenString);
+        User responseUser = securityService.getTokenByCookie(cookies);
         FindUserByEmailResponseDto findUserByEmailResponseDto = findUserByIdApplication.execute(responseUser.getEmail());
         return coreSuccessResponse(true, findUserByEmailResponseDto, "로그인 성공", HttpStatus.OK.value());
     }
@@ -90,12 +89,11 @@ public class UserController {
             description = "내정보 수정"
     )
     public CoreSuccessResponse updateMyInfo(
-            HttpServletRequest request,
+            HttpServletRequest httpServletRequest,
             @RequestBody UpdateUserRequestDto updateUserRequestDto
     ) {
-        Cookie[] cookies = request.getCookies();
-        String tokenString = securityService.getTokenByCookie(cookies);
-        User responseUser = securityService.getSubject(tokenString);
+        Cookie[] cookies = httpServletRequest.getCookies();
+        User responseUser = securityService.getTokenByCookie(cookies);
         UpdateUserResponseDto updateUserResponseDto = updateMyInfoApplication.execute(
                 responseUser,
                 updateUserRequestDto
