@@ -28,4 +28,3 @@ public class CoreSuccessResponse {
     private String message;
     private Object data;
 }
-
