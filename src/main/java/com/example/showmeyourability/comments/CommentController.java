@@ -7,7 +7,7 @@ import com.example.showmeyourability.comments.infrastructure.dto.FindCommentDto.
 import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDto.UpdateCommentReqeustDto;
 import com.example.showmeyourability.comments.infrastructure.dto.UpdateCommentDto.UpdateCommentResponseDto;
 import com.example.showmeyourability.shared.CoreSuccessResponse;
-import com.example.showmeyourability.shared.Service.SecurityService;
+import com.example.showmeyourability.shared.Service.securityService.SecurityService;
 import com.example.showmeyourability.users.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

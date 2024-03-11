@@ -1,4 +1,4 @@
-package com.example.showmeyourability.shared.Service;
+package com.example.showmeyourability.shared.Service.securityService;
 
 import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import com.example.showmeyourability.users.domain.User;
@@ -22,6 +22,8 @@ public class SecurityService {
 
     @Value("${jwt.secret.key}")
     private String SECRET_KEY;
+
+    @Value("${jwt.expiration.time}")
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
 
     private final UserRepository userRepository;

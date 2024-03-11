@@ -26,10 +26,9 @@ public class UpdateCommentApplication {
                         HttpStatus.BAD_REQUEST));
 
         comments.setContent(request.getContent());
-        Comments updatedComment = commentRepository.save(comments);
 
         UpdateCommentResponseDto responseDto = new UpdateCommentResponseDto();
-        responseDto.toDto(updatedComment);
+        responseDto.toDto(comments);
         return responseDto;
     }
 }

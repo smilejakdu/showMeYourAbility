@@ -1,7 +1,7 @@
 package com.example.showmeyourability.users.application;
 
 import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
-import com.example.showmeyourability.shared.Service.SecurityService;
+import com.example.showmeyourability.shared.Service.securityService.SecurityService;
 import com.example.showmeyourability.users.domain.User;
 import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserRequestDto;
 import com.example.showmeyourability.users.infrastructure.dto.LoginUserDto.LoginUserResponseDto;
@@ -10,11 +10,9 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Service
 @RequiredArgsConstructor

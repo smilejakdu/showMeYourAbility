@@ -1,7 +1,7 @@
 package com.example.showmeyourability.service.userApplication;
 
 import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
-import com.example.showmeyourability.shared.Service.SecurityService;
+import com.example.showmeyourability.shared.Service.securityService.SecurityService;
 import com.example.showmeyourability.users.application.LoginUserApplication;
 import com.example.showmeyourability.users.domain.GenderType;
 import com.example.showmeyourability.users.domain.User;

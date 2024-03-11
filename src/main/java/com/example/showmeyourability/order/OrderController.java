@@ -9,7 +9,7 @@ import com.example.showmeyourability.order.infrastructure.dto.FindOrderDto.FindO
 import com.example.showmeyourability.order.infrastructure.dto.UpdateOrderDto.UpdateOrderRequestDto;
 import com.example.showmeyourability.order.infrastructure.dto.UpdateOrderDto.UpdateOrderResponseDto;
 import com.example.showmeyourability.shared.CoreSuccessResponse;
-import com.example.showmeyourability.shared.Service.SecurityService;
+import com.example.showmeyourability.shared.Service.securityService.SecurityService;
 import com.example.showmeyourability.users.domain.User;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
