@@ -13,8 +13,8 @@ public class TeacherDto {
     private Long id;
     private String career;
     private String email;
-    private String skill;
     private Long userId;
+    private String skill;
     private Double avgScore;
     private LocalDateTime createdAt;
 }

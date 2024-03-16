@@ -1,39 +1,87 @@
 package com.example.showmeyourability.teacher.application;
 
 import com.example.showmeyourability.comments.domain.QComments;
-import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
+import com.example.showmeyourability.shared.Service.redisService.RedisService;
 import com.example.showmeyourability.teacher.domain.QTeacher;
-import com.example.showmeyourability.teacher.domain.Teacher;
-import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherByIdResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindTeacherResponseDto;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.TeacherDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FindTeacherApplication {
+    private final static String CACHE_KEY = "findAllTeacher";
     private final JPAQueryFactory queryFactory; // JPAQueryFactory 주입
     private final QTeacher qTeacher = QTeacher.teacher;
     private final QComments qComments = QComments.comments;
+    private final RedisService redisService;
+    private final ObjectMapper objectMapper;
 
 
-    @Transactional(readOnly = true) // readOnly = true for read operations
-    public FindTeacherResponseDto findAllTeacher(int page, int size) {
-        List<TeacherDto> teacherDtos = queryFactory
+    private FindTeacherResponseDto findTeacherFromDatabase(int page, int size) {
+       // 데이터베이스에서 데이터를 조회 합니다.
+        List<TeacherDto> teacherDtoList = getTeacherDtos(page, size, qTeacher);
+        long totalCount = queryFactory
+                .selectFrom(QTeacher.teacher)
+                .fetchCount();
+
+        int lastPage = (int) Math.ceil((double) totalCount / size);
+
+        FindTeacherResponseDto returnValue = new FindTeacherResponseDto(lastPage, teacherDtoList);
+        saveToCache(returnValue);
+
+        return FindTeacherResponseDto.builder()
+                .lastPage(lastPage)
+                .teachers(teacherDtoList)
+                .build();
+    }
+
+    private Optional<FindTeacherResponseDto> findTeacherFromCache(int page, int size) {
+        String cacheKey = CACHE_KEY + page + size;
+        String cacheValue = redisService.getValue(cacheKey);
+        if (cacheValue != null && !cacheValue.isEmpty()) {
+            try {
+                System.out.println("cacheValue: " + cacheValue);
+                return Optional.of(objectMapper.readValue(cacheValue, FindTeacherResponseDto.class));
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to parse JSON from cache", e);
+            }
+        }
+        return Optional.empty();
+    }
+
+
+    @Transactional(readOnly = true) // 읽기 전용 트랜잭션
+    public FindTeacherResponseDto execute(int page, int size) {
+        return findTeacherFromCache(page, size).orElseGet(() -> findTeacherFromDatabase(page, size));
+    }
+
+
+    private List<TeacherDto> getTeacherDtos(
+            int page,
+            int size,
+            QTeacher qTeacher
+    ) {
+        List<TeacherDto> rawTeacherDtos = queryFactory
                 .select(Projections.constructor(TeacherDto.class,
                         qTeacher.id,
                         qTeacher.career,
                         qTeacher.user.email,
-                        qTeacher.skill,
                         qTeacher.user.id,
-                        qComments.likes.avg().coalesce(0.0)
+                        qTeacher.skill,
+                        qComments.likes.avg().coalesce(0.0),
+                        qTeacher.createdAt
                 ))
                 .from(QTeacher.teacher)
                 .leftJoin(QTeacher.teacher.comments, QComments.comments)
@@ -43,59 +91,30 @@ public class FindTeacherApplication {
                 .limit(size)
                 .fetch();
 
-        long total = queryFactory
-                .selectFrom(QTeacher.teacher)
-                .fetchCount();
-
-        int lastPage = (int) Math.ceil((double) total / size);
-
-        return FindTeacherResponseDto.builder()
-                .lastPage(lastPage)
-                .teachers(teacherDtos)
-                .build();
+        // 후처리: 평균 좋아요 수를 소수점 둘째자리까지 반올림
+        return rawTeacherDtos.stream()
+                .map(dto -> {
+                    BigDecimal roundedAvgLikes = BigDecimal.valueOf(dto.getAvgScore())
+                            .setScale(2, RoundingMode.HALF_UP); // 소수점 둘째자리 반올림
+                    return new TeacherDto(
+                            dto.getId(),
+                            dto.getCareer(),
+                            dto.getEmail(),
+                            dto.getUserId(),
+                            dto.getSkill(),
+                            roundedAvgLikes.doubleValue(), // 반올림된 값 적용
+                            dto.getCreatedAt());
+                })
+                .collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
-    public FindTeacherByIdResponseDto findOneTeacherById(Long teacherId) {
-        Teacher teacher = queryFactory
-                .selectFrom(QTeacher.teacher)
-                .where(QTeacher.teacher.id.eq(teacherId))
-                .leftJoin(QTeacher.teacher.comments, QComments.comments)
-                .fetchOne();
-
-        if (teacher == null) {
-            throw new HttpExceptionCustom(
-                    false,
-                    "해당하는 선생님을 찾을 수 없습니다.",
-                    HttpStatus.NOT_FOUND
-            );
+    private void saveToCache(FindTeacherResponseDto returnValue) {
+        // 캐시에 데이터를 저장
+        try {
+            String cacheValue = objectMapper.writeValueAsString(returnValue);
+            redisService.setValue(CACHE_KEY, cacheValue);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save to cache", e);
         }
-
-
-        Double avgLikes = queryFactory
-                .select(qComments.likes.avg().coalesce(0.0))
-                .from(QComments.comments)
-                .where(QComments.comments.teacher.id.eq(teacherId))
-                .fetchOne();
-        TeacherDto teacherDto = getTeacherDto(avgLikes, teacher);
-
-        return FindTeacherByIdResponseDto.builder()
-                .teacher(teacherDto)
-                .commentDtoList(teacher.getComments())
-                .build();
-    }
-
-    private TeacherDto getTeacherDto(Double avgLikes, Teacher teacher) {
-        Double avgScore = Double.parseDouble(String.format("%.2f", avgLikes));
-
-        return new TeacherDto(
-                teacher.getId(),
-                teacher.getCareer(),
-                teacher.getUser().getEmail(), // 여기에서 선생님과 연관된 사용자의 이메일을 포함합니다.
-                teacher.getSkill(),
-                teacher.getUser().getId(), // 이는 예시로, 실제 구조에 따라 달라질 수 있습니다.
-                avgScore, // 평균 점수 등 추가 필드에 해당하는 값이 필요할 수 있습니다.
-                teacher.getCreatedAt()
-        );
     }
 }

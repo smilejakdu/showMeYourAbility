@@ -1,6 +1,7 @@
 package com.example.showmeyourability.teacher;
 
 import com.example.showmeyourability.shared.CoreSuccessResponse;
+import com.example.showmeyourability.teacher.application.FindOneTeacherByIdApplication;
 import com.example.showmeyourability.teacher.application.FindRecentTeacherApplication;
 import com.example.showmeyourability.teacher.application.FindTeacherApplication;
 import com.example.showmeyourability.teacher.infrastructure.dto.FindTeacherDto.FindRecentTeacherResponseDto;
@@ -21,6 +22,7 @@ import static com.example.showmeyourability.shared.CoreSuccessResponse.coreSucce
 public class TeacherController {
     private final FindTeacherApplication findTeacherApplication;
     private final FindRecentTeacherApplication findRecentTeacherApplication;
+    private final FindOneTeacherByIdApplication findOneTeacherByIdApplication;
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
@@ -29,10 +31,13 @@ public class TeacherController {
             description = "선생님 데이터 불러오기"
     )
     public CoreSuccessResponse findAllTeacher(
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "3") int size
     ) {
-        FindTeacherResponseDto findTeacherResponseDto = findTeacherApplication.findAllTeacher(page, size);
+        // 페이지 번호가 1보다 작은 경우 1로 재설정합니다.
+        int validatedPage = page < 1 ? 1 : page;
+
+        FindTeacherResponseDto findTeacherResponseDto = findTeacherApplication.execute(validatedPage - 1, size);
         return coreSuccessResponse(true, findTeacherResponseDto, "교사 정보 조회 성공", HttpStatus.OK.value());
     }
 
@@ -45,7 +50,7 @@ public class TeacherController {
     public CoreSuccessResponse findOneTeacherById(
             @PathVariable Long teacherId
     ) {
-        FindTeacherByIdResponseDto findTeacherByIdResponseDto = findTeacherApplication.findOneTeacherById(teacherId);
+        FindTeacherByIdResponseDto findTeacherByIdResponseDto = findOneTeacherByIdApplication.execute(teacherId);
         return coreSuccessResponse(true, findTeacherByIdResponseDto, "교사 정보 조회 성공", HttpStatus.OK.value());
     }
 

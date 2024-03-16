@@ -13,4 +13,3 @@ public class FindTeacherResponseDto {
     int lastPage;
     List<TeacherDto> teachers;
 }
-
