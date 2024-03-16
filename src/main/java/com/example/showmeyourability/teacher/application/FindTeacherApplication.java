@@ -1,7 +1,6 @@
 package com.example.showmeyourability.teacher.application;
 
 import com.example.showmeyourability.comments.domain.QComments;
-import com.example.showmeyourability.shared.Exception.ErrorCode;
 import com.example.showmeyourability.shared.Exception.HttpExceptionCustom;
 import com.example.showmeyourability.teacher.domain.QTeacher;
 import com.example.showmeyourability.teacher.domain.Teacher;
@@ -21,53 +20,43 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FindTeacherApplication {
     private final JPAQueryFactory queryFactory; // JPAQueryFactory 주입
-    private final QTeacher qTeacher = QTeacher.teacher; // 클래스 수준의 QTeacher 인스턴스
-    private final QComments qComments = QComments.comments; // 클래스 수준의 QComments 인스턴스
+    private final QTeacher qTeacher = QTeacher.teacher;
+    private final QComments qComments = QComments.comments;
 
-    @Transactional
+
+    @Transactional(readOnly = true) // readOnly = true for read operations
     public FindTeacherResponseDto findAllTeacher(int page, int size) {
-        // 교사 정보와 평균 점수를 함께 조회
         List<TeacherDto> teacherDtos = queryFactory
                 .select(Projections.constructor(TeacherDto.class,
                         qTeacher.id,
                         qTeacher.career,
-                        qTeacher.user.email, // Email 필드 추가
+                        qTeacher.user.email,
                         qTeacher.skill,
                         qTeacher.user.id,
-                        qComments.likes.avg().coalesce(0.0) // 평균 점수 계산 및 null 처리
+                        qComments.likes.avg().coalesce(0.0)
                 ))
-                .from(qTeacher)
-                .leftJoin(qTeacher.comments, qComments)
-                .groupBy(qTeacher.id)
-                .orderBy(qTeacher.user.email.asc())
+                .from(QTeacher.teacher)
+                .leftJoin(QTeacher.teacher.comments, QComments.comments)
+                .groupBy(QTeacher.teacher.id)
+                .orderBy(QTeacher.teacher.user.email.asc())
                 .offset((long) page * size)
                 .limit(size)
                 .fetch();
 
-        // 총 페이지 수 계산
         long total = queryFactory
-                .selectFrom(qTeacher)
+                .selectFrom(QTeacher.teacher)
                 .fetchCount();
 
         int lastPage = (int) Math.ceil((double) total / size);
 
-        return convertToFindTeacherResponseDto(lastPage, teacherDtos);
-    }
-
-    private FindTeacherResponseDto convertToFindTeacherResponseDto(
-            int lastPage,
-            List<TeacherDto> teachers
-    ) {
         return FindTeacherResponseDto.builder()
                 .lastPage(lastPage)
-                .teachers(teachers)
+                .teachers(teacherDtos)
                 .build();
     }
 
-    @Transactional
-    public FindTeacherByIdResponseDto findOneTeacherById(
-            Long teacherId
-    ) {
+    @Transactional(readOnly = true)
+    public FindTeacherByIdResponseDto findOneTeacherById(Long teacherId) {
         Teacher teacher = queryFactory
                 .selectFrom(QTeacher.teacher)
                 .where(QTeacher.teacher.id.eq(teacherId))
@@ -77,14 +66,36 @@ public class FindTeacherApplication {
         if (teacher == null) {
             throw new HttpExceptionCustom(
                     false,
-                    ErrorCode.NOT_FOUND_DATA.getMessage(),
+                    "해당하는 선생님을 찾을 수 없습니다.",
                     HttpStatus.NOT_FOUND
             );
         }
 
-        FindTeacherByIdResponseDto findTeacherByIdResponseDto = new FindTeacherByIdResponseDto();
-        findTeacherByIdResponseDto.setTeacher(teacher);
-        findTeacherByIdResponseDto.setCommentDtoList(teacher.getComments());
-        return findTeacherByIdResponseDto;
+
+        Double avgLikes = queryFactory
+                .select(qComments.likes.avg().coalesce(0.0))
+                .from(QComments.comments)
+                .where(QComments.comments.teacher.id.eq(teacherId))
+                .fetchOne();
+        TeacherDto teacherDto = getTeacherDto(avgLikes, teacher);
+
+        return FindTeacherByIdResponseDto.builder()
+                .teacher(teacherDto)
+                .commentDtoList(teacher.getComments())
+                .build();
+    }
+
+    private TeacherDto getTeacherDto(Double avgLikes, Teacher teacher) {
+        Double avgScore = Double.parseDouble(String.format("%.2f", avgLikes));
+
+        return new TeacherDto(
+                teacher.getId(),
+                teacher.getCareer(),
+                teacher.getUser().getEmail(), // 여기에서 선생님과 연관된 사용자의 이메일을 포함합니다.
+                teacher.getSkill(),
+                teacher.getUser().getId(), // 이는 예시로, 실제 구조에 따라 달라질 수 있습니다.
+                avgScore, // 평균 점수 등 추가 필드에 해당하는 값이 필요할 수 있습니다.
+                teacher.getCreatedAt()
+        );
     }
 }
