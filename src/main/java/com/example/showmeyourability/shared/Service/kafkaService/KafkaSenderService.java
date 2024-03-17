@@ -4,7 +4,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
-public class kafkaConsumerService {
+public class KafkaSenderService {
     @KafkaListener(topics = "comment", groupId = "comment-group")
     public void listen(String message) {
         // poll 메서드를 사용하여 주기적으로 Kafka로 부터 메시지를 요청하고 가져옵니다.

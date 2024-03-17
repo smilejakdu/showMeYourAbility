@@ -11,10 +11,8 @@ import com.example.showmeyourability.shared.Service.securityService.SecurityServ
 import com.example.showmeyourability.users.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -36,27 +34,13 @@ public class CommentController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
-    @Operation(
-            summary = "댓글 작성하기",
-            description = "댓글 작성하기"
-    )
+    @Operation(summary = "댓글 작성하기", description = "댓글 작성하기")
     public CreateCommentResponseDto createComment(
             HttpServletRequest httpServletRequest,
             @RequestBody CreateCommentRequestDto createCommentRequestDto
     ) {
-        Cookie[] cookies = httpServletRequest.getCookies();
-        User responseUser = securityService.getTokenByCookie(cookies);
-        // Kafka로 이벤트 전송
-
-        CreateCommentResponseDto responseDto = createCommentApplication.execute(responseUser, createCommentRequestDto);
-        // 댓글 생성이 성공했다면, Kafka로 이벤트 전송
-        if (responseDto != null) {
-            String commentContent = createCommentRequestDto.getContent(); // 또는 responseDto 에서 댓글 내용을 가져옵니다.
-            // Kafka의 'comments' 토픽으로 메시지를 전송합니다. 토픽 이름은 실제 사용 환경에 맞게 변경해야 합니다.
-            kafkaTemplate.send("comment", commentContent);
-        }
-
-        return responseDto;
+        User responseUser = securityService.getUserFromCookies(httpServletRequest);
+        return createCommentApplication.execute(responseUser, createCommentRequestDto);
     }
 
     @PutMapping("/{commentId}")
@@ -70,8 +54,7 @@ public class CommentController {
             @PathVariable("commentId") Long commentId,
             @RequestBody UpdateCommentReqeustDto request
     ) {
-        Cookie[] cookies = httpServletRequest.getCookies();
-        securityService.getTokenByCookie(cookies);
+        securityService.getUserFromCookies(httpServletRequest);
         return updateCommentApplication.execute(commentId, request);
     }
 
@@ -110,8 +93,7 @@ public class CommentController {
             HttpServletRequest httpServletRequest,
             @PathVariable("commentId") Long commentId
     ) {
-        Cookie[] cookies = httpServletRequest.getCookies();
-        User responseUser = securityService.getTokenByCookie(cookies);
+        User responseUser = securityService.getUserFromCookies(httpServletRequest);
         return deleteCommentApplication.execute(responseUser, commentId);
     }
 }

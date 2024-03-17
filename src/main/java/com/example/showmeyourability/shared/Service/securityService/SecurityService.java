@@ -7,6 +7,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -61,6 +62,12 @@ public class SecurityService {
                         )
                 );
     }
+
+    public User getUserFromCookies(HttpServletRequest httpServletRequest){
+        Cookie[] cookies = httpServletRequest.getCookies();
+        return getTokenByCookie(cookies);
+    }
+
 
     public User getTokenByCookie(Cookie[] cookies) {
         String token = null;
