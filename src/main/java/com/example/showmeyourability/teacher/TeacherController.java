@@ -24,6 +24,7 @@ public class TeacherController {
     private final FindRecentTeacherApplication findRecentTeacherApplication;
     private final FindOneTeacherByIdApplication findOneTeacherByIdApplication;
 
+
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     @Operation(

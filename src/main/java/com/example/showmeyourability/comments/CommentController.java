@@ -14,7 +14,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.showmeyourability.shared.CoreSuccessResponse.coreSuccessResponse;
@@ -30,6 +32,7 @@ public class CommentController {
     private final FindCommentAndReplyApplication findCommentAndReplyApplication;
     private final CreateCommentApplication createCommentApplication;
     private final SecurityService securityService;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
@@ -43,7 +46,17 @@ public class CommentController {
     ) {
         Cookie[] cookies = httpServletRequest.getCookies();
         User responseUser = securityService.getTokenByCookie(cookies);
-        return createCommentApplication.execute(responseUser, createCommentRequestDto);
+        // Kafka로 이벤트 전송
+
+        CreateCommentResponseDto responseDto = createCommentApplication.execute(responseUser, createCommentRequestDto);
+        // 댓글 생성이 성공했다면, Kafka로 이벤트 전송
+        if (responseDto != null) {
+            String commentContent = createCommentRequestDto.getContent(); // 또는 responseDto 에서 댓글 내용을 가져옵니다.
+            // Kafka의 'comments' 토픽으로 메시지를 전송합니다. 토픽 이름은 실제 사용 환경에 맞게 변경해야 합니다.
+            kafkaTemplate.send("comment", commentContent);
+        }
+
+        return responseDto;
     }
 
     @PutMapping("/{commentId}")
