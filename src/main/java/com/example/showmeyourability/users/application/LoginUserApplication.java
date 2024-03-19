@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LoginUserApplication {
 
-
     private final UserRepository userRepository;
     private final SecurityService securityService;
 

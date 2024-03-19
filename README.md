@@ -53,4 +53,5 @@ http://localhost:13022/swagger-ui/index.html
 ### session 03
 
 - 성능 테스트 
+- Message Queue 적용
 - Kafka 적용 

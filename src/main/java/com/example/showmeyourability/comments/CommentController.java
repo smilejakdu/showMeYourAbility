@@ -30,7 +30,6 @@ public class CommentController {
     private final FindCommentAndReplyApplication findCommentAndReplyApplication;
     private final CreateCommentApplication createCommentApplication;
     private final SecurityService securityService;
-    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @PostMapping()
     @ResponseStatus(HttpStatus.OK)
