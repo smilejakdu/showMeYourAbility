@@ -24,7 +24,6 @@ public class FindOrderByUserApplication {
             User user,
             FindOrderByUserIdApplication findOrderByUserIdApplication
     ) {
-        System.out.println("FindOrderByUserApplication.execute: "+ findOrderByUserIdApplication);
         int page = findOrderByUserIdApplication.getPage();
         int size = findOrderByUserIdApplication.getSize();
         List<Order> orders = orderRepository.findAllByUser(user, PageRequest.of(page, size));
