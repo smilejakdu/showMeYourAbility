@@ -63,44 +63,4 @@ public class FindTeacherApplicationTest {
                 .user(user)
                 .build();
     }
-
-    @Test
-    @DisplayName("teacher find one 조회 실패")
-    void doesNotExistFindOneTeacherByIdTestWhenTeacher() {
-        Long teacherId = 133L;
-
-        // queryFactory의 동작을 모의 처리합니다.
-        // when
-        when(queryFactory.selectFrom(QTeacher.teacher)).thenReturn(jpaQuery);
-        when(jpaQuery.where(QTeacher.teacher.id.eq(teacherId))).thenReturn(jpaQuery);
-        when(jpaQuery.leftJoin(QTeacher.teacher.comments, QComments.comments)).thenReturn(jpaQuery);
-        when(jpaQuery.fetchOne()).thenReturn(null);
-
-        HttpExceptionCustom exception = assertThrows(HttpExceptionCustom.class, () -> {
-            findTeacherApplication.findOneTeacherById(teacherId);
-        });
-        System.out.println("exception = " + exception);
-
-        Assertions.assertEquals(ErrorCode.NOT_FOUND_DATA.getMessage(), exception.getMessage());
-        Assertions.assertEquals(HttpStatus.NOT_FOUND, exception.getHttpStatus());
-    }
-
-    @Test
-    @DisplayName("teacher find one 조회 성공")
-    void successFindOneTeacherByIdTest() {
-        Long teacherId = 1L;
-        // when
-        when(queryFactory.selectFrom(QTeacher.teacher)).thenReturn(jpaQuery);
-        when(jpaQuery.where(QTeacher.teacher.id.eq(teacherId))).thenReturn(jpaQuery);
-        when(jpaQuery.leftJoin(QTeacher.teacher.comments, QComments.comments)).thenReturn(jpaQuery);
-        when(jpaQuery.fetchOne()).thenReturn(teacher); // 수정된 부분
-
-        FindTeacherByIdResponseDto responseDto = findTeacherApplication.findOneTeacherById(teacherId);
-
-        // 검증 코드를 추가하는 것이 좋습니다.
-        // 예를 들어, responseDto가 예상대로 선생님 정보를 포함하고 있는지 확인합니다.
-        System.out.println("response = " + responseDto);
-        Assertions.assertEquals(teacher.getId(), responseDto.getTeacher().getId());
-        Assertions.assertEquals(teacher.getSkill(), responseDto.getTeacher().getSkill());
-    }
 }

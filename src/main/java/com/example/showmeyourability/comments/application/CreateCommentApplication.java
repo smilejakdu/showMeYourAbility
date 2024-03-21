@@ -18,15 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CreateCommentApplication {
     private final CommentRepository commentRepository;
-
     private final TeacherRepository teacherRepository;
-    private final KafkaTemplate<String, String> kafkaTemplate; // KafkaTemplate 주입
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private static final String KAFKA_TOPIC = "commentTopic";
 
     @Transactional
-    public CreateCommentResponseDto execute(
-            User user,
-            CreateCommentRequestDto request
-    ) {
+    public CreateCommentResponseDto execute(User user, CreateCommentRequestDto request) {
         Teacher foundTeacher = teacherRepository.findById(request.getTeacherId())
                 .orElseThrow(() -> new HttpExceptionCustom(
                         false,
@@ -45,8 +42,8 @@ public class CreateCommentApplication {
         Comments saved = commentRepository.save(newComments);
 
         // Kafka로 댓글 생성 이벤트 전송
-        String message = convertToKafkaMessage(saved); // 예시 메서드, 실제 메시지 형식에 맞게 변환
-        kafkaTemplate.send("commentTopic", message); // "commentTopic"은 실제 사용할 Kafka 토픽 이름으로 변경해야 합니다.
+        String message = convertToKafkaMessage(saved);
+        kafkaTemplate.send(KAFKA_TOPIC, message);
 
         return CreateCommentResponseDto
                 .builder()
@@ -59,7 +56,6 @@ public class CreateCommentApplication {
 
     private String convertToKafkaMessage(Comments comment) {
         // 댓글 정보를 Kafka 메시지 형식으로 변환
-        // 실제 메시지 형식은 애플리케이션 요구 사항에 따라 다를 수 있습니다.
         return String.format("New comment by %s: %s", comment.getUser().getName(), comment.getContent());
     }
 }

@@ -28,6 +28,10 @@ public class FindTeacherApplication {
     private final RedisService redisService;
     private final ObjectMapper objectMapper;
 
+    @Transactional(readOnly = true) // 읽기 전용 트랜잭션
+    public FindTeacherResponseDto execute(int page, int size) {
+        return findTeacherFromCache(page, size).orElseGet(() -> findTeacherFromDatabase(page, size));
+    }
 
     private FindTeacherResponseDto findTeacherFromDatabase(int page, int size) {
        // 데이터베이스에서 데이터를 조회 합니다.
@@ -52,7 +56,6 @@ public class FindTeacherApplication {
         String cacheValue = redisService.getValue(cacheKey);
         if (cacheValue != null && !cacheValue.isEmpty()) {
             try {
-                System.out.println("cacheValue: " + cacheValue);
                 return Optional.of(objectMapper.readValue(cacheValue, FindTeacherResponseDto.class));
             } catch (Exception e) {
                 throw new RuntimeException("Failed to parse JSON from cache", e);
@@ -60,13 +63,6 @@ public class FindTeacherApplication {
         }
         return Optional.empty();
     }
-
-
-    @Transactional(readOnly = true) // 읽기 전용 트랜잭션
-    public FindTeacherResponseDto execute(int page, int size) {
-        return findTeacherFromCache(page, size).orElseGet(() -> findTeacherFromDatabase(page, size));
-    }
-
 
     private List<TeacherDto> getTeacherDtos(
             int page,
