@@ -93,9 +93,6 @@ public class FindOneTeacherApplicationTest {
         when(jpaQuery.leftJoin(QTeacher.teacher.comments, QComments.comments)).thenReturn(jpaQuery);
         when(jpaQuery.fetchOne()).thenReturn(teacher); // 수정된 부분
 
-        int page = 1;
-        int size = 10;
-
         FindTeacherByIdResponseDto responseDto = findOneTeacherByIdApplication.execute(
                 teacherId
         );
