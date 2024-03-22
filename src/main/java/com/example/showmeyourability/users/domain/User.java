@@ -3,6 +3,7 @@ package com.example.showmeyourability.users.domain;
 import com.example.showmeyourability.comments.domain.Comments;
 import com.example.showmeyourability.order.domain.Order;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
+import com.example.showmeyourability.shared.Enum.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,6 +44,10 @@ public class User extends BaseTimeEntitiy {
 
     @Column()
     private String img;
+
+    @Column()
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER)
