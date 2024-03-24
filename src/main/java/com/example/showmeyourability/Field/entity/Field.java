@@ -1,6 +1,5 @@
-package com.example.showmeyourability.Field.domain;
+package com.example.showmeyourability.Field.entity;
 
-import com.example.showmeyourability.comments.domain.Comments;
 import com.example.showmeyourability.lesson.domain.Lesson;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.example.showmeyourability.shared.Enum.FieldType;
@@ -26,9 +25,9 @@ public class Field extends BaseTimeEntitiy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column()
+    @Column(name = "field_type")
     @Enumerated(EnumType.STRING)
-    private FieldType name;
+    private FieldType fieldType;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "field")
@@ -42,5 +41,6 @@ public class Field extends BaseTimeEntitiy {
     @Column(name = "updated_at")
     public LocalDateTime updatedAt;
 
+    @Column(name = "deleted_at")
     public LocalDateTime deletedAt;
 }

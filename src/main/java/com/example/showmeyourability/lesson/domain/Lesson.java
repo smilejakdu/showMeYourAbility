@@ -1,6 +1,6 @@
 package com.example.showmeyourability.lesson.domain;
 
-import com.example.showmeyourability.Field.domain.Field;
+import com.example.showmeyourability.Field.entity.Field;
 import com.example.showmeyourability.shared.BaseTimeEntitiy;
 import com.example.showmeyourability.teacher.domain.Teacher;
 import com.fasterxml.jackson.annotation.JsonIgnore;
