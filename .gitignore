@@ -18,7 +18,6 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 src/main/resources/application.properties
-mysql
 
 ### IntelliJ IDEA ###
 .idea
