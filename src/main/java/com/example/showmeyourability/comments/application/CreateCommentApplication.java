@@ -1,6 +1,7 @@
 package com.example.showmeyourability.comments.application;
 
 import com.example.showmeyourability.comments.domain.Comments;
+import com.example.showmeyourability.comments.domain.LikesVo;
 import com.example.showmeyourability.comments.infrastructure.dto.CommentCreateDto.CreateCommentRequestDto;
 import com.example.showmeyourability.comments.infrastructure.dto.CommentCreateDto.CreateCommentResponseDto;
 import com.example.showmeyourability.comments.infrastructure.repository.CommentRepository;
@@ -10,7 +11,6 @@ import com.example.showmeyourability.teacher.infrastructure.repository.TeacherRe
 import com.example.showmeyourability.users.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreateCommentApplication {
     private final CommentRepository commentRepository;
     private final TeacherRepository teacherRepository;
-    private final KafkaTemplate<String, String> kafkaTemplate;
-    private static final String KAFKA_TOPIC = "commentTopic";
 
     @Transactional
     public CreateCommentResponseDto execute(User user, CreateCommentRequestDto request) {
@@ -31,19 +29,11 @@ public class CreateCommentApplication {
                        HttpStatus.NOT_FOUND
                 ));
 
-         Comments newComments = Comments
-                 .builder()
-                 .user(user)
-                 .teacher(foundTeacher)
-                 .likes(request.getLikes())
-                 .content(request.getContent())
-                 .build();
+        LikesVo responseLikes = LikesVo.of(request.getLikes());
+        System.out.println("Likes: " + responseLikes.getValue());
 
+        Comments newComments = Comments.of(user, foundTeacher, request.getContent(), request.getLikes());
         Comments saved = commentRepository.save(newComments);
-
-        // Kafka로 댓글 생성 이벤트 전송
-        String message = convertToKafkaMessage(saved);
-        kafkaTemplate.send(KAFKA_TOPIC, message);
 
         return CreateCommentResponseDto
                 .builder()
@@ -52,10 +42,5 @@ public class CreateCommentApplication {
                 .likes(saved.getLikes())
                 .content(saved.getContent())
                 .build();
-    }
-
-    private String convertToKafkaMessage(Comments comment) {
-        // 댓글 정보를 Kafka 메시지 형식으로 변환
-        return String.format("New comment by %s: %s", comment.getUser().getName(), comment.getContent());
     }
 }

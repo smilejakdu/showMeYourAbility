@@ -35,4 +35,18 @@ public class Comments extends BaseTimeEntitiy {
     @JsonIgnore
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+
+    public static Comments of(
+            User user,
+            Teacher teacher,
+            String content,
+            Double likes
+    ) {
+        return Comments.builder()
+                .user(user)
+                .teacher(teacher)
+                .likes(likes)
+                .content(content)
+                .build();
+    }
 }

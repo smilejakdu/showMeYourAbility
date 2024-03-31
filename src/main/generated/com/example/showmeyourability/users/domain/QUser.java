@@ -51,6 +51,8 @@ public class QUser extends EntityPathBase<User> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
+    public final EnumPath<com.example.showmeyourability.shared.Enum.UserType> userType = createEnum("userType", com.example.showmeyourability.shared.Enum.UserType.class);
+
     public QUser(String variable) {
         super(User.class, forVariable(variable));
     }
